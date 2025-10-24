@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X, Calendar } from 'lucide-react'
+import './CreateChallengeModal.css'
 
 export const CreateChallengeModal = ({ onClose, onCreateChallenge }) => {
   const [formData, setFormData] = useState({
