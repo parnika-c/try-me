@@ -1,35 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+    // src/App.js
+import React, { useState } from 'react';
+import Login from './pages/Login';
+import CreateAccount from './pages/CreateAccount';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [authToken, setAuthToken] = useState(null);
+  const [currentView, setCurrentView] = useState('login'); // 'login' or 'createAccount'
+
+  const handleLoginSuccess = (token) => {
+    setAuthToken(token);
+    setIsLoggedIn(true);
+  };
+
+  const handleAccountCreated = (token) => {
+    setAuthToken(token);
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setAuthToken(null);
+    setIsLoggedIn(false);
+    setCurrentView('login');
+  };
+
+  const showCreateAccount = () => {
+    setCurrentView('createAccount');
+  };
+
+  const showLogin = () => {
+    setCurrentView('login');
+  };
+
+  // Simple Dashboard component for demonstration
+  const Dashboard = ({ onLogout }) => (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full mx-6 text-center">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">Welcome to Try Me!</h1>
+        <p className="text-gray-600 mb-6">You are successfully logged in.</p>
+        <button 
+          onClick={onLogout}
+          className="w-full bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition-all font-medium"
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      {isLoggedIn ? (
+        <Dashboard onLogout={handleLogout} authToken={authToken} />
+      ) : currentView === 'login' ? (
+        <Login 
+          onLoginSuccess={handleLoginSuccess} 
+          onShowCreateAccount={showCreateAccount}
+        />
+      ) : (
+        <CreateAccount 
+          onAccountCreated={handleAccountCreated}
+          onShowLogin={showLogin}
+        />
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
