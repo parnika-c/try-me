@@ -1,0 +1,46 @@
+/* Minimal styling for the ChallengeCard component */
+
+.challenge-card {
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 12px 12px 14px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s ease, transform 0.05s ease;
+}
+.challenge-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
+
+.card-header { margin-bottom: 4px; }
+.title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
+.card-title { font-size: 1.0625rem; line-height: 1.4; font-weight: 600; margin: 0; }
+.card-description { color: #6b7280; margin: 0; font-size: 0.95rem; }
+
+.badge { display:inline-flex; align-items:center; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+.badge-active { background: #22c55e; color: white; }
+.badge-secondary { background: #e5e7eb; color: #111827; }
+
+.card-content { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+
+.progress-block { display: flex; flex-direction: column; gap: 6px; }
+.progress { position: relative; height: 8px; background: #e5e7eb; border-radius: 999px; overflow: hidden; }
+.progress-inner { position: absolute; inset: 0 auto 0 0; width: 0; background: #2563eb; border-radius: 999px; }
+
+.row { display: flex; align-items: center; gap: 8px; }
+.row.space-between { justify-content: space-between; }
+.row.gap { gap: 16px; }
+.row.gap-sm { gap: 6px; }
+.row.center { align-items: center; }
+.small { font-size: 0.875rem; }
+.muted { color: #6b7280; }
+
+.icon { width: 16px; height: 16px; color: #6b7280; }
+.icon-orange { color: #f97316; }
+.icon-yellow { color: #eab308; }
+.icon-green { color: #16a34a; }
+
+.avatar-stack { display: flex; align-items: center; }
+.avatar-stack .avatar { width: 32px; height: 32px; border-radius: 999px; overflow: hidden; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,0.06); margin-right: -8px; display: flex; align-items: center; justify-content: center; background: #e5e7eb; font-size: 12px; font-weight: 600; color: #374151; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.avatar-fallback { display:flex; align-items:center; justify-content:center; width:100%; height:100%; }
+.avatar.more { background: #e5e7eb; }
