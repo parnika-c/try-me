@@ -19,7 +19,7 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
     try {
       const response = await new Promise((resolve) =>
         setTimeout(() => {
-          if (email === 'user@example.com' && password === 'password123') {
+          if (email === 'user@gmail.com' && password === 'password') {
             resolve({ success: true, token: 'fake-jwt-token' });
           } else {
             resolve({ success: false, message: 'Invalid credentials.' });
@@ -65,10 +65,10 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
         <div className="hidden lg:block">
           <div className="max-w-xl">
             <h1 className="text-5xl font-black tracking-tight text-gray-900 leading-tight">
-              Welcome back — let’s keep your streak alive
+              Welcome back to Try Me!
             </h1>
             <p className="mt-4 text-gray-600 text-lg">
-              Pick up where you left off. Your progress and weekly challenges are waiting.
+              Sign in to your account to continue.
             </p>
           </div>
         </div>
@@ -100,7 +100,7 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                     aria-label="Toggle password visibility"
                   >
-                    {showPw ? '🙈' : '👁️'}
+                    {showPw ? '◉' : '◯'}
                   </button>
                 </div>
               </div>
@@ -118,8 +118,7 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
               Don&apos;t have an account?{' '}
               <button
                 onClick={onShowCreateAccount}
-                className="text-blue-700 font-semibold underline decoration-2 underline-offset-2"
-              >
+                className="text-blue-800 font-semibold underline decoration-2 underline-offset-2">
                 Create one here
               </button>
             </div>

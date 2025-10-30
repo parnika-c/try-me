@@ -18,7 +18,7 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
       uppercase: /[A-Z]/.test(password),
       lowercase: /[a-z]/.test(password),
       number: /\d/.test(password),
-      special: /[@$!%*?&]/.test(password)
+      special: /[@!&%*?_]/.test(password)
     };
     setPasswordValidation(validation);
     return Object.values(validation).every(Boolean);
@@ -106,24 +106,12 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
         <div className="hidden lg:block">
           <div className="max-w-xl">
             <h1 className="text-5xl font-black tracking-tight text-gray-900 leading-tight">
-              Join a cleaner, calmer way to track your goals
+              Welcome to Try Me, a fun way to compete with your friends!
             </h1>
             <p className="mt-4 text-gray-600 text-lg">
-              Create an account to unlock streaks, weekly challenges, and rich visual insights.
+              Create an account to creat challenges and compete with your friends!
             </p>
 
-            <ul className="mt-8 space-y-3">
-              {[
-                'Beautiful analytics and progress charts',
-                'Privacy-first by default',
-                'Invite friends and compete weekly',
-              ].map((t) => (
-                <li key={t} className="flex items-center gap-3 text-gray-700">
-                  <span className="inline-flex h-5 w-5 rounded-full bg-green-100 border border-green-200" />
-                  <span className="font-medium">{t}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
 
@@ -172,7 +160,7 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                     aria-label="Toggle password visibility"
                   >
-                    {showPw ? '🙈' : '👁️'}
+                    {showPw ? '◉' : '◯'}
                   </button>
                 </div>
 
@@ -224,7 +212,7 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                     aria-label="Toggle password visibility"
                   >
-                    {showPw2 ? '🙈' : '👁️'}
+                    {showPw ? '◉' : '◯'}
                   </button>
                 </div>
               </div>

@@ -1,20 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 
-/* Brand tokens */
+
 :root{
-  --brand-from: #2563eb; /* blue-600 */
-  --brand-to:   #4f46e5; /* indigo-600 */
+  --brand-from: #3ae7b9; /* blue-600 */
+  --brand-to:   #1c1681; /* indigo-600 */
 }
 
 /* Soft patterned background for auth pages */
 .bg-auth {
   background:
-    radial-gradient(1000px 420px at -10% -10%, rgba(147,197,253,0.28), transparent 60%),
-    radial-gradient(900px 380px at 110% 0%, rgba(199,210,254,0.28), transparent 60%),
-    linear-gradient(135deg,#f8fafc,#eef2ff);
+    radial-gradient(1000px 420px at -10% -10%, rgba(22, 59, 101, 0.28), transparent 60%),
+    linear-gradient(135deg,#ced3d8,#eef2ff);
 }
 
 /* Glass effect for cards */
@@ -55,18 +52,6 @@
   --primary-500: #3b82f6;
   --primary-600: #2563eb;
   --primary-700: #1d4ed8;
-  --success-500: #10b981;
-  --warning-500: #f59e0b;
-  --error-500: #ef4444;
-  --gray-50: #f9fafb;
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-300: #d1d5db;
-  --gray-400: #9ca3af;
-  --gray-500: #6b7280;
-  --gray-600: #4b5563;
-  --gray-700: #374151;
-  --gray-800: #1f2937;
   --gray-900: #111827;
 }
 
@@ -131,7 +116,11 @@
 }
 
 .card-glass {
-  @apply glass rounded-2xl shadow-xl;
+  background: rgba(61, 61, 147, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(239, 122, 122, 0.6);
+  @apply rounded-2xl shadow-xl;
 }
 
 /* Form components */
@@ -183,7 +172,7 @@
 }
 
 .nav-link-active {
-  @apply bg-blue-100 text-blue-700;
+  @apply bg-green-100 text-green-700;
 }
 
 .nav-link-inactive {
@@ -269,7 +258,7 @@
   }
   
   .form-label {
-    @apply text-gray-300;
+    @apply text-gray-500;
   }
 }
 
