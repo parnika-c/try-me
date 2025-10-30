@@ -1,12 +1,16 @@
-    // src/App.js
+// src/App.js
 import React, { useState } from 'react';
 import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount';
+import { CreateChallengeModal } from './components/CreateChallengeModal'
+import './App.css'
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authToken, setAuthToken] = useState(null);
   const [currentView, setCurrentView] = useState('login'); // 'login' or 'createAccount'
+  const [showModal, setShowModal] = useState(false)
 
   const handleLoginSuccess = (token) => {
     setAuthToken(token);
@@ -50,6 +54,18 @@ function App() {
 
   return (
     <div className="App">
+      <div className="main-content">
+          <h1>Try Me</h1>
+
+          <button 
+            className="create-challenge-btn"
+            onClick={() => setShowModal(true)}
+          >
+            Create Challenge
+          </button>
+        </div>
+    
+    
       {isLoggedIn ? (
         <Dashboard onLogout={handleLogout} authToken={authToken} />
       ) : currentView === 'login' ? (
@@ -61,6 +77,15 @@ function App() {
         <CreateAccount 
           onAccountCreated={handleAccountCreated}
           onShowLogin={showLogin}
+        />
+      )}
+      {showModal && (
+        <CreateChallengeModal 
+          onClose={() => setShowModal(false)}
+          onCreateChallenge={(challengeData) => {
+            console.log('Creating challenge:', challengeData)
+            setShowModal(false)
+          }}
         />
       )}
     </div>
