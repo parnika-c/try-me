@@ -1,6 +1,17 @@
-import React from 'react'
-import { Calendar, Users, Trophy, Flame, DollarSign } from 'lucide-react'
+//The goal of this component is to make a readable card for the user w/ all their existing/upcoming challenges 
+import { Calendar, Users, Trophy, Flame } from 'lucide-react'
 import './Challenge-Card.css'
+
+// Challenges are always 7 days long
+const DAYS = 7
+
+// Stat Component which includes the icon + the text 
+const Stat = ({ Icon, colorClass = '', children }) => (
+  <div className="row gap-sm center">
+    <Icon className={`icon ${colorClass}`.trim()} />
+    <span>{children}</span>
+  </div>
+)
 
 /**
  * @typedef {Object} ChallengeParticipant
@@ -17,95 +28,95 @@ import './Challenge-Card.css'
  * @property {boolean} isActive
  * @property {number} currentDay
  * @property {ChallengeParticipant[]} participants
- * @property {boolean} [hasForfeitPot]
- * @property {number} [forfeitPotTotal]
  * @property {string|number|Date} [startDate]
  */
 
-/**
- * @param {{ challenge: Challenge, onClick: () => void }} props
- */
 export function ChallengeCard({ challenge, onClick }) {
-  const progressPercentage = Math.min(100, Math.max(0, (challenge.currentDay / 7) * 100))
-  const daysRemaining = Math.max(0, 7 - (challenge.currentDay || 0))
 
-  const currentUserParticipant = (challenge.participants || []).find(
-    (p) => p.userId === 'user-1'
-  )
+  const { name, description, isActive: active, currentDay = 0, participants: list = [], startDate } = challenge
+
+  // derives values
+  const isActive = !!active
+  const participants = list
+  const participantCount = participants.length
+  const visibleParticipants = participants.slice(0, 5)
+
+  // MATH for the progress percentage for the progress bar 
+  const progressPercentage = Math.min(100, Math.max(0, (currentDay / DAYS) * 100))
+  const daysRemaining = Math.max(0, DAYS - currentDay)
+
+  // show their streak + points
+  const currentUserParticipant = participants.find((p) => p.userId === 'user-1')
+
+  // if not active, should start date, else days remaining
+  const metaText = !isActive && startDate
+    ? `Starts ${new Date(startDate).toLocaleDateString()}`
+    : isActive && daysRemaining > 0
+      ? `${daysRemaining} days remaining`
+      : null
 
   return (
     <div className="challenge-card" role="button" onClick={onClick}>
       <div className="card-header">
         <div className="title-row">
-          <h3 className="card-title">{challenge.name}</h3>
-          {challenge.isActive ? (
+
+
+           {/* Badge for active vs upcoming */}
+          <h3 className="card-title">{name}</h3>
+          {isActive ? (
             <span className="badge badge-active">Active</span>
           ) : (
             <span className="badge badge-secondary">Upcoming</span>
           )}
         </div>
-        <p className="card-description">{challenge.description}</p>
+        <p className="card-description">{description}</p>
       </div>
 
       <div className="card-content">
-        {challenge.isActive && (
+        {/* Progress section for active challenges! */}
+        {isActive && (
           <>
             <div className="progress-block">
               <div className="row space-between small muted">
                 <span>Progress</span>
-                <span>Day {challenge.currentDay}/7</span>
+                <span>Day {currentDay}/{DAYS}</span>
               </div>
               <div className="progress">
                 <div className="progress-inner" style={{ width: `${progressPercentage}%` }} />
               </div>
             </div>
 
+            {/* Personal progress for  that challenge */}
             {currentUserParticipant && (
               <div className="row gap small">
-                <div className="row gap-sm center">
-                  <Flame className="icon icon-orange" />
-                  <span>{currentUserParticipant.currentStreak || 0} day streak</span>
-                </div>
-                <div className="row gap-sm center">
-                  <Trophy className="icon icon-yellow" />
-                  <span>{currentUserParticipant.totalPoints || 0} pts</span>
-                </div>
+                <Stat Icon={Flame} colorClass="icon-orange">
+                  {currentUserParticipant.currentStreak || 0} day streak
+                </Stat>
+                <Stat Icon={Trophy} colorClass="icon-yellow">
+                  {currentUserParticipant.totalPoints || 0} pts
+                </Stat>
               </div>
             )}
           </>
         )}
 
-        <div className="row space-between">
-          <div className="row gap-sm center muted">
-            <Users className="icon" />
-            <span className="small">
-              {(challenge.participants || []).length} participants
-            </span>
-          </div>
-          {challenge.hasForfeitPot && (
-            <div className="row gap-sm center">
-              <DollarSign className="icon icon-green" />
-              <span className="small">${challenge.forfeitPotTotal || 0}</span>
-            </div>
-          )}
+        {/* Number of particpants */}
+        <div className="row gap-sm center muted">
+          <Users className="icon" />
+          <span className="small">{participantCount} participants</span>
         </div>
 
-        {!challenge.isActive && challenge.startDate && (
+        {/* Calendar data */}
+        {metaText && (
           <div className="row gap-sm small muted">
             <Calendar className="icon" />
-            <span>Starts {new Date(challenge.startDate).toLocaleDateString()}</span>
+            <span>{metaText}</span>
           </div>
         )}
 
-        {challenge.isActive && daysRemaining > 0 && (
-          <div className="row gap-sm small muted">
-            <Calendar className="icon" />
-            <span>{daysRemaining} days remaining</span>
-          </div>
-        )}
-
+        {/* Show first 5 participants */}
         <div className="avatar-stack">
-          {(challenge.participants || []).slice(0, 5).map((participant) => {
+          {visibleParticipants.map((participant) => {
             const name = participant.user?.name || 'U'
             const initial = name.charAt(0).toUpperCase()
             const src = participant.user?.avatar
@@ -119,13 +130,11 @@ export function ChallengeCard({ challenge, onClick }) {
               </div>
             )
           })}
-          {(challenge.participants || []).length > 5 && (
-            <div className="avatar more">+{(challenge.participants || []).length - 5}</div>
+          {participantCount > 5 && (
+            <div className="avatar more">+{participantCount - 5}</div>
           )}
         </div>
       </div>
     </div>
   )
 }
-
-export default ChallengeCard

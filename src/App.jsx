@@ -1,16 +1,51 @@
 import './App.css'
-import { useState } from 'react'
 import { ChallengeCard } from './components/Challenge-Card'
 
 function App() {
+
+  //MOCK DATA TO TEST CODE / DISPLAY
   const challenges = [
+    {
+      name: '10K Steps Daily',
+      description: 'Walk 10,000 steps every day for a week!',
+      isActive: true,
+      currentDay: 5,
+      startDate: new Date().toISOString(),
+      participants: [
+        { userId: 'user-1', user: { name: 'Sarah' }, currentStreak: 3, totalPoints: 145 },
+        { userId: 'user-2', user: { name: 'Mike' } },
+        { userId: 'user-3', user: { name: 'Tom' } },
+        { userId: 'user-4', user: { name: 'Priya' } },
+      ],
+    },
+    {
+      name: 'Morning Meditation',
+      description: 'Meditate for at least 10 minutes each morning',
+      isActive: true,
+      currentDay: 4,
+      startDate: new Date().toISOString(),
+      participants: [
+        { userId: 'user-1', user: { name: 'Sarah' }, currentStreak: 4, totalPoints: 140 },
+        { userId: 'user-5', user: { name: 'Emma' } },
+      ],
+    },
+    {
+      name: 'Read 30 Minutes Daily',
+      description: 'Develop a reading habit by reading for 30 minutes each day',
+      isActive: true,
+      currentDay: 3,
+      startDate: new Date().toISOString(),
+      participants: [
+        { userId: 'user-1', user: { name: 'Sarah' }, currentStreak: 2, totalPoints: 65 },
+        { userId: 'user-3', user: { name: 'Tom' } },
+        { userId: 'user-6', user: { name: 'Linda' } },
+      ],
+    },
     {
       name: '7-Day Hydration',
       description: 'Drink 8 cups of water daily to stay hydrated and energized.',
       isActive: true,
       currentDay: 3,
-      hasForfeitPot: true,
-      forfeitPotTotal: 125,
       startDate: new Date().toISOString(),
       participants: [
         { userId: 'user-1', user: { name: 'Alex Johnson' }, currentStreak: 3, totalPoints: 45 },
@@ -26,8 +61,6 @@ function App() {
       description: 'Run 2 miles every morning before 9 AM for a week.',
       isActive: false,
       currentDay: 0,
-      hasForfeitPot: false,
-      forfeitPotTotal: 0,
       startDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
       participants: [
         { userId: 'user-1', user: { name: 'Alex Johnson' }, currentStreak: 0, totalPoints: 0 },
@@ -35,21 +68,31 @@ function App() {
         { userId: 'user-8', user: { name: 'Chris Evans' } },
       ],
     },
+    {
+      name: 'Daily Reading Club',
+      description: 'Read 20 pages every day for the next 7 days.',
+      isActive: true,
+      currentDay: 5,
+      startDate: new Date().toISOString(),
+      participants: [
+        { userId: 'user-1', user: { name: 'Alex Johnson' }, currentStreak: 2, totalPoints: 30 },
+        { userId: 'user-9', user: { name: 'Jordan Lee' } },
+        { userId: 'user-10', user: { name: 'Morgan Yu' } },
+        { userId: 'user-11', user: { name: 'Casey Neistat' } },
+        { userId: 'user-12', user: { name: 'Nina Williams' } },
+        { userId: 'user-13', user: { name: 'Arjun Mehta' } },
+      ],
+    },
   ]
-
-  const handleClick = (challenge) => {
-    // eslint-disable-next-line no-console
-    console.log('Challenge clicked:', challenge.name)
-  }
 
   return (
     <div className="App">
       <div className="main-content">
         <h1>Try Me</h1>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 16 }}>
+        <div className="cards-grid">
           {challenges.map((c) => (
-            <ChallengeCard key={c.name} challenge={c} onClick={() => handleClick(c)} />)
-          )}
+            <ChallengeCard key={c.name} challenge={c} onClick={() => handleClick(c)} />
+          ))}
         </div>
       </div>
     </div>
