@@ -1,15 +1,15 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import { NavBar } from './components/NavBar';
 import { CreateChallengeModal } from './components/CreateChallengeModal'
-import './App.css'
+import './App.css';
 
 function App() {
   const [showModal, setShowModal] = useState(false)
 
   return (
     <div className="App">
+      <NavBar />
       <div className="main-content">
-        <h1>Try Me</h1>
-
         <button 
           className="create-challenge-btn"
           onClick={() => setShowModal(true)}
@@ -17,7 +17,7 @@ function App() {
           Create Challenge
         </button>
       </div>
-
+      
       {showModal && (
         <CreateChallengeModal 
           onClose={() => setShowModal(false)}
@@ -28,7 +28,7 @@ function App() {
         />
       )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
