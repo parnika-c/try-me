@@ -1,39 +1,19 @@
 import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-import JoinChallenge from "./components/JoinChallenge";
-import CreateChallengeModal from './components/CreateChallengeModal'
-import NavBar from './components/NavBar';
+import Dashboard from './pages/Dashboard.jsx'
 import './App.css'
 
 function App() {
-  const [showModal, setShowModal] = useState(false)
-
   return (
-    <div className="App">
-      <NavBar />
-      <div className="main-content">
-        <button 
-          className="create-challenge-btn"
-          onClick={() => setShowModal(true)}
-        >
-          Create Challenge
-        </button>
-
-        <div style={{padding: 24}}>
-          <JoinChallenge />
-        </div>
-      </div>
-      
-      {showModal && (
-        <CreateChallengeModal 
-          onClose={() => setShowModal(false)}
-          onCreateChallenge={(challengeData) => {
-            console.log('Creating challenge:', challengeData)
-            setShowModal(false)
-          }}
-        />
-      )}
-    </div>
+    // <Dashboard />
+    <Router>
+      <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="*" element={<Dashboard />} />
+      </Routes>
+    </Router>
   );
 }
 
