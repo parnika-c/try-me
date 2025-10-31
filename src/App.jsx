@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import { NavBar } from './components/NavBar';
-import { CreateChallengeModal } from './components/CreateChallengeModal'
-import './App.css';
+import { useState } from 'react'
+
+import JoinChallenge from "./components/JoinChallenge";
+import CreateChallengeModal from './components/CreateChallengeModal'
+import NavBar from './components/NavBar';
+import './App.css'
 
 function App() {
   const [showModal, setShowModal] = useState(false)
@@ -16,6 +18,10 @@ function App() {
         >
           Create Challenge
         </button>
+
+        <div style={{padding: 24}}>
+          <JoinChallenge />
+        </div>
       </div>
       
       {showModal && (
