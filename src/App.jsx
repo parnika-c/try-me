@@ -6,7 +6,6 @@ import './App.css'
 
 function App() {
   return (
-    // <Dashboard />
     <Router>
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />

@@ -34,20 +34,3 @@ body {
   color: #64748b;
   margin-bottom: 2rem;
 }
-
-.create-challenge-btn {
-  background: #1e293b;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.create-challenge-btn:hover {
-  background: #1e293b;
-  transform: translateY(-1px);
-}
