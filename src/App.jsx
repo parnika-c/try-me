@@ -1,3 +1,8 @@
+import { useState } from 'react'
+
+import JoinChallenge from "./components/JoinChallenge";
+import CreateChallengeModal from './components/CreateChallengeModal'
+import NavBar from './components/NavBar';
 import './App.css'
 import { ChallengeCard } from './components/Challenge-Card'
 
@@ -84,19 +89,42 @@ function App() {
       ],
     },
   ]
+  const [showModal, setShowModal] = useState(false)
 
   return (
     <div className="App">
+      <NavBar />
       <div className="main-content">
-        <h1>Try Me</h1>
+        <button 
+          className="create-challenge-btn"
+          onClick={() => setShowModal(true)}
+        >
+          Create Challenge
+        </button>
+
+        <div style={{padding: 24}}>
+          <JoinChallenge />
+        </div>
+
         <div className="cards-grid">
           {challenges.map((c) => (
             <ChallengeCard key={c.name} challenge={c} onClick={() => handleClick(c)} />
           ))}
         </div>
+
       </div>
+      
+      {showModal && (
+        <CreateChallengeModal 
+          onClose={() => setShowModal(false)}
+          onCreateChallenge={(challengeData) => {
+            console.log('Creating challenge:', challengeData)
+            setShowModal(false)
+          }}
+        />
+      )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
