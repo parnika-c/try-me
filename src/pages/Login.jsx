@@ -23,7 +23,6 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
       const response = await login({ email, password });
 
       // If we get here, login worked! User exists in MongoDB!
-      alert('Login successful!');
       onLoginSuccess?.(response);
     } catch (err) {
       console.error(err);

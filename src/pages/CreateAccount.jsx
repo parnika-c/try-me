@@ -77,8 +77,7 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
       });
 
       // If we get here, it worked! The user is now saved in MongoDB!
-      alert('Account created successfully! Your info is now in the database!');
-      onAccountCreated?.(response);
+      onAccountCreated?.();
     } catch (err) {
       console.error(err);
       // Show the error message from the server
