@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CreateChallenge } from '../components/CreateChallenge';
+import CreateChallenge from '../components/CreateChallenge';
 import { NavBar } from '../components/NavBar';
 import JoinChallenge from '../components/JoinChallenge';
 import './Dashboard.css';
@@ -13,7 +13,6 @@ function Dashboard() {
           <JoinChallenge />
         </div>
     </>
-    
   );
 };
 

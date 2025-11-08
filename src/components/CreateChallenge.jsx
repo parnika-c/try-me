@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Calendar } from 'lucide-react'
 import './CreateChallenge.css'
 
-export const CreateChallengeModal = ({ onClose, onCreateChallenge }) => {
+export const CreateChallenge = ({ onClose, onCreateChallenge }) => {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -159,3 +159,5 @@ export const CreateChallengeModal = ({ onClose, onCreateChallenge }) => {
     </>
   )
 }
+
+export default CreateChallenge;
