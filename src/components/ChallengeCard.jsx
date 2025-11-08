@@ -1,6 +1,6 @@
 //The goal of this component is to make a readable card for the user w/ all their existing/upcoming challenges 
 import { Calendar, Users, Trophy, Flame } from 'lucide-react'
-import './Challenge-Card.css'
+import './ChallengeCard.css'
 
 // Challenges are always 7 days long
 const DAYS = 7
@@ -32,7 +32,6 @@ const Stat = ({ Icon, colorClass = '', children }) => (
  */
 
 export function ChallengeCard({ challenge, onClick }) {
-
   const { name, description, isActive: active, currentDay = 0, participants: list = [], startDate } = challenge
 
   // derives values
@@ -138,3 +137,5 @@ export function ChallengeCard({ challenge, onClick }) {
     </div>
   )
 }
+
+export default ChallengeCard;
