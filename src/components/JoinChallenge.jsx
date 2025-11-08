@@ -14,8 +14,6 @@ export default function JoinChallenge() {
 
   return (
     <>
-      <h1 className="demo-title">Try-Me</h1>
-
       <button className="join-btn" onClick={() => setOpen(true)}>
         <span className="join-btn__icon">+</span>
         <span>Join Challenge</span>
