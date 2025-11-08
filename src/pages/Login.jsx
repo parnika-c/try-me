@@ -1,6 +1,7 @@
 // src/pages/Login.jsx
 import React, { useState } from 'react';
 import './Login.css';
+import { login } from '../services/api';
 
 const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
   const [email, setEmail] = useState(''); 
@@ -16,27 +17,21 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
       setError('Please enter both email and password.');
       return;
     }
+    if (formData.email == formData.confirmEmail && formData.password != formData.confirmPassword) {
+      setError('Passwords do not match.');
+      
 
     try {
-      const response = await new Promise((resolve) =>
-        setTimeout(() => {
-          if (email === 'user@gmail.com' && password === 'password') {
-            resolve({ success: true, token: 'fake-jwt-token' });
-          } else {
-            resolve({ success: false, message: 'Invalid credentials.' });
-          }
-        }, 500)
-      );
+      // Send login request to your backend!
+      const response = await login({ email, password });
 
-      if (response.success) {
-        alert('Login successful!');
-        onLoginSuccess?.(response.token);
-      } else {
-        setError(response.message);
-      }
+      // If we get here, login worked! User exists in MongoDB!
+      alert('Login successful!');
+      onLoginSuccess?.(response);
     } catch (err) {
       console.error(err);
-      setError('An error occurred during login.');
+      // Show the error message from the server
+      setError(err.message || 'An error occurred during login.');
     }
   };
 

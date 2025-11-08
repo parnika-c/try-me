@@ -1,6 +1,7 @@
 // src/pages/CreateAccount.jsx
 import React, { useState } from 'react';
 import './CreateAccount.css';
+import { register } from '../services/api';
 
 const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
   const [formData, setFormData] = useState({
@@ -50,6 +51,7 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
 
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match.');
+
       return;
     }
 
@@ -66,17 +68,21 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
     }
 
     try {
-      const response = await new Promise((resolve) =>
-        setTimeout(() => resolve({ success: true, token: 'fake-jwt-token' }), 600)
-      );
+      // Send the user data to your backend!
+      const response = await register({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password
+      });
 
-      if (response.success) {
-        alert('Account created successfully!');
-        onAccountCreated?.(response.token);
-      }
+      // If we get here, it worked! The user is now saved in MongoDB!
+      alert('Account created successfully! Your info is now in the database!');
+      onAccountCreated?.(response);
     } catch (err) {
       console.error(err);
-      setError('An error occurred during account creation.');
+      // Show the error message from the server
+      setError(err.message || 'An error occurred during account creation.');
     }
   };
 
