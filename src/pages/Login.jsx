@@ -17,9 +17,6 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
       setError('Please enter both email and password.');
       return;
     }
-    if (formData.email == formData.confirmEmail && formData.password != formData.confirmPassword) {
-      setError('Passwords do not match.');
-      
 
     try {
       // Send login request to your backend!
