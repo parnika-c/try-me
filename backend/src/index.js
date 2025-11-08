@@ -14,7 +14,6 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json());
 
-// Connect your auth routes (this is the missing piece!)
 app.use("/api/auth", authRoutes);
 
 app.get("/api/health", (req, res) => {

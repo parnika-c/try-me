@@ -38,15 +38,9 @@ function App() {
       {isLoggedIn ? (
         <Dashboard userData={userData} onLogout={handleLogout} />
       ) : currentView === 'login' ? (
-        <Login 
-          onLoginSuccess={handleLoginSuccess} 
-          onShowCreateAccount={toggleView}
-        />
+        <Login onLoginSuccess={handleLoginSuccess} onShowCreateAccount={toggleView} />
       ) : (
-        <CreateAccount 
-          onAccountCreated={handleAccountCreated}
-          onShowLogin={toggleView}
-        />
+        <CreateAccount onAccountCreated={handleAccountCreated} onShowLogin={toggleView} />
       )}
     </div>
   );
