@@ -1,5 +1,6 @@
 // src/App.js
 import React, { useState } from 'react';
+import './App.css';
 import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount';
 import { CreateChallengeModal } from './components/CreateChallengeModal'
@@ -38,14 +39,11 @@ function App() {
 
   // Simple Dashboard component for demonstration
   const Dashboard = ({ onLogout }) => (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-      <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full mx-6 text-center">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">Welcome to Try Me!</h1>
-        <p className="text-gray-600 mb-6">You are successfully logged in.</p>
-        <button 
-          onClick={onLogout}
-          className="w-full bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition-all font-medium"
-        >
+    <div className="dashboard-container">
+      <div className="dashboard-card">
+        <h1 className="dashboard-title">Welcome to Try Me!</h1>
+        <p className="dashboard-text">You are successfully logged in.</p>
+        <button onClick={onLogout} className="dashboard-logout-btn">
           Logout
         </button>
       </div>

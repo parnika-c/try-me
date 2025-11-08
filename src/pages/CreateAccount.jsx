@@ -1,5 +1,6 @@
 // src/pages/CreateAccount.jsx
 import React, { useState } from 'react';
+import './CreateAccount.css';
 
 const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
   const [formData, setFormData] = useState({
@@ -18,7 +19,7 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
       uppercase: /[A-Z]/.test(password),
       lowercase: /[a-z]/.test(password),
       number: /\d/.test(password),
-      special: /[@!&%*?_]/.test(password)
+      special: /[@$!%*?&]/.test(password)
     };
     setPasswordValidation(validation);
     return Object.values(validation).every(Boolean);
@@ -80,84 +81,99 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
   };
 
   return (
-    <div className="relative min-h-screen bg-auth overflow-hidden">
-      <div className="blob" aria-hidden />
+    <div className="create-account-container">
+      <div className="create-account-blob" aria-hidden="true" />
 
       {/* Top Navigation */}
-      <div className="relative z-10 flex justify-between items-center px-6 sm:px-10 py-6">
-        <div className="flex items-center gap-2">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[var(--brand-from)] to-[var(--brand-to)]" />
-          <span className="font-extrabold text-xl tracking-tight text-gray-900">Try Me</span>
+      <div className="create-account-nav">
+        <div className="create-account-logo-container">
+          <div className="create-account-logo" />
+          <span className="create-account-logo-text">Try Me</span>
         </div>
-        <div className="flex gap-3">
-          <button
-            className="px-5 py-2 bg-white text-blue-600 border-2 border-blue-600 rounded-xl hover:bg-blue-50 transition-all font-semibold shadow"
-            onClick={onShowLogin}
-          >
+        <div className="create-account-nav-buttons">
+          <button className="create-account-btn-secondary" onClick={onShowLogin}>
             Login
           </button>
-          <button className="px-5 py-2 btn-primary">Create Account</button>
+          <button className="create-account-btn-primary">Create Account</button>
         </div>
       </div>
 
       {/* Split Layout */}
-      <div className="relative z-10 grid lg:grid-cols-2 gap-10 items-center px-6 sm:px-10 pb-16">
+      <div className="create-account-layout">
         {/* Left: marketing / value prop */}
-        <div className="hidden lg:block">
-          <div className="max-w-xl">
-            <h1 className="text-5xl font-black tracking-tight text-gray-900 leading-tight">
+        <div className="create-account-hero">
+          <div className="create-account-hero-content">
+            <h1 className="create-account-hero-title">
               Welcome to Try Me, a fun way to compete with your friends!
             </h1>
-            <p className="mt-4 text-gray-600 text-lg">
+            <p className="create-account-hero-text">
               Create an account to creat challenges and compete with your friends!
             </p>
-
           </div>
         </div>
 
         {/* Right: form card */}
-        <div className="w-full max-w-md mx-auto">
-          <div className="glass rounded-3xl shadow-2xl p-8 border border-white/60">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Create your account</h2>
+        <div className="create-account-form-wrapper">
+          <div className="create-account-card">
+            <h2 className="create-account-card-title">Create your account</h2>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
+            <form onSubmit={handleSubmit} className="create-account-form">
+              <div className="create-account-form-row">
+                <div className="create-account-form-group">
+                  <label className="create-account-label">First Name</label>
                   <input
-                    type="text" name="firstName" value={formData.firstName} onChange={handleChange}
-                    placeholder="John" className="input" required
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    placeholder="John"
+                    className="create-account-input"
+                    required
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
+                <div className="create-account-form-group">
+                  <label className="create-account-label">Last Name</label>
                   <input
-                    type="text" name="lastName" value={formData.lastName} onChange={handleChange}
-                    placeholder="Doe" className="input" required
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    placeholder="Doe"
+                    className="create-account-input"
+                    required
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+              <div className="create-account-form-group">
+                <label className="create-account-label">Email Address</label>
                 <input
-                  type="email" name="email" value={formData.email} onChange={handleChange}
-                  placeholder="example@mail.com" className="input" required
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="example@mail.com"
+                  className="create-account-input"
+                  required
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
-                <div className="relative">
+              <div className="create-account-form-group">
+                <label className="create-account-label">Password</label>
+                <div className="create-account-input-wrapper">
                   <input
                     type={showPw ? 'text' : 'password'}
-                    name="password" value={formData.password} onChange={handleChange}
-                    placeholder="Min 10 characters" className="input pr-12" required
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Min 10 characters"
+                    className="create-account-input create-account-input-with-icon"
+                    required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPw(v => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    className="create-account-toggle-password"
                     aria-label="Toggle password visibility"
                   >
                     {showPw ? '◉' : '◯'}
@@ -165,24 +181,22 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
                 </div>
 
                 {/* Strength meter */}
-                <div className="mt-3">
-                  <div className="flex gap-1">
+                <div className="create-account-strength-meter">
+                  <div className="create-account-strength-bars">
                     {[0,1,2,3,4].map(i => (
                       <div
                         key={i}
-                        className={`h-1.5 flex-1 rounded-full ${
-                          i < strengthScore ? 'bg-green-500' : 'bg-gray-200'
-                        }`}
+                        className={`create-account-strength-bar ${i < strengthScore ? 'active' : ''}`}
                       />
                     ))}
                   </div>
-                  <p className="mt-2 text-xs text-gray-600">
+                  <p className="create-account-strength-text">
                     {strengthScore <= 2 ? 'Weak' : strengthScore === 3 ? 'Okay' : 'Strong'}
                   </p>
                 </div>
 
                 {/* Requirements */}
-                <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                <div className="create-account-requirements">
                   {[
                     ['length','At least 10 characters'],
                     ['uppercase','One uppercase letter (A–Z)'],
@@ -190,45 +204,49 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
                     ['number','One number (0–9)'],
                     ['special','One special (@$!%*?&)'],
                   ].map(([k, label]) => (
-                    <div key={k} className={`flex items-center ${passwordValidation[k] ? 'text-green-700' : 'text-gray-500'}`}>
-                      <span className={`w-2 h-2 rounded-full mr-2 ${passwordValidation[k] ? 'bg-green-500' : 'bg-gray-300'}`} />
+                    <div key={k} className={`create-account-requirement ${passwordValidation[k] ? 'met' : ''}`}>
+                      <span className="create-account-requirement-dot" />
                       {label}
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
-                <div className="relative">
+              <div className="create-account-form-group">
+                <label className="create-account-label">Confirm Password</label>
+                <div className="create-account-input-wrapper">
                   <input
                     type={showPw2 ? 'text' : 'password'}
-                    name="confirmPassword" value={formData.confirmPassword} onChange={handleChange}
-                    placeholder="Confirm your password" className="input pr-12" required
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    placeholder="Confirm your password"
+                    className="create-account-input create-account-input-with-icon"
+                    required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPw2(v => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    className="create-account-toggle-password"
                     aria-label="Toggle password visibility"
                   >
-                    {showPw ? '◉' : '◯'}
+                    {showPw2 ? '◉' : '◯'}
                   </button>
                 </div>
               </div>
 
               {error && (
-                <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4">
-                  <p className="text-red-700 font-medium">{error}</p>
+                <div className="create-account-error">
+                  <p className="create-account-error-text">{error}</p>
                 </div>
               )}
 
-              <button type="submit" className="w-full btn-primary py-4">Create Account</button>
+              <button type="submit" className="create-account-submit-btn">Create Account</button>
             </form>
 
-            <div className="mt-6 text-center text-gray-600">
+            <div className="create-account-footer">
               Already have an account?{' '}
-              <button onClick={onShowLogin} className="text-blue-700 font-semibold underline decoration-2 underline-offset-2">
+              <button onClick={onShowLogin} className="create-account-footer-link">
                 Sign in here
               </button>
             </div>

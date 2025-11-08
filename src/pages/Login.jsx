@@ -1,5 +1,6 @@
 // src/pages/Login.jsx
 import React, { useState } from 'react';
+import './Login.css';
 
 const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
   const [email, setEmail] = useState(''); 
@@ -40,64 +41,68 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
   };
 
   return (
-    <div className="relative min-h-screen bg-auth overflow-hidden">
-      <div className="blob" aria-hidden />
+    <div className="login-container">
+      <div className="login-blob" aria-hidden="true" />
 
       {/* Top Nav */}
-      <div className="relative z-10 flex justify-between items-center px-6 sm:px-10 py-6">
-        <div className="flex items-center gap-2">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[var(--brand-from)] to-[var(--brand-to)]" />
-          <span className="font-extrabold text-xl tracking-tight text-gray-900">Try Me</span>
+      <div className="login-nav">
+        <div className="login-logo-container">
+          <div className="login-logo" />
+          <span className="login-logo-text">Try Me</span>
         </div>
-        <div className="flex gap-3">
-          <button className="px-5 py-2 btn-primary">Login</button>
-          <button
-            className="px-5 py-2 bg-white text-blue-600 border-2 border-blue-600 rounded-xl hover:bg-blue-50 transition-all font-semibold shadow"
-            onClick={onShowCreateAccount}
-          >
+        <div className="login-nav-buttons">
+          <button className="login-btn-primary">Login</button>
+          <button className="login-btn-secondary" onClick={onShowCreateAccount}>
             Create Account
           </button>
         </div>
       </div>
 
       {/* Split Layout */}
-      <div className="relative z-10 grid lg:grid-cols-2 gap-10 items-center px-6 sm:px-10 pb-16">
-        <div className="hidden lg:block">
-          <div className="max-w-xl">
-            <h1 className="text-5xl font-black tracking-tight text-gray-900 leading-tight">
+      <div className="login-layout">
+        <div className="login-hero">
+          <div className="login-hero-content">
+            <h1 className="login-hero-title">
               Welcome back to Try Me!
             </h1>
-            <p className="mt-4 text-gray-600 text-lg">
+            <p className="login-hero-text">
               Sign in to your account to continue.
             </p>
           </div>
         </div>
 
-        <div className="w-full max-w-md mx-auto">
-          <div className="glass rounded-3xl shadow-2xl p-8 border border-white/60">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Sign in</h2>
+        <div className="login-form-wrapper">
+          <div className="login-card">
+            <h2 className="login-card-title">Sign in</h2>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+            <form onSubmit={handleSubmit} className="login-form">
+              <div className="login-form-group">
+                <label className="login-label">Email Address</label>
                 <input
-                  type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                  placeholder="example@mail.com" className="input" required
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="example@mail.com"
+                  className="login-input"
+                  required
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
-                <div className="relative">
+              <div className="login-form-group">
+                <label className="login-label">Password</label>
+                <div className="login-input-wrapper">
                   <input
                     type={showPw ? 'text' : 'password'}
-                    value={password} onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password" className="input pr-12" required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    className="login-input login-input-with-icon"
+                    required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPw(v => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    className="login-toggle-password"
                     aria-label="Toggle password visibility"
                   >
                     {showPw ? '◉' : '◯'}
@@ -106,19 +111,17 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
               </div>
 
               {error && (
-                <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4">
-                  <p className="text-red-700 font-medium">{error}</p>
+                <div className="login-error">
+                  <p className="login-error-text">{error}</p>
                 </div>
               )}
 
-              <button type="submit" className="w-full btn-primary py-4">Sign In</button>
+              <button type="submit" className="login-submit-btn">Sign In</button>
             </form>
 
-            <div className="mt-6 text-center text-gray-600">
+            <div className="login-footer">
               Don&apos;t have an account?{' '}
-              <button
-                onClick={onShowCreateAccount}
-                className="text-blue-800 font-semibold underline decoration-2 underline-offset-2">
+              <button onClick={onShowCreateAccount} className="login-footer-link">
                 Create one here
               </button>
             </div>

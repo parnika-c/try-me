@@ -1,54 +1,54 @@
-@import "tailwindcss";
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* App Component Styles */
+
+.app-container {
+  width: 100%;
+  height: 100%;
 }
 
-body {
-  font-family: 'Roboto', sans-serif;
-  background-color: #f8fafc;
-}
-
-.App {
+/* Dashboard Styles */
+.dashboard-container {
   min-height: 100vh;
+  background: linear-gradient(to bottom right, #eff6ff, #eef2ff);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
 }
 
-.main-content {
+.dashboard-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  padding: 2rem;
+  max-width: 28rem;
+  width: 100%;
+  margin: 0 1.5rem;
   text-align: center;
-  max-width: 500px;
 }
 
-.main-content h1 {
-  font-size: 3rem;
+.dashboard-title {
+  font-size: 1.875rem;
   font-weight: 700;
-  color: #1e293b;
+  color: #1f2937;
   margin-bottom: 1rem;
 }
 
-.main-content p {
-  font-size: 1.2rem;
-  color: #64748b;
-  margin-bottom: 2rem;
+.dashboard-text {
+  color: #4b5563;
+  margin-bottom: 1.5rem;
 }
 
-.create-challenge-btn {
-  background: #1e293b;
+.dashboard-logout-btn {
+  width: 100%;
+  background: #dc2626;
   color: white;
+  padding: 0.75rem 1rem;
   border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 0.5rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.2s;
 }
 
-.create-challenge-btn:hover {
-  background: #1e293b;
-  transform: translateY(-1px);
+.dashboard-logout-btn:hover {
+  background: #b91c1c;
 }
