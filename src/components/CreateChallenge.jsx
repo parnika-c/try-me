@@ -11,28 +11,54 @@ export const CreateChallenge = ({ onClose, onCreateChallenge }) => {
     startDate: '',
     dailyGoal: '',
     unit: ''
-  })
+  });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('New Challenge Created:', formData)
-    setOpen(false)
-    setFormData({
-      name: '',
-      description: '',
-      type: 'task-based',
-      startDate: '',
-      dailyGoal: '',
-      unit: ''
-    })
-  }
+
+    const payload = {
+      name: formData.name,
+      description: formData.description,
+      type: formData.type === 'task-based' ? 'task' : 'value',
+      startDate: formData.startDate,
+      dailyGoal: formData.type === 'value-based' ? Number(formData.dailyGoal) : undefined,
+      unit: formData.type === 'value-based' ? formData.unit : undefined,
+    };
+
+    try {
+      const res = await fetch("http://localhost:4000/api/challenges", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        credentials: 'include' // include cookies
+      });
+
+      if (!res.ok) throw new Error("Failed to create challenge");
+      const data = await res.json();
+
+      console.log("Challenge created:", data);
+      setOpen(false);
+      onCreateChallenge?.(data);
+      setFormData({
+        name: '',
+        description: '',
+        type: 'task-based',
+        startDate: '',
+        dailyGoal: '',
+        unit: ''
+      });
+    } catch (err) {
+      console.error("Error creating challenge:", err);
+      alert("Failed to create challenge. Try again.");
+    }
+  };
 
   const handleChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }))
-  }
+  };
 
   return (
     <>
@@ -157,7 +183,7 @@ export const CreateChallenge = ({ onClose, onCreateChallenge }) => {
         </div>
       )}
     </>
-  )
+  );
 }
 
 export default CreateChallenge;

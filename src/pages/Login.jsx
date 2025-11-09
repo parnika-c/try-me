@@ -19,14 +19,10 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
     }
 
     try {
-      // Send login request to your backend!
-      const response = await login({ email, password });
-
-      // If we get here, login worked! User exists in MongoDB!
+      const response = await login({ email, password }); // Send login request to backend
       onLoginSuccess?.(response);
     } catch (err) {
       console.error(err);
-      // Show the error message from the server
       setError(err.message || 'An error occurred during login.');
     }
   };

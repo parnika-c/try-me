@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./db.js";
 import authRoutes from "./routes/auth.js";
+import challengeRoutes from "./routes/challenges.js";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/challenges", challengeRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ ok: true });
