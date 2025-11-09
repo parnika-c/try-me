@@ -1,11 +1,12 @@
 import express from "express";
 import Challenge from "../models/Challenge.js";
 import crypto from "crypto";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 // POST /api/challenges - create new challenge
-router.post("/", async (req, res) => {
+router.post("/", protect, async (req, res) => {
   try {
     const {
       name,
@@ -13,8 +14,7 @@ router.post("/", async (req, res) => {
       type,
       dailyGoal,
       unit,
-      startDate,
-      createdBy
+      startDate
     } = req.body;
     
     if (type === "value" && (!dailyGoal || !unit)) {
@@ -24,6 +24,7 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ message: "Task-based challenges should not include dailyGoal or unit." });
     }
 
+    const createdBy = req.user._id; // from JWT, protect middleware
     const joinCode = crypto.randomBytes(3).toString("hex").toUpperCase(); // Generate a random join code TODO join_code.py
 
     const challenge = new Challenge({
