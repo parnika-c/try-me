@@ -5,6 +5,20 @@ import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
+// GET /api/challenges - get challenges where user is a participant
+router.get("/", protect, async (req, res) => {
+  try {
+    const challenges = await Challenge.find({ participants: req.user._id })
+      .populate("createdBy", "name email")
+      .populate("participants", "name email");
+
+    res.json(challenges);
+  } catch (error) {
+    console.error("Error fetching challenges:", error);
+    res.status(500).json({ message: "Failed to load challenges", error: error.message });
+  }
+});
+
 // POST /api/challenges - create new challenge
 router.post("/", protect, async (req, res) => {
   try {

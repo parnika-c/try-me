@@ -120,7 +120,7 @@ export function ChallengeCard({ challenge, onClick }) {
             const initial = name.charAt(0).toUpperCase()
             const src = participant.user?.avatar
             return (
-              <div key={participant.userId} className="avatar" title={name}>
+              <div key={participant._id} className="avatar" title={name}>
                 {src ? (
                   <img src={src} alt={name} />
                 ) : (
