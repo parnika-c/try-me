@@ -41,7 +41,7 @@ function Dashboard() {
     <>
         <NavBar />
         <div className="dashboard-container">
-          <CreateChallenge />
+          <CreateChallenge onCreateChallenge={handleNewChallenge} />
           <JoinChallenge />
           <div className="cards-grid">
             {challenges.map((c) => (
