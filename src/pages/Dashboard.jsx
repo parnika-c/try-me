@@ -41,8 +41,18 @@ function Dashboard() {
     <>
         <NavBar />
         <div className="dashboard-container">
-          <CreateChallenge onCreateChallenge={handleNewChallenge} />
-          <JoinChallenge />
+          <div className="dashboard-header">
+            <div className="header-left">
+              <h1 className="dashboard-title">My Challenges</h1>
+              <p>Track your active and upcoming challenges</p>
+            </div>
+
+            <div className="header-right">
+              <CreateChallenge onCreateChallenge={handleNewChallenge} />
+              <JoinChallenge />
+            </div>
+          </div>
+          
           <div className="cards-grid">
             {challenges.map((c) => (
               <ChallengeCard key={c._id} challenge={c} onClick={() => handleClick(c)} />
