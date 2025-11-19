@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import { connectDB } from "./db.js";
 import authRoutes from "./routes/auth.js";
 import challengeRoutes from "./routes/challenges.js";
+import mfaRoutes from "./routes/mfa.js";
+import { protect } from './middleware/authMiddleware.js';
 
 const app = express();
 
@@ -17,6 +19,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/challenges", challengeRoutes);
+app.use("/api/mfa", mfaRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ ok: true });

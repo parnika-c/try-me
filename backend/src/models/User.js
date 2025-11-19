@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true },
     totalPoints: { type: Number, default: 0 },
+    mfaEnabled: { type: Boolean, default: false },
+    mfaSecret: { type: String },
     challengesJoined: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Challenge" }
     ]

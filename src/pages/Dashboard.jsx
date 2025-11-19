@@ -5,7 +5,7 @@ import { ChallengeCard } from '../components/ChallengeCard'
 import JoinChallenge from '../components/JoinChallenge';
 import './Dashboard.css';
 
-function Dashboard() {
+function Dashboard({ onShowMfa }) {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -40,6 +40,9 @@ function Dashboard() {
   return (
     <>
         <NavBar />
+        <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '0 1rem' }}>
+          <button onClick={() => onShowMfa?.()} className="mfa-setup-btn">Set up MFA</button>
+        </div>
         <div className="dashboard-container">
           <CreateChallenge onCreateChallenge={handleNewChallenge} />
           <JoinChallenge />
