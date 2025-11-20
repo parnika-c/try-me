@@ -6,7 +6,26 @@
   text-align: left; 
   width: 100%;
   margin: 0 auto;
+  
+  padding: 48px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   padding-top: 120px;
-  padding-left: 48px;
-  padding-right: 48px;
+  margin-bottom: 32px;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.header-right {
+  display: flex;
+  gap: 16px;
 }
