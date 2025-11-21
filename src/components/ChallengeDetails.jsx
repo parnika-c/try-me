@@ -45,12 +45,8 @@ export function ChallengeDetails({ challenge, onBack }) {
           <p className="details-desc">{challenge.description}</p>
         </div>
 
-        <span
-          className={`badge ${
-            challenge.isActive ? "badge-active" : "badge-secondary"
-          }`}
-        >
-          {challenge.isActive ? "Active" : "Upcoming"}
+        <span className={`badge badge-${(challenge?.status || "Upcoming").toLowerCase()}`} >
+          {challenge?.status || "Loading..."}
         </span>
       </div>
 

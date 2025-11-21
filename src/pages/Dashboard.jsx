@@ -68,7 +68,7 @@ function Dashboard({ userData }) {
             <ChallengeDetails
               challenge={selectedChallenge}
               onBack={() => setSelectedChallenge(null)}
-              currentUserId={userData?.id || userData?._id}
+              currentUserId={userData?._id}
             />
           }
         </div>

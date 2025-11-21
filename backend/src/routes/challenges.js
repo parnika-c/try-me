@@ -12,10 +12,21 @@ router.get("/", protect, async (req, res) => {
       .populate("createdBy", "name email")
       .populate("participants", "name email");
 
-    res.json(challenges.map(ch => ({
-      ...ch.toObject(),
-      currentDay: computeCurrentDay(ch.startDate)
-    })));
+    res.json(challenges.map(ch => {
+      const now = new Date();
+      const start = new Date(ch.startDate);
+      const end = new Date(ch.endDate);
+
+      let status = "Active";
+      if (now < start) status = "Upcoming";
+      else if (now > end) status = "Previous";
+
+      return {
+        ...ch.toObject(),
+        currentDay: computeCurrentDay(ch.startDate),
+        status: status
+      };
+    }));
   } catch (error) {
     console.error("Error fetching challenges:", error);
     res.status(500).json({ message: "Failed to load challenges", error: error.message });
