@@ -9,21 +9,26 @@ import './Dashboard.css';
 function Dashboard() {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedChallenge, setSelectedChallenge] = useState(null)
+  const [selectedChallenge, setSelectedChallenge] = useState(null);
+  const [error, setError] = useState(null);
 
   // Fetch challenges from backend
   useEffect(() => {
     const fetchChallenges = async () => {
       try {
         const res = await fetch("http://localhost:4000/api/challenges", {
-          credentials: "include", // send cookies
+          credentials: "include", 
         });
 
-        if (!res.ok) throw new Error("Failed to load challenges");
+        if (!res.ok) {
+          const msg = `Failed to load challenges (status ${res.status})`;
+          throw new Error(msg);
+        }
         const data = await res.json();
         console.log("Fetched challenges:", data);
         setChallenges(data);
       } catch (err) {
+        setError(err.message);
         console.error("Error fetching challenges:", err);
       } finally {
         setLoading(false);
@@ -38,6 +43,7 @@ function Dashboard() {
   };
 
   if (loading) return <p style={{ textAlign: "center" }}>Loading your challenges...</p>;
+  if (error) return <p style={{ textAlign: "center", color: 'red' }}>{error}</p>;
 
   return (
     <>
@@ -61,6 +67,7 @@ function Dashboard() {
               </div>
 
               <div className="cards-grid">
+                {challenges.length === 0 && <p className="empty-state">You have no challenges yet. Create or join one to get started.</p>}
                 {challenges.map((c) => (
                   <ChallengeCard key={c._id} challenge={c} onClick={() => setSelectedChallenge(c)} />
                 ))}
