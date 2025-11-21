@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import './App.css';
 import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount';
-import Dashboard from './pages/Dashboard.jsx'
+import Dashboard from './pages/Dashboard.jsx';
+import Leaderboard from './pages/Leaderboard.jsx'; 
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -36,7 +38,12 @@ function App() {
   return (
     <div className="app-container">
       {isLoggedIn ? (
-        <Dashboard userData={userData} onLogout={handleLogout} />
+        <BrowserRouter> {/* added router wrapper so NavBar's useNavigate works */}
+          <Routes>
+            <Route path="/" element={<Dashboard userData={userData} onLogout={handleLogout} />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+          </Routes>
+        </BrowserRouter>
       ) : currentView === 'login' ? (
         <Login onLoginSuccess={handleLoginSuccess} onShowCreateAccount={toggleView} />
       ) : (

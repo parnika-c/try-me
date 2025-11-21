@@ -1,8 +1,10 @@
 import React from "react";
 import { Target, Compass, Trophy } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import "./NavBar.css";
 
 export const NavBar = () => {
+    const navigate = useNavigate();
     return (
         <>
         <nav className="navbar">
@@ -40,7 +42,7 @@ export const NavBar = () => {
                 <Compass size={18} />
             <span>Discover</span>
             </button>
-            <button className="nav-tab">
+            <button className="nav-tab" onClick={() => navigate('/leaderboard')}>
                 <Trophy size={18} />
             <span>Leaderboard</span>
             </button>
