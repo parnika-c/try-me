@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Target, Compass, Trophy } from "lucide-react";
 import "./NavBar.css";
 
@@ -13,6 +13,7 @@ export const NavBar = ({ onLogout }) => {
         }
     };
     const menus = ["Sign Out"];
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
         <>
@@ -42,23 +43,26 @@ export const NavBar = ({ onLogout }) => {
                         <img className="profile-pic" 
                             src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" 
                             alt="Profile Picture"
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            onMouseEnter={() => setIsMenuOpen(!isMenuOpen)}
+                            
                             />
                      
-                        <div className="menu-dropdown">
+                        {isMenuOpen && <div className="menu-dropdown">
                             
                         <ul>
                             {menus.map((menu) => ( 
                                 <li 
                                     key={menu}>
-                                    <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                                    <button className="logout-btn" onClick={handleLogout}>
+                                    {menu}
+                                    </button>
 
 
                                 </li>
                             ))}
                        
                         </ul>
-                    </div>
+                    </div>}
                     </div>
                     
                     </div>

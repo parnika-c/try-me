@@ -19,6 +19,7 @@
   background: #0b0b15;
   color: #fff;
   border: 0;
+  white-space: nowrap;
   padding: 12px 18px;
   border-radius: 999px;
   font-weight: 600;
@@ -30,7 +31,7 @@
   scale: 1.05;
 }
 .logout-btn__icon {
-  line-height: -1; font-size: 18px;
+  line-height: -1; font-size: 18px; 
 }
 .profile {
   position: relative;
@@ -54,16 +55,7 @@
 .menu-dropdown li:hover {
   background: #f1f3ff;
 }
-.menu-dropdown ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.menu-dropdown ul li {
-  list-style: none;
-  padding: 8px 16px;
-  cursor: pointer;
-}
+
 .menu-dropdown ul li:hover {
   background: #f1f3ff;
 }
@@ -101,6 +93,10 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+.profile-pic:hover {
+  transform: scale(1.05);
+  cursor: pointer;
 }
 
 .rank-card {
