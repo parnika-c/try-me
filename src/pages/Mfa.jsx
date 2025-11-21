@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Mfa.css';
 
 function Mfa({ onComplete }) {
   const [code, setCode] = useState('');
@@ -74,60 +75,74 @@ function Mfa({ onComplete }) {
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h2>Set up multi factor authentication</h2>
+    <div className="mfa-container">
+      <div className="mfa-blob" aria-hidden="true" />
+      
+      <div className="mfa-content">
+        <div className="mfa-card">
+          
 
-      {step === 'start' && (
-        <div>
-          <p>Click the button to generate a secret and QR code for your account.</p>
-          <button onClick={startSetup}>Start setup</button>
-        </div>
-      )}
-
-      {step === 'scan' && (
-        <div>
-          <p>Scan this QR code using Google Authenticator or a similar app.</p>
-          {qrCode && (
-            <img src={qrCode} alt="MFA QR" style={{ width: '200px', height: '200px' }} />
+          {step === 'start' && (
+            <div className="mfa-step-container">
+              <h2 className="mfa-title">Set up Multi Factor Authentication</h2>
+              <p className="mfa-text">Click the button to generate a secret and QR code for your account.</p>
+              <button onClick={startSetup} className="mfa-button">Start setup</button>
+            </div>
           )}
-          <p>
-            After scanning, your app will start showing six digit codes. Enter one of
-            those codes below and submit.
-          </p>
-          <input value={code} onChange={(e) => setCode(e.target.value)} placeholder="Enter six digit code" />
-          <button onClick={verifyCode} style={{ marginLeft: '0.5rem' }}>
-            Verify code
-          </button>
-        </div>
-      )}
 
-      {step === 'done' && (
-        <div>
-          <p style={{ color: 'green', marginBottom: '1rem' }}>
-            Setup complete! Next time you log in, you will be asked for a code after entering your
-            password.
-          </p>
-          {onComplete && (
-            <button 
-              onClick={onComplete}
-              style={{ 
-                padding: '0.75rem 1.5rem', 
-                backgroundColor: '#3a71e7', 
-                color: 'white', 
-                border: 'none', 
-                borderRadius: '0.5rem',
-                cursor: 'pointer',
-                fontSize: '1rem'
-              }}
-            >
-              Continue to Dashboard
-            </button>
+          {step === 'scan' && (
+            <div className="mfa-step-container">
+              <p className="mfa-text">Scan this QR code using Google Authenticator or a similar app.</p>
+              {qrCode && (
+                <div className="mfa-qr-container">
+                  <img src={qrCode} alt="MFA QR" className="mfa-qr-image" />
+                </div>
+              )}
+              <p className="mfa-text">
+                After scanning, your app will start showing six digit codes. Enter one of
+                those codes below and submit.
+              </p>
+              <div className="mfa-input-group">
+                <input 
+                  value={code} 
+                  onChange={(e) => setCode(e.target.value)} 
+                  placeholder="Enter six digit code"
+                  className="mfa-input"
+                  maxLength="6"
+                />
+                <div className="mfa-button-group">
+                  <button onClick={verifyCode} className="mfa-button">
+                    Verify code
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
-        </div>
-      )}
 
-      {message && <p style={{ color: 'green' }}>{message}</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+          {step === 'done' && (
+            <div className="mfa-step-container">
+              <h2 className="mfa-title">Setup complete!</h2>
+
+              <p className="mfa-success-text">
+               Next time you log in, you will be asked for a code after entering your
+                password.
+              </p>
+              {onComplete && (
+                <button 
+                  onClick={onComplete}
+                  className="mfa-button-primary"
+                >
+                  Continue to Dashboard
+                </button>
+              )}
+            </div>
+   
+          )}
+
+          {message && <p className="mfa-message">{message}</p>}
+          {error && <p className="mfa-error">{error}</p>}
+        </div>
+      </div>
     </div>
   );
 }

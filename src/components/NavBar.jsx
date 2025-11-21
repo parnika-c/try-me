@@ -2,7 +2,17 @@ import React from "react";
 import { Target, Compass, Trophy } from "lucide-react";
 import "./NavBar.css";
 
-export const NavBar = () => {
+export const NavBar = ({ onLogout }) => {
+    const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        // Call the parent's logout handler if provided, otherwise fallback to reload
+        if (onLogout) {
+            onLogout();
+        } else {
+            window.location.href = '/login';
+        }
+    };
+
     return (
         <>
         <nav className="navbar">
@@ -26,6 +36,7 @@ export const NavBar = () => {
                     <span className="points">
                         1250 pts
                     </span>
+                    <button className="join-btn" onClick={handleLogout}>Logout</button>
                 </div>
                     <img className="profile-pic" src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" alt="Profile Picture"/>
             </div>

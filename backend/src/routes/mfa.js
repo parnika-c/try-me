@@ -33,8 +33,8 @@ router.post('/enable', protect, async (req, res) => {
   }
 });
 
-// Verify MFA token and enable MFA for user
-router.post('/verify', protect, async (req, res) => {
+// Verify MFA token and enable MFA for user 
+router.post('/verify', protect, async (req, res) => { 
   try {
     const userId = req.user?._id || req.user?.id;
     const { token } = req.body;
@@ -43,7 +43,7 @@ router.post('/verify', protect, async (req, res) => {
     const user = await User.findById(userId);
     if (!user || !user.mfaSecret) return res.status(404).json({ message: 'MFA not initialized' });
 
-    const verified = speakeasy.totp.verify({
+    const verified = speakeasy.totp.verify({ 
       secret: user.mfaSecret,
       encoding: 'base32',
       token,
@@ -52,7 +52,7 @@ router.post('/verify', protect, async (req, res) => {
 
     if (!verified) return res.status(400).json({ message: 'Invalid token' });
 
-    user.mfaEnabled = true;
+    user.mfaEnabled = true; 
     await user.save();
     return res.json({ ok: true, mfaEnabled: true });
   } catch (err) {
