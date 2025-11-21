@@ -26,13 +26,19 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
     try {
       setSubmitting(true);
 
+      let points = 25;
+      if (challenge.type === "value" && challenge.dailyGoal) {
+        points = value / challenge.dailyGoal * 25;
+        points = Math.min(Math.max(Math.round(points), 0), 25); // round to int between 0-25, proportional to goal
+      }
+
       const res = await fetch(
         `http://localhost:4000/api/challenges/${challenge._id}/check-ins`,
         {
           method: "POST",
           headers: {"Content-Type": "application/json"},
           credentials: "include",
-          body: JSON.stringify({day: today, value: challenge.type === "value" ? value : ""}),
+          body: JSON.stringify({day: today, value: challenge.type === "value" ? value : "", pointsEarned: points,}),
         }
       );
 
@@ -49,7 +55,6 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
     }
   };
 
-  /* TODO value based can't be negative */
   return (
     <>
       <button className="checkin-btn" onClick={() => setOpen(true)} disabled={alreadyCheckedIn}>
@@ -73,7 +78,7 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
                   min="0"
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
-                  placeholder={`e.g. ${challenge.dailyGoal || 0}`}
+                  placeholder={`ex. ${challenge.dailyGoal}`}
                   required
                 />
               </label>

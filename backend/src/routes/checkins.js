@@ -59,7 +59,7 @@ router.post("/:challengeId/check-ins", protect, async (req, res) => {
         userId: req.user._id,
         date,
         value: value || "Completed",
-        pointsEarned: 25,
+        pointsEarned: req.body.pointsEarned,
       },
       { upsert: true, new: true }
     );
