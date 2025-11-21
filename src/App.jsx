@@ -1,16 +1,50 @@
 // src/App.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount';
 import Dashboard from './pages/Dashboard';
 import Mfa from './pages/Mfa';
+import { verifyAuth } from './services/api';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
   const [currentView, setCurrentView] = useState('login'); // 'login' or 'createAccount'
   const [showMfaSetup, setShowMfaSetup] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  // Check if user is logged in on page load/reload
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        setIsCheckingAuth(false);
+        return;
+      }
+
+      try {
+        const userData = await verifyAuth();
+        setUserData(userData);
+        
+        // If user doesn't have MFA enabled, show MFA setup
+        if (!userData.mfaEnabled) {
+          setShowMfaSetup(true);
+        } else {
+          setIsLoggedIn(true);
+        }
+      } catch (err) {
+        console.error('Auth check failed:', err);
+        // Token is invalid, user will see login page
+        setIsLoggedIn(false);
+        setUserData(null);
+      } finally {
+        setIsCheckingAuth(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
 
   // Handler for successful login - check if MFA setup is needed
   const handleLoginSuccess = (data) => {
@@ -50,6 +84,15 @@ function App() {
   const toggleView = () => {
     setCurrentView(currentView === 'login' ? 'createAccount' : 'login');
   };
+
+  // Show loading while checking auth on page reload
+  if (isCheckingAuth) {
+    return (
+      <div className="app-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   // Show MFA setup screen if user just logged in without MFA
   if (showMfaSetup) {

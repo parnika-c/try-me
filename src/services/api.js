@@ -205,3 +205,39 @@ export const resetPassword = async (token, password) => {
   }
 };
 
+/**
+ * Verify auth token and get current user info
+ * @returns {Promise} - Returns user data if token is valid
+ */
+export const verifyAuth = async () => {
+  try {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const response = await fetch(`${API_URL}/auth/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      credentials: 'include',
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      // Token is invalid, clear it
+      localStorage.removeItem('authToken');
+      throw new Error(data.message || 'Not authorized');
+    }
+
+    return data;
+  } catch (error) {
+    // Clear token on any error
+    localStorage.removeItem('authToken');
+    throw error;
+  }
+};
+

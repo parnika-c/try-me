@@ -1,6 +1,3 @@
-// Shared password validation utility
-// This ensures the same validation rules are used everywhere
-
 /**
  * Validates a password against the app's requirements
  * @param {string} password - The password to validate
