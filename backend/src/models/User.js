@@ -9,6 +9,8 @@ const userSchema = new mongoose.Schema(
     totalPoints: { type: Number, default: 0 },
     mfaEnabled: { type: Boolean, default: false },
     mfaSecret: { type: String },
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Date },
     challengesJoined: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Challenge" }
     ]

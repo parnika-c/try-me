@@ -148,3 +148,60 @@ export const logout = async () => {
   }
 };
 
+/**
+ * Request password reset
+ * @param {string} email - User email address
+ * @returns {Promise} - Returns success message and reset token
+ */
+export const forgotPassword = async (email) => {
+  try {
+    const response = await fetch(`${API_URL}/auth/forgot-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to send reset email');
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Reset password with token
+ * @param {string} token - Reset token from email
+ * @param {string} password - New password
+ * @returns {Promise} - Returns success message
+ */
+export const resetPassword = async (token, password) => {
+  try {
+    const response = await fetch(`${API_URL}/auth/reset-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ token, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to reset password');
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+

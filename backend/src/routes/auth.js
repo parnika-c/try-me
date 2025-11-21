@@ -2,6 +2,7 @@ import { Router } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import speakeasy from "speakeasy";
+import crypto from "crypto";
 import User from "../models/User.js";
 
 const router = Router();
@@ -85,6 +86,103 @@ router.post("/login", async (req, res) => {
 router.post("/logout", (_req, res) => {
   res.clearCookie("token");
   return res.json({ ok: true });
+});
+
+// forgot password - request password reset
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    
+    // For security, always return success even if user doesn't exist
+    if (!user) {
+      return res.status(200).json({ 
+        message: "If an account exists with that email, a password reset link has been sent." 
+      });
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenExpiry = Date.now() + 3600000; // 1 hour from now
+
+    // Save reset token to user
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = new Date(resetTokenExpiry);
+    await user.save();
+
+    // In development, return the token for testing
+    console.log(`Password reset token for ${email}: ${resetToken}`);
+    
+    return res.status(200).json({ 
+      message: "If an account exists with that email, a password reset link has been sent.",
+      // Only include token in development
+      ...(process.env.NODE_ENV !== 'production' && { resetToken })
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+// reset password - actually change the password
+router.post("/reset-password", async (req, res) => {
+  try {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+      return res.status(400).json({ message: "Token and password are required" });
+    }
+
+    // Validate password strength - same as registration
+    if (password.length < 10) {
+      return res.status(400).json({ message: "Password must be at least 10 characters" });
+    }
+    if (!/[A-Z]/.test(password)) {
+      return res.status(400).json({ message: "Password must contain at least one uppercase letter" });
+    }
+    if (!/[a-z]/.test(password)) {
+      return res.status(400).json({ message: "Password must contain at least one lowercase letter" });
+    }
+    if (!/\d/.test(password)) {
+      return res.status(400).json({ message: "Password must contain at least one number" });
+    }
+    if (!/[@$!%*?&]/.test(password)) {
+      return res.status(400).json({ message: "Password must contain at least one special character (@$!%*?&)" });
+    }
+
+    // Find user with valid reset token
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() } // Token not expired
+    });
+
+    if (!user) {
+      return res.status(400).json({ 
+        message: "Invalid or expired reset token" 
+      });
+    }
+
+    // Hash new password
+    const hash = await bcrypt.hash(password, 12);
+
+    // Update user password and clear reset token
+    user.password = hash;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    return res.status(200).json({ 
+      message: "Password has been reset successfully" 
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
 });
 
 export default router;
