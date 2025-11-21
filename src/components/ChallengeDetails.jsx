@@ -1,4 +1,4 @@
-import { ArrowLeft, Trophy, Calendar, Users } from "lucide-react";
+import { ArrowLeft, Calendar, Users, Trophy, Flame, DollarSign } from 'lucide-react';
 import "./ChallengeDetails.css";
 
 export function ChallengeDetails({ challenge, onBack }) {
@@ -64,12 +64,18 @@ export function ChallengeDetails({ challenge, onBack }) {
           <h3 className="section-title">Your Progress</h3>
           <div className="progress-combined-row">
             <div className="user-mini-block">
-              <p className="progress-stat">🔥 {challenge.userStreak || 0}</p>
+              <p className="progress-stat">
+                <Flame className="icon" />
+                 {challenge.userStreak || 0}
+                </p>
               <p className="muted small">Day Streak</p>
             </div>
 
             <div className="user-mini-block">
-              <p className="progress-stat">🏆 {challenge.userPoints || 0}</p>
+              <p className="progress-stat">
+                <Trophy className="icon" /> 
+                {challenge.userPoints || 0}
+              </p>
               <p className="muted small">Points</p>
             </div>
 

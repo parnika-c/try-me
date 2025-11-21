@@ -8,7 +8,9 @@ export const NavBar = () => {
         <nav className="navbar">
             <div className="nav-left">
                 <div className="logo-section">
-                    <span className="trophy">🏆</span>
+                    <span className="trophy">
+                        <Trophy/>
+                    </span>
                     <div className="text-group">
                         <h1 className="app-name">Try Me</h1>
                         <p className="subtitle">Challenge yourself, compete with friends</p>
