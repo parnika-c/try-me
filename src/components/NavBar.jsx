@@ -12,6 +12,7 @@ export const NavBar = ({ onLogout }) => {
             window.location.href = '/login';
         }
     };
+    const menus = ["Sign Out"];
 
     return (
         <>
@@ -36,12 +37,35 @@ export const NavBar = ({ onLogout }) => {
                     <span className="points">
                         1250 pts
                     </span>
-                    <button className="join-btn" onClick={handleLogout}>Logout</button>
-                </div>
-                    <img className="profile-pic" src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" alt="Profile Picture"/>
-            </div>
-        </nav>
+                    
+                    <div className="profile">
+                        <img className="profile-pic" 
+                            src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" 
+                            alt="Profile Picture"
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            />
+                     
+                        <div className="menu-dropdown">
+                            
+                        <ul>
+                            {menus.map((menu) => ( 
+                                <li 
+                                    key={menu}>
+                                    <button className="logout-btn" onClick={handleLogout}>Logout</button>
 
+
+                                </li>
+                            ))}
+                       
+                        </ul>
+                    </div>
+                    </div>
+                    
+                    </div>
+                </div>
+
+   
+        </nav>
         <div className="bottom-nav">
             <button className="nav-tab active">
                 <Target size={18} />
