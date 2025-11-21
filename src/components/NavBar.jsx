@@ -37,10 +37,6 @@ export const NavBar = () => {
             <span>My Challenges</span>
             </button>
             <button className="nav-tab">
-                <Compass size={18} />
-            <span>Discover</span>
-            </button>
-            <button className="nav-tab">
                 <Trophy size={18} />
             <span>Leaderboard</span>
             </button>

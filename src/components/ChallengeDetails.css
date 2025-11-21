@@ -233,9 +233,9 @@
 
 
 .leaderboard-left {
-display: flex;
-align-items: center;
-gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 
@@ -248,4 +248,8 @@ gap: 12px;
 .points {
   font-weight: 600;
   color: #374151;
+}
+
+.section-title {
+  margin-bottom: 10px;
 }
