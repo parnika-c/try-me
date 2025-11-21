@@ -12,7 +12,10 @@ router.get("/", protect, async (req, res) => {
       .populate("createdBy", "name email")
       .populate("participants", "name email");
 
-    res.json(challenges);
+    res.json(challenges.map(ch => ({
+      ...ch.toObject(),
+      currentDay: computeCurrentDay(ch.startDate)
+    })));
   } catch (error) {
     console.error("Error fetching challenges:", error);
     res.status(500).json({ message: "Failed to load challenges", error: error.message });
@@ -61,5 +64,16 @@ router.post("/", protect, async (req, res) => {
     res.status(500).json({ message: "Error creating challenge", error: error.message });
   }
 });
+
+function computeCurrentDay(startDate) {
+  const start = new Date(startDate);
+  const today = new Date();
+  start.setHours(0,0,0,0);
+  today.setHours(0,0,0,0);
+
+  if (today < start) return 0;
+  const diff = Math.floor((today - start) / 86400000) + 1;
+  return Math.min(Math.max(diff, 0), 7);
+}
 
 export default router;

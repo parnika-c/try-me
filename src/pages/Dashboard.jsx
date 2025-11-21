@@ -6,7 +6,7 @@ import { ChallengeDetails } from "../components/ChallengeDetails"
 import JoinChallenge from '../components/JoinChallenge';
 import './Dashboard.css';
 
-function Dashboard() {
+function Dashboard({ userData }) {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedChallenge, setSelectedChallenge] = useState(null)
@@ -21,7 +21,6 @@ function Dashboard() {
 
         if (!res.ok) throw new Error("Failed to load challenges");
         const data = await res.json();
-        console.log("Fetched challenges:", data);
         setChallenges(data);
       } catch (err) {
         console.error("Error fetching challenges:", err);
@@ -43,9 +42,6 @@ function Dashboard() {
     <>
         <NavBar />
         <div className="dashboard-container">
-          
-
-          
           {!selectedChallenge && (
             <>
               <div className="dashboard-header">
@@ -72,6 +68,7 @@ function Dashboard() {
             <ChallengeDetails
               challenge={selectedChallenge}
               onBack={() => setSelectedChallenge(null)}
+              currentUserId={userData?.id || userData?._id}
             />
           }
         </div>

@@ -6,6 +6,9 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
   const [value, setValue] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  const today = Math.min(currentDay, 7);
+  const alreadyCheckedIn = checkIns.find((c) => c.day === today)?.completed;
+
   const closeModal = () => {
     setOpen(false);
     setSubmitting(false);
@@ -13,26 +16,64 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
   };
 
   const handleSubmit = async (event) => {
-    // TODO later
+    event.preventDefault();
+
+    if (today === 0) {
+      console.error("Challenge hasn't started yet.");
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+
+      const res = await fetch(
+        `http://localhost:4000/api/challenges/${challenge._id}/check-ins`,
+        {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          credentials: "include",
+          body: JSON.stringify({day: today, value: challenge.type === "value" ? value : ""}),
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+
+      await onComplete(data);
+      closeModal();
+    } catch (err) {
+      console.error("Error checking into challenge:",err.message);
+      alert("Failed to check into challenge. Try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
+  /* TODO value based can't be negative */
   return (
     <>
-      <button className="checkin-btn" onClick={() => setOpen(true)}>
-        <span className="checkin-btn__icon">✓</span>
-        <span>Check In</span>
+      <button className="checkin-btn" onClick={() => setOpen(true)} disabled={alreadyCheckedIn}>
+        {alreadyCheckedIn ? "Checked In" : 
+          <>
+            <span className="checkin-btn__icon">✓</span>
+            <span>Check In</span>
+          </>
+        }
       </button>
 
       {open && (
         <div className="checkin-overlay" onClick={(e) => e.target === e.currentTarget && closeModal()}>
           <form className="checkin-modal" onSubmit={handleSubmit}>
-            <h2 className="checkin-title">Check In </h2>
+            <h2 className="checkin-title">Check In for Day {today}</h2>
             {challenge.type === "value" && (
               <label className="checkin-field">
+                <span> Enter your {challenge.unit || "value"} for today </span>
                 <input
                   type="number"
                   min="0"
                   value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                  placeholder={`e.g. ${challenge.dailyGoal || 0}`}
                   required
                 />
               </label>
