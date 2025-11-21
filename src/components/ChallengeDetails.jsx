@@ -4,9 +4,18 @@ import "./ChallengeDetails.css";
 export function ChallengeDetails({ challenge, onBack }) {
   console.log("Challenge object:", challenge);
 
-  const checkins = challenge.checkins || [];
+  // just for now
+  const checkins = challenge.checkins || [
+    { status: 'success' },
+    { status: 'success' },
+    { status: 'missed' },
+    { status: 'success' },
+    { status: 'success' },
+    { status: 'pending' },
+    { status: 'pending' },
+  ];
   const leaderboard = challenge.leaderboard || [];
-  
+
   return (
     <div className="challenge-details">
       <button className="back-btn" onClick={onBack}>
@@ -66,7 +75,9 @@ export function ChallengeDetails({ challenge, onBack }) {
 
             <div className="mini-progressbar">
               <p className="muted small flex space-between">
-                <span>Progress</span>
+                <span>
+                  Progress
+                </span>
                 <span>
                   Day {challenge.currentDay || 0}/{challenge.totalDays || 0}
                 </span>
@@ -107,10 +118,16 @@ export function ChallengeDetails({ challenge, onBack }) {
             leaderboard.map((entry, i) => (
               <div key={i} className="leaderboard-row">
                 <div className="leaderboard-left">
-                  <span className="rank">#{i + 1}</span>
-                  <span className="name">{entry.name}</span>
+                  <span className="rank">
+                    #{i + 1}
+                  </span>
+                  <span className="name">
+                    {entry.name}
+                  </span>
                 </div>
-                <span className="points">{entry.points} pts</span>
+                <span className="points">
+                  {entry.points} pts
+                </span>
               </div>
             ))
           ) : (
