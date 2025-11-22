@@ -8,6 +8,7 @@ export function ChallengeDetails({ challenge, onBack }) {
   const [currentDay, setCurrentDay] = useState(0);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   // Fetch check ins from backend
   const fetchCheckIns = useCallback(async () => {
@@ -25,6 +26,8 @@ export function ChallengeDetails({ challenge, onBack }) {
       setTotalPoints(data.participant.totalPoints);
     } catch (err) {
       console.error("Error fetching challenges:", err);
+    } finally {
+      setLoading(false);
     }
   }, [challenge._id]);
 
@@ -72,27 +75,31 @@ export function ChallengeDetails({ challenge, onBack }) {
         )}
       </div>
 
-      <CheckinModal
-        challenge={challenge}
-        currentDay={currentDay}
-        checkIns={checkIns}
-        onComplete={fetchCheckIns}
-      />
-
-      {/* TEMP TO VIEW VALUES */}
-      <div>
-        <p>Current Streak: {currentStreak} {currentStreak === 1 ? "day" : "days"}</p>
-        <p>Total Points: {totalPoints}</p>
-      </div>
-      <div> 
-        <ul>
-          {checkIns.map((entry) => (
-            <li key={entry.day}>
-              Day {entry.day}: {entry.completed ? "true" : "false"}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {loading ? (<p style={{ textAlign: "center" }}>Loading...</p>) : ( 
+        <>
+          <CheckinModal
+            challenge={challenge}
+            currentDay={currentDay}
+            checkIns={checkIns}
+            onComplete={fetchCheckIns}
+          />
+          
+          {/* TEMP TO VIEW VALUES */}
+          <div>
+            <p>Current Streak: {currentStreak} {currentStreak === 1 ? "day" : "days"}</p>
+            <p>Total Points: {totalPoints}</p>
+          </div>
+          <div> 
+            <ul>
+              {checkIns.map((entry) => (
+                <li key={entry.day}>
+                  Day {entry.day}: {entry.completed ? "true" : "false"}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
     </div>
   );
 }
