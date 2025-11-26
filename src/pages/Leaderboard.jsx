@@ -41,7 +41,7 @@ export function Leaderboard() {
   return (
     <>
       <NavBar />
-      <main className="dashboard-container">
+      <main className="leaderboard-wrapper">
         <div className="leaderboard-header">
           <h2 className="leaderboard-title">Global Leaderboard</h2>
           <p className="leaderboard-subtitle">Top players ranked by total points earned across all challenges.</p>
