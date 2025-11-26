@@ -37,12 +37,30 @@ function Dashboard() {
     setChallenges(prev => [newChallenge, ...prev]);
   };
 
+  //user joining new challenge 
+  const handleJoinChallenge = (joinedChallenge) => {
+    setChallenges(prev => {
+      const exists = prev.some(c => c._id === joinedChallenge._id);
+      if (exists) {
+        return prev.map(c => c._id === joinedChallenge._id ? joinedChallenge : c);
+      }
+      return [joinedChallenge, ...prev];
+    });
+  };
+
   if (loading) return <p style={{ textAlign: "center" }}>Loading your challenges...</p>;
 
   return (
     <>
         <NavBar />
         <div className="dashboard-container">
+          <CreateChallenge onCreateChallenge={handleNewChallenge} />
+          <JoinChallenge onJoinChallenge={handleJoinChallenge} />
+          <div className="cards-grid">
+            {challenges.map((c) => (
+              <ChallengeCard key={c._id} challenge={c} onClick={() => handleClick(c)} />
+            ))}
+          </div>
           
 
           

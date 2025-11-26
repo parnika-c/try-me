@@ -10,7 +10,7 @@ export const CreateChallenge = ({ onClose, onCreateChallenge }) => {
     type: 'task-based',
     startDate: '',
     dailyGoal: '',
-    unit: ''
+    unit: '',
   });
 
   const handleSubmit = async (e) => {
@@ -45,7 +45,7 @@ export const CreateChallenge = ({ onClose, onCreateChallenge }) => {
         type: 'task-based',
         startDate: '',
         dailyGoal: '',
-        unit: ''
+        unit: '',
       });
     } catch (err) {
       console.error("Error creating challenge:", err);
