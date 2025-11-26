@@ -84,3 +84,25 @@ export const logout = async () => {
   }
 };
 
+/**
+ * Get current user
+ * @returns {Promise} - Returns current user data
+ */
+export const getCurrentUser = async () => {
+  try {
+    const response = await fetch(`${API_URL}/auth/me`, {
+      credentials: 'include',
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to get user');
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+

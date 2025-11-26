@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Target, Compass, Trophy } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { getCurrentUser } from "../services/api.js";
+import { fetchUsers } from "./LeaderboardLogic.jsx";
 import "./NavBar.css";
 
 export const NavBar = () => {
@@ -8,6 +10,29 @@ export const NavBar = () => {
     const location = useLocation();
     const isDashboard = location.pathname === "/";
     const isLeaderboard = location.pathname === "/leaderboard";
+
+    const [rank, setRank] = useState('#--');
+    const [points, setPoints] = useState('-- pts');
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadUserData = async () => {
+            try {
+                const currentUser = await getCurrentUser();
+                const allUsers = await fetchUsers();
+                const sortedUsers = allUsers.sort((a, b) => b.totalPoints - a.totalPoints);
+                const userRank = sortedUsers.findIndex(u => u.id === currentUser._id) + 1;
+                setRank(`#${userRank}`);
+                setPoints(`${currentUser.totalPoints} pts`);
+            } catch (error) {
+                console.error('Failed to load user data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadUserData();
+    }, []);
+
     return (
         <>
         <nav className="navbar">
@@ -23,13 +48,13 @@ export const NavBar = () => {
             <div className="nav-right">
                 <div className="rank-card">
                     <span className="rank-text">
-                        Rank: #3
+                        Rank: {rank}
                     </span>
                     <span className="divider">
                         |
                     </span>
                     <span className="points">
-                        1250 pts
+                        {points}
                     </span>
                 </div>
                     <img className="profile-pic" src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" alt="Profile Picture"/>

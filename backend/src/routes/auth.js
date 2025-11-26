@@ -2,6 +2,7 @@ import { Router } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
@@ -57,6 +58,18 @@ router.post("/login", async (req, res) => {
 router.post("/logout", (_req, res) => {
   res.clearCookie("token");
   return res.json({ ok: true });
+});
+
+// get current user
+router.get("/me", protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('firstName lastName email totalPoints');
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
 });
 
 export default router;
