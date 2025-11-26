@@ -82,7 +82,12 @@
   color: white;
 }
 
-.badge-secondary {
+.badge-upcoming {
+  background: #fecc40;
+  color: #111827;
+}
+
+.badge-previous {
   background: #e5e7eb;
   color: #111827;
 }

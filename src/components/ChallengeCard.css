@@ -19,8 +19,20 @@
 
 /* STATUS BADGE*/
 .badge { display:inline-flex; align-items:center; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; }
-.badge-active { background: #22c55e; color: white; }
-.badge-secondary { background: #e5e7eb; color: #111827; }
+.badge-active {
+  background: #22c55e;
+  color: white;
+}
+
+.badge-upcoming {
+  background: #fecc40;
+  color: #111827;
+}
+
+.badge-previous {
+  background: #e5e7eb;
+  color: #111827;
+}
 
 /* SPACING */
 .card-content { display: flex; flex-direction: column; gap: 12px; }
