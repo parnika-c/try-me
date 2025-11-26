@@ -53,12 +53,12 @@ export function ChallengeCard({ challenge, onClick }) {
   // show their streak + points
   const currentUserParticipant = participants.find((p) => p.userId === 'user-1')
 
-  // if not active, should start date, else days remaining
-  const status = (challenge?.status || "Upcoming").toLowerCase();
+  // get status and create meta text
+  const status = (challenge?.status || "Upcoming");
   const metaText =
-    status === "upcoming" ? `Starts ${new Date(startDate).toLocaleDateString()}` :
-    status === "active" ? `${DAYS - currentDay} day${DAYS - currentDay === 1 ? '' : 's'} remaining` :
-    status === "previous" ? `Completed on ${new Date(challenge.endDate).toLocaleDateString()}` :
+    status === "Upcoming" ? `Starts ${new Date(startDate).toLocaleDateString()}` :
+    status === "Active" ? `${DAYS - currentDay} day${DAYS - currentDay === 1 ? '' : 's'} remaining` :
+    status === "Previous" ? `Completed on ${new Date(challenge.endDate).toLocaleDateString()}` :
     null;
 
   return (
@@ -68,8 +68,8 @@ export function ChallengeCard({ challenge, onClick }) {
 
            {/* Badge for active vs upcoming */}
           <h3 className="card-title">{name}</h3>
-          <span className={`badge badge-${(challenge?.status || "Upcoming").toLowerCase()}`} >
-            {challenge?.status || "Loading..."}
+          <span className={`badge badge-${(status || "Upcoming").toLowerCase()}`} >
+            {status}
           </span>
         </div>
         <p className="card-description">{description}</p>
@@ -77,7 +77,7 @@ export function ChallengeCard({ challenge, onClick }) {
 
       <div className="card-content">
         {/* Progress section for active challenges! */}
-        {status === "active" && (
+        {status === "Active" && (
           <>
             <div className="progress-block">
               <div className="row space-between small muted">
