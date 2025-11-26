@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Target, Compass, Trophy } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./NavBar.css";
 
-export const NavBar = () => {
+export const NavBar = ({ onLogout }) => {
+    const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        // Call the parent's logout handler if provided, otherwise fallback to reload
+        if (onLogout) {
+            onLogout();
+        } else {
+            window.location.href = '/login';
+        }
+    };
+    const menus = ["Sign Out"];
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
     const navigate = useNavigate();
     const location = useLocation();
     const isDashboard = location.pathname === "/";
@@ -31,11 +43,38 @@ export const NavBar = () => {
                     <span className="points">
                         1250 pts
                     </span>
-                </div>
-                    <img className="profile-pic" src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" alt="Profile Picture"/>
-            </div>
-        </nav>
+                    
+                    <div className="profile">
+                        <img className="profile-pic" 
+                            src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" 
+                            alt="Profile Picture"
+                            onMouseEnter={() => setIsMenuOpen(!isMenuOpen)}
+                            
+                            />
+                     
+                        {isMenuOpen && <div className="menu-dropdown">
+                            
+                        <ul>
+                            {menus.map((menu) => ( 
+                                <li 
+                                    key={menu}>
+                                    <button className="logout-btn" onClick={handleLogout}>
+                                    {menu}
+                                    </button>
 
+
+                                </li>
+                            ))}
+                       
+                        </ul>
+                    </div>}
+                    </div>
+                    
+                    </div>
+                </div>
+
+   
+        </nav>
         <div className="bottom-nav">
             {}
             <button

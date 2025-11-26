@@ -1,7 +1,10 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import speakeasy from "speakeasy";
+import crypto from "crypto";
 import User from "../models/User.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
@@ -15,7 +18,7 @@ router.post("/register", async (req, res) => {
     }
 
     const exists = await User.findOne({ email });
-    if (exists) return res.status(409).json({ message: "Email already in use" });
+    if (exists) return res.status(409).json({ message: "This email is already in use" });
 
     const hash = await bcrypt.hash(password, 12);
     const user = await User.create({ firstName, lastName, email, password: hash });
@@ -27,6 +30,10 @@ router.post("/register", async (req, res) => {
   }
 });
 
+function createAuthToken(user) {
+  // include 'sub' claim with user id so auth middleware can read it
+  return jwt.sign({ sub: String(user._id), email: user.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
+}
 // login
 router.post("/login", async (req, res) => {
   try {
@@ -38,15 +45,38 @@ router.post("/login", async (req, res) => {
     const ok = await bcrypt.compare(password, user.password);
     if (!ok) return res.status(401).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ sub: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    // If user has MFA enabled, require a TOTP token
+    if (user.mfaEnabled) {
+      const { token } = req.body;
+      if (!token) {
+        return res.status(200).json({ mfaRequired: true });
+      }
 
-    res.cookie("token", token, {
+      const tokenValid = speakeasy.totp.verify({
+        secret: user.mfaSecret, // note: field in User model is `mfaSecret`
+        encoding: "base32",
+        token,
+        window: 1,
+      });
+
+      if (!tokenValid) return res.status(401).json({ message: "Invalid MFA token" });
+    }
+
+    // everything ok -> create auth token
+    const authToken = createAuthToken(user);
+    res.cookie("token", authToken, {
       httpOnly: true,
       sameSite: "lax",
-      secure: false // set true in production on https
+      secure: false, // set true in production on https
     });
 
-    return res.json({ id: user._id, email: user.email, firstName: user.firstName });
+    return res.json({
+      id: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      mfaEnabled: !!user.mfaEnabled, // !! converts to boolean
+      token: authToken,
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error" });
@@ -57,6 +87,138 @@ router.post("/login", async (req, res) => {
 router.post("/logout", (_req, res) => {
   res.clearCookie("token");
   return res.json({ ok: true });
+});
+
+// verify token and get user info
+router.get("/me", async (req, res) => {
+  try {
+    let token = null;
+    if (req.cookies?.token) {
+      token = req.cookies.token;
+    } else if (req.headers.authorization?.startsWith("Bearer ")) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+    
+    if (!token) {
+      return res.status(401).json({ message: "Not authorized, no token" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.sub).select("-password -mfaSecret");
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.json({
+      id: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      mfaEnabled: !!user.mfaEnabled,
+      token: token
+    });
+  } catch (error) {
+    console.error("Auth error:", error);
+    return res.status(401).json({ message: "Not authorized" });
+  }
+});
+
+// forgot password - request password reset
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    
+    // For security, always return success even if user doesn't exist
+    if (!user) {
+      return res.status(200).json({ 
+        message: "If an account exists with that email, a password reset link has been sent." 
+      });
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenExpiry = Date.now() + 3600000; // 1 hour from now
+
+    // Save reset token to user
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = new Date(resetTokenExpiry);
+    await user.save();
+
+    // In development, return the token for testing
+    console.log(`Password reset token for ${email}: ${resetToken}`);
+    
+    return res.status(200).json({ 
+      message: "If an account exists with that email, a password reset link has been sent.",
+      // Only include token in development
+      ...(process.env.NODE_ENV !== 'production' && { resetToken })
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+// reset password - actually change the password
+router.post("/reset-password", async (req, res) => {
+  try {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+      return res.status(400).json({ message: "Token and password are required" });
+    }
+
+    // Validate password strength - same as registration
+    if (password.length < 10) {
+      return res.status(400).json({ message: "Password must be at least 10 characters" });
+    }
+    if (!/[A-Z]/.test(password)) {
+      return res.status(400).json({ message: "Password must contain at least one uppercase letter" });
+    }
+    if (!/[a-z]/.test(password)) {
+      return res.status(400).json({ message: "Password must contain at least one lowercase letter" });
+    }
+    if (!/\d/.test(password)) {
+      return res.status(400).json({ message: "Password must contain at least one number" });
+    }
+    if (!/[@$!%*?&]/.test(password)) {
+      return res.status(400).json({ message: "Password must contain at least one special character (@$!%*?&)" });
+    }
+
+    // Find user with valid reset token
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() } // Token not expired
+    });
+
+    if (!user) {
+      return res.status(400).json({ 
+        message: "Invalid or expired reset token" 
+      });
+    }
+
+    // Hash new password
+    const hash = await bcrypt.hash(password, 12);
+
+    // Update user password and clear reset token
+    user.password = hash;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    return res.status(200).json({ 
+      message: "Password has been reset successfully" 
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
 });
 
 export default router;

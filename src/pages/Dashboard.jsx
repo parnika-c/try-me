@@ -6,7 +6,7 @@ import { ChallengeDetails } from "../components/ChallengeDetails";
 import JoinChallenge from '../components/JoinChallenge';
 import './Dashboard.css';
 
-function Dashboard({ userData }) {
+function Dashboard({ onShowMfa, onLogout, userData }) {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedChallenge, setSelectedChallenge] = useState(null);
@@ -57,7 +57,10 @@ function Dashboard({ userData }) {
 
   return (
     <>
-      <NavBar />
+      <NavBar onLogout={onLogout} />
+      <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '0 1rem' }}>
+        <button onClick={() => onShowMfa?.()} className="mfa-setup-btn">Set up MFA</button>
+      </div>
       <div className="dashboard-container">
         {!selectedChallenge && (
           <>
