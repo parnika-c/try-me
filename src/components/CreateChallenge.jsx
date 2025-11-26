@@ -20,7 +20,7 @@ export const CreateChallenge = ({ onClose, onCreateChallenge }) => {
       name: formData.name,
       description: formData.description,
       type: formData.type === 'task-based' ? 'task' : 'value',
-      startDate: formData.startDate,
+      startDate: new Date(formData.startDate + "T00:00:00"),
       dailyGoal: formData.type === 'value-based' ? Number(formData.dailyGoal) : undefined,
       unit: formData.type === 'value-based' ? formData.unit : undefined,
     };

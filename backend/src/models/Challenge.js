@@ -22,7 +22,7 @@ const challengeSchema = new mongoose.Schema({
 challengeSchema.pre("validate", function(next) {
   if (!this.endDate && this.startDate) {
     const end = new Date(this.startDate);
-    end.setDate(end.getDate() + 7);
+    end.setDate(end.getDate() + 6);
     this.endDate = end;
   }
   next();

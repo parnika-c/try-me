@@ -1,16 +1,70 @@
-# React + Vite
+# 🏆 Try Me – Challenge Tracking Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack web application where users create accounts, join or create weekly challenges, and check in daily to stay active. Includes MFA, authentication, rankings, and a dynamic leaderboard.
 
-Currently, two official plugins are available:
+This document explains how to install dependencies, configure environment variables, and run the application locally.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Prerequisites
 
-## React Compiler
+Before running the project locally, you must have:
+* Node.js
+  * Download: [https://nodejs.org/en/download](https://nodejs.org/en/download)
+  * npm (comes with Node): used to manage dependencies
+* A MongoDB Atlas cluster and connection string
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Environment Variables
 
-## Expanding the ESLint configuration
+Create the `backend/.env` file and add:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+CLIENT_ORIGIN=http://localhost:5173
+PORT=4000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+
+```
+
+## Installation and Running the App Locally
+
+This project has two servers:
+
+* Frontend (Vite dev server)
+* Backend (Express API server)
+
+Start them separately and run them at the same time.
+
+### 1. Frontend (React/Vite)
+
+From the project root, install dependencies and start the frontend:
+
+```
+npm install
+npm run dev
+```
+
+Vite will start on:
+
+```
+http://localhost:5173
+```
+
+
+### 2. Backend server
+
+Then repeat for the backend, inside the backend directory:
+
+```
+cd backend
+npm install
+npm run dev
+```
+When the server starts, you should see:
+```
+Mongo connected
+API on 4000
+```
+
+The backend API runs at:
+```
+http://localhost:4000
+```

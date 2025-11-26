@@ -41,7 +41,7 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
     setChallenges(prev => [newChallenge, ...prev]);
   };
 
-  // user joining new challenge 
+  // user joining new challenge
   const handleJoinChallenge = (joinedChallenge) => {
     setChallenges(prev => {
       const exists = prev.some(c => c._id === joinedChallenge._id);

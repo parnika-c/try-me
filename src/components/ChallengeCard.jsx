@@ -25,7 +25,6 @@ const Stat = ({ Icon, colorClass = '', children }) => (
  * @typedef {Object} Challenge
  * @property {string} name
  * @property {string} description
- * @property {boolean} isActive
  * @property {number} currentDay
  * @property {ChallengeParticipant[]} participants
  * @property {string|number|Date} [startDate]
@@ -33,10 +32,9 @@ const Stat = ({ Icon, colorClass = '', children }) => (
  */
 
 export function ChallengeCard({ challenge, onClick }) {
-  const { name, description, isActive: active, currentDay = 0, participants: list = [], startDate, joinCode } = challenge
+  const { name, description, currentDay = 0, participants: list = [], startDate, joinCode } = challenge
 
   // derives values
-  const isActive = !!active
   const participants = list
   const participantCount = participants.length
   const visibleParticipants = participants.slice(0, 5)
@@ -55,23 +53,23 @@ export function ChallengeCard({ challenge, onClick }) {
   // show their streak + points
   const currentUserParticipant = participants.find((p) => p.userId === 'user-1')
 
-  // if not active, should start date, else days remaining
-  const metaText = !isActive && startDate
-    ? `Starts ${new Date(startDate).toLocaleDateString()}`
-    : isActive && daysRemaining > 0
-      ? `${daysRemaining} days remaining`
-      : null
+  // get status and create meta text
+  const status = (challenge?.status || "Upcoming");
+  const metaText =
+    status === "Upcoming" ? `Starts ${new Date(startDate).toLocaleDateString()}` :
+    status === "Active" ? `${DAYS - currentDay} day${DAYS - currentDay === 1 ? '' : 's'} remaining` :
+    status === "Previous" ? `Completed on ${new Date(challenge.endDate).toLocaleDateString()}` :
+    null;
 
   return (
     <div className="challenge-card" role="button" onClick={onClick}>
       <div className="card-header">
         <div className="title-row">
 
-
            {/* Badge for active vs upcoming */}
           <h3 className="card-title">{name}</h3>
-          <span className={`badge badge-${(challenge?.status || "Upcoming").toLowerCase()}`} >
-            {challenge?.status || "Loading..."}
+          <span className={`badge badge-${(status || "Upcoming").toLowerCase()}`} >
+            {status}
           </span>
         </div>
         <p className="card-description">{description}</p>
@@ -79,7 +77,7 @@ export function ChallengeCard({ challenge, onClick }) {
 
       <div className="card-content">
         {/* Progress section for active challenges! */}
-        {isActive && (
+        {status === "Active" && (
           <>
             <div className="progress-block">
               <div className="row space-between small muted">

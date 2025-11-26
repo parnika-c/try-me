@@ -1,13 +1,12 @@
 import express from "express";
 import Challenge from "../models/Challenge.js";
-import crypto from "crypto";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 const JOIN_CODE_REGEX = /^[A-Za-z0-9-]{7}$/;
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-";
-//
+
 function generateJoinCode() {
   let result = "";
   for (let i = 0; i < 7; i++) {
@@ -25,18 +24,10 @@ router.get("/", protect, async (req, res) => {
       .populate("participants", "name email");
 
     res.json(challenges.map(ch => {
-      const now = new Date();
-      const start = new Date(ch.startDate);
-      const end = new Date(ch.endDate);
-
-      let status = "Active";
-      if (now < start) status = "Upcoming";
-      else if (now > end) status = "Previous";
-
       return {
         ...ch.toObject(),
         currentDay: computeCurrentDay(ch.startDate),
-        status: status
+        status: computeChallengeStatus(ch.startDate, ch.endDate)
       };
     }));
   } catch (error) {
@@ -65,7 +56,6 @@ router.post("/", protect, async (req, res) => {
     }
 
     const createdBy = req.user._id; // from JWT, protect middleware
-    //const joinCode = crypto.randomBytes(3).toString("hex").toUpperCase(); // HERE Generate a random join code join_code.py
     let joinCode = generateJoinCode();
     while (!JOIN_CODE_REGEX.test(joinCode)) {
       joinCode = generateJoinCode();
@@ -84,8 +74,16 @@ router.post("/", protect, async (req, res) => {
     });
 
     await challenge.save();
-    res.status(201).json(challenge);
 
+    const populated = await Challenge.findById(challenge._id)
+      .populate("createdBy", "name email")
+      .populate("participants", "name email");
+
+    res.status(201).json({
+      ...populated.toObject(),
+      currentDay: computeCurrentDay(populated.startDate),
+      status: computeChallengeStatus(populated.startDate, populated.endDate)
+    });
   } catch (error) {
     console.error("Create challenge error:", error);
     res.status(500).json({ message: "Error creating challenge", error: error.message });
@@ -117,7 +115,12 @@ router.post("/join", protect, async (req, res) => {
       .populate("createdBy", "name email")
       .populate("participants", "name email");
 
-    res.json(challenge);
+    res.json({
+      ...challenge.toObject(),
+      currentDay: computeCurrentDay(challenge.startDate),
+      status: computeChallengeStatus(challenge.startDate, challenge.endDate)
+    });
+
   } catch (error) {
     console.error("Join challenge error:", error);
     res.status(500).json({ message: "Error joining challenge", error: error.message });
@@ -133,6 +136,20 @@ function computeCurrentDay(startDate) {
   if (today < start) return 0;
   const diff = Math.floor((today - start) / 86400000) + 1;
   return Math.min(Math.max(diff, 0), 7);
+}
+
+function computeChallengeStatus(startDate, endDate) {
+  const now = new Date();
+  const start = new Date(startDate);
+  const end = endDate ? new Date(endDate) : new Date(start.getTime() + 6*24*60*60*1000); // 7-day default
+
+  start.setHours(0,0,0,0);
+  end.setHours(23,59,59,999);
+  now.setHours(0,0,0,0);
+
+  if (now < start) return "Upcoming";
+  if (now > end) return "Previous";
+  return "Active";
 }
 
 export default router;
