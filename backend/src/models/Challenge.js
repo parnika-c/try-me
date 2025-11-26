@@ -16,7 +16,6 @@ const challengeSchema = new mongoose.Schema({
   
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true},
-  isActive: { type: Boolean, default: true }
 }, { timestamps: true });
 
 // Set endDate = 7 days after startDate

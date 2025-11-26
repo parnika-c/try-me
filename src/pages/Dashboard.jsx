@@ -6,7 +6,7 @@ import { ChallengeDetails } from "../components/ChallengeDetails";
 import JoinChallenge from '../components/JoinChallenge';
 import './Dashboard.css';
 
-function Dashboard() {
+function Dashboard({ userData }) {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedChallenge, setSelectedChallenge] = useState(null);
@@ -25,7 +25,6 @@ function Dashboard() {
           throw new Error(msg);
         }
         const data = await res.json();
-        console.log("Fetched challenges:", data);
         setChallenges(data);
       } catch (err) {
         setError(err.message);
@@ -67,13 +66,11 @@ function Dashboard() {
                 <h1 className="dashboard-title">My Challenges</h1>
                 <p>Track your active and upcoming challenges</p>
               </div>
-
               <div className="header-right">
                 <CreateChallenge onCreateChallenge={handleNewChallenge} />
                 <JoinChallenge onJoinChallenge={handleJoinChallenge} />
               </div>
             </div>
-
             <div className="cards-grid">
               {challenges.length === 0 && (
                 <p className="empty-state">
@@ -90,11 +87,11 @@ function Dashboard() {
             </div>
           </>
         )}
-
         {selectedChallenge && (
           <ChallengeDetails
             challenge={selectedChallenge}
             onBack={() => setSelectedChallenge(null)}
+            currentUserId={userData?._id}
           />
         )}
       </div>

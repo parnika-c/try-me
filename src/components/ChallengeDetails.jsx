@@ -1,7 +1,41 @@
+import { useState, useEffect, useCallback } from "react";
 import { ArrowLeft, Trophy, Calendar, Users } from "lucide-react";
+import CheckinModal from "./CheckinModal";
 import "./ChallengeDetails.css";
 
 export function ChallengeDetails({ challenge, onBack }) {
+  const [checkIns, setCheckIns] = useState([]);
+  const [currentDay, setCurrentDay] = useState(0);
+  const [currentStreak, setCurrentStreak] = useState(0);
+  const [totalPoints, setTotalPoints] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch check ins from backend
+  const fetchCheckIns = useCallback(async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/challenges/${challenge._id}/check-ins/me`,
+        { credentials: "include" }
+      );
+      if (!res.ok) throw new Error("Failed to load challenges");
+
+      const data = await res.json();
+      setCheckIns(data.participant.checkIns);
+      setCurrentDay(data.currentDay);
+      setCurrentStreak(data.participant.currentStreak);
+      setTotalPoints(data.participant.totalPoints);
+    } catch (err) {
+      console.error("Error fetching challenges:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [challenge._id]);
+
+  // Load on first render
+  useEffect(() => {
+    fetchCheckIns();
+  }, [fetchCheckIns]);
+
   return (
     <div className="challenge-details">
       <button className="back-btn" onClick={onBack}>
@@ -14,12 +48,8 @@ export function ChallengeDetails({ challenge, onBack }) {
           <p className="details-desc">{challenge.description}</p>
         </div>
 
-        <span
-          className={`badge ${
-            challenge.isActive ? "badge-active" : "badge-secondary"
-          }`}
-        >
-          {challenge.isActive ? "Active" : "Upcoming"}
+        <span className={`badge badge-${(challenge?.status || "Upcoming").toLowerCase()}`} >
+          {challenge?.status || "Loading..."}
         </span>
       </div>
 
@@ -44,6 +74,34 @@ export function ChallengeDetails({ challenge, onBack }) {
           </div>
         )}
       </div>
+
+      {loading ? (<p style={{ textAlign: "center" }}>Loading...</p>) : ( 
+        <>
+          <CheckinModal
+            challenge={challenge}
+            currentDay={currentDay}
+            checkIns={checkIns}
+            onComplete={fetchCheckIns}
+          />
+          
+          {/* TEMP TO VIEW VALUES */}
+          <div>
+            <p>Current Streak: {currentStreak} {currentStreak === 1 ? "day" : "days"}</p>
+            <p>Total Points: {totalPoints}</p>
+          </div>
+          <div> 
+            <ul>
+              {checkIns.map((entry) => (
+                <li key={entry.day}>
+                  Day {entry.day}: {entry.completed ? "true" : "false"}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
     </div>
   );
 }
+
+export default ChallengeDetails;
