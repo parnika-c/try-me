@@ -1,5 +1,5 @@
 //The goal of this component is to make a readable card for the user w/ all their existing/upcoming challenges 
-import { Calendar, Users, Trophy, Flame } from 'lucide-react'
+import { Calendar, Users, Trophy, Flame, Copy } from 'lucide-react'
 import './ChallengeCard.css'
 
 // Challenges are always 7 days long
@@ -29,16 +29,24 @@ const Stat = ({ Icon, colorClass = '', children }) => (
  * @property {number} currentDay
  * @property {ChallengeParticipant[]} participants
  * @property {string|number|Date} [startDate]
+ * @property {string} [joinCode]
  */
 
 export function ChallengeCard({ challenge, onClick }) {
-  const { name, description, isActive: active, currentDay = 0, participants: list = [], startDate } = challenge
+  const { name, description, isActive: active, currentDay = 0, participants: list = [], startDate, joinCode } = challenge
 
   // derives values
   const isActive = !!active
   const participants = list
   const participantCount = participants.length
   const visibleParticipants = participants.slice(0, 5)
+  const handleCopyJoinCode = (e) => {
+    e.stopPropagation(); // don’t trigger card click
+    if (!joinCode) return;
+    navigator.clipboard
+      ?.writeText(joinCode)
+      .catch((err) => console.error('Failed to copy join code', err));
+  };
 
   // MATH for the progress percentage for the progress bar 
   const progressPercentage = Math.min(100, Math.max(0, (currentDay / DAYS) * 100))
@@ -62,11 +70,9 @@ export function ChallengeCard({ challenge, onClick }) {
 
            {/* Badge for active vs upcoming */}
           <h3 className="card-title">{name}</h3>
-          {isActive ? (
-            <span className="badge badge-active">Active</span>
-          ) : (
-            <span className="badge badge-secondary">Upcoming</span>
-          )}
+          <span className={`badge badge-${(challenge?.status || "Upcoming").toLowerCase()}`} >
+            {challenge?.status || "Loading..."}
+          </span>
         </div>
         <p className="card-description">{description}</p>
       </div>
@@ -105,11 +111,25 @@ export function ChallengeCard({ challenge, onClick }) {
           <span className="small">{participantCount} participants</span>
         </div>
 
-        {/* Calendar data */}
-        {metaText && (
-          <div className="row gap-sm small muted">
-            <Calendar className="icon" />
-            <span>{metaText}</span>
+        {/* Calendar + join code row */}
+        {(metaText || joinCode) && (
+          <div className="row space-between center">
+            {metaText && (
+              <div className="row gap-sm small muted">
+                <Calendar className="icon" />
+                <span>{metaText}</span>
+              </div>
+            )}
+
+            {joinCode && (
+              <button
+                type="button"
+                className="join-code small muted"
+                onClick={handleCopyJoinCode}
+              >
+                Code: <span className="join-code-value">{joinCode}</span>
+              </button>
+            )}
           </div>
         )}
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Target, Compass, Trophy } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./NavBar.css";
 
 export const NavBar = ({ onLogout }) => {
@@ -14,7 +15,11 @@ export const NavBar = ({ onLogout }) => {
     };
     const menus = ["Sign Out"];
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  
+    const navigate = useNavigate();
+    const location = useLocation();
+    const isDashboard = location.pathname === "/";
+    const isLeaderboard = location.pathname === "/leaderboard";
     return (
         <>
         <nav className="navbar">
@@ -71,19 +76,34 @@ export const NavBar = ({ onLogout }) => {
    
         </nav>
         <div className="bottom-nav">
-            <button className="nav-tab active">
-                <Target size={18} />
+            {}
+            <button
+            className={`nav-tab ${isDashboard ? "active" : ""}`}
+            onClick={() => navigate("/")}
+            >
+            <Target size={18} />
             <span>My Challenges</span>
             </button>
-            <button className="nav-tab">
-                <Compass size={18} />
+
+            {/*discover*/}
+            <button
+            className="nav-tab"
+            onClick={() => navigate("/")}
+            >
+            <Compass size={18} />
             <span>Discover</span>
             </button>
-            <button className="nav-tab">
-                <Trophy size={18} />
+
+            {/* leaderboard */}
+            <button
+            className={`nav-tab ${isLeaderboard ? "active" : ""}`}
+            onClick={() => navigate("/leaderboard")}
+            >
+            <Trophy size={18} />
             <span>Leaderboard</span>
             </button>
         </div>
         </>
     );
 };
+

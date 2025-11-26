@@ -5,7 +5,9 @@ import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount';
 import Dashboard from './pages/Dashboard';
 import Mfa from './pages/Mfa';
+import Leaderboard from './pages/Leaderboard.jsx';
 import { verifyAuth } from './services/api';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -117,11 +119,15 @@ function App() {
   // Show login or create account
   return (
     <div className="app-container">
-      {currentView === 'login' ? (
-        <Login 
-          onLoginSuccess={handleLoginSuccess} 
-          onShowCreateAccount={toggleView}
-        />
+      {isLoggedIn ? (
+        <BrowserRouter> {/* added router wrapper so NavBar's useNavigate works */}
+          <Routes>
+            <Route path="/" element={<Dashboard userData={userData} onLogout={handleLogout} />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+          </Routes>
+        </BrowserRouter>
+      ) : currentView === 'login' ? (
+        <Login onLoginSuccess={handleLoginSuccess} onShowCreateAccount={toggleView} />
       ) : (
         <CreateAccount 
           onAccountCreated={handleAccountCreated}

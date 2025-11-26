@@ -1,15 +1,40 @@
 import React, { useState } from "react";
 import "./JoinChallenge.css";
 
-export default function JoinChallenge() {
+export default function JoinChallenge({ onJoinChallenge }) {
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log("join code:", code);
-    setOpen(false);
-    setCode("");
+
+    try {
+      const res = await fetch("http://localhost:4000/api/challenges/join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ code }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        alert(data.message || "Failed to join challenge");
+        return;
+      }
+
+      const joinedChallenge = await res.json();
+      console.log("Joined challenge:", joinedChallenge);
+
+      if (onJoinChallenge) {
+        onJoinChallenge(joinedChallenge);
+      }
+
+      setOpen(false);
+      setCode("");
+    } catch (err) {
+      console.error("Error joining challenge:", err);
+      alert("Error joining challenge. Try again.");
+    }
   }
 
   return (
@@ -20,7 +45,14 @@ export default function JoinChallenge() {
       </button>
 
       {open && (
-        <div className="join-overlay" onClick={(e) => e.target === e.currentTarget && setOpen(false)}>
+        <div
+          className="join-overlay"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setOpen(false);
+            }
+          }}
+        >
           <form className="join-modal" onSubmit={handleSubmit}>
             <h2 className="join-title">Enter 7-character Join Code:</h2>
 
@@ -34,8 +66,18 @@ export default function JoinChallenge() {
               autoFocus
             />
 
-            <button className="join-primary" type="submit">Enter</button>
-            <button className="join-cancel" type="button" onClick={() => setOpen(false)}>×</button>
+            <div className="join-actions">
+              <button className="join-primary" type="submit">
+                Enter
+              </button>
+              <button
+                className="join-cancel"
+                type="button"
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </button>
+            </div>
           </form>
         </div>
       )}

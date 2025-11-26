@@ -1,0 +1,152 @@
+.challenge-details {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px;
+  padding-top: 120px;
+}
+
+.flex {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.small {
+  font-size: 0.875rem;
+}
+
+.muted {
+  color: #6b7280;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 8px 0;
+  margin-bottom: 24px;
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: #111827;
+}
+
+.back-btn .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.details-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
+
+.details-desc {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-active {
+  background: #22c55e;
+  color: white;
+}
+
+.badge-upcoming {
+  background: #fecc40;
+  color: #111827;
+}
+
+.badge-previous {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.meta-item .icon {
+  width: 18px;
+  height: 18px;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+/* Details Card */
+.details-card {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+/* Challenge Progress Section */
+.details-card > p.muted.small {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.details-card .progress {
+  position: relative;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.details-card .progress-inner {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: #1f2937;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
