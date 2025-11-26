@@ -7,7 +7,7 @@ const router = express.Router();
 
 const JOIN_CODE_REGEX = /^[A-Za-z0-9-]{7}$/;
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-";
-//
+
 function generateJoinCode() {
   let result = "";
   for (let i = 0; i < 7; i++) {
@@ -28,6 +28,11 @@ router.get("/", protect, async (req, res) => {
       const now = new Date();
       const start = new Date(ch.startDate);
       const end = new Date(ch.endDate);
+
+      // Normalize to full calendar days
+      start.setHours(0,0,0,0);
+      end.setHours(23,59,59,999);
+      now.setHours(0,0,0,0);
 
       let status = "Active";
       if (now < start) status = "Upcoming";

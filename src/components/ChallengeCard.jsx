@@ -67,7 +67,6 @@ export function ChallengeCard({ challenge, onClick }) {
       <div className="card-header">
         <div className="title-row">
 
-
            {/* Badge for active vs upcoming */}
           <h3 className="card-title">{name}</h3>
           <span className={`badge badge-${(challenge?.status || "Upcoming").toLowerCase()}`} >
