@@ -31,14 +31,15 @@ const Stat = ({ Icon, colorClass = '', children }) => (
  * @property {string} [joinCode]
  */
 
-export function ChallengeCard({ challenge, onClick, userStats  }) {
-  const { name, description, currentDay = 0, participants: list = [], startDate, joinCode } = challenge
+export function ChallengeCard({ challenge, onClick, userStats, currentUserId  }) {
+  const { name, description, currentDay = 0, participants: list = [], startDate, joinCode  } = challenge
 
   // derives values
   const participants = list
   const participantCount = participants.length
   const streak = userStats?.currentStreak ?? 0;
   const points = userStats?.totalPoints ?? 0;
+  
 
   const visibleParticipants = participants.slice(0, 5)
   const handleCopyJoinCode = (e) => {
