@@ -70,7 +70,7 @@ router.post("/", protect, async (req, res) => {
       startDate,
       createdBy,
       joinCode,
-      participants: [createdBy]
+      participants: [{ userId: createdBy, currentStreak: 0, totalPoints: 0 }]
     });
 
     await challenge.save();
@@ -78,6 +78,8 @@ router.post("/", protect, async (req, res) => {
     const populated = await Challenge.findById(challenge._id)
       .populate("createdBy", "name email")
       .populate("participants", "name email");
+      
+      
 
     res.status(201).json({
       ...populated.toObject(),

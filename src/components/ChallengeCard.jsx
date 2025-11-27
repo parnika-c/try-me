@@ -51,7 +51,9 @@ export function ChallengeCard({ challenge, onClick }) {
   const daysRemaining = Math.max(0, DAYS - currentDay)
 
   // show their streak + points
-  const currentUserParticipant = participants.find((p) => p.userId === 'user-1')
+  const currentUserParticipant = participants.find((p) => p.userId === challenge.currentUserId)
+  
+
 
   // get status and create meta text
   const status = (challenge?.status || "Upcoming");
@@ -90,10 +92,13 @@ export function ChallengeCard({ challenge, onClick }) {
             </div>
 
             {/* Personal progress for  that challenge */}
+            
             {currentUserParticipant && (
-              <div className="row gap small">
+              <div className="row gap-sm center mt">
                 <Stat Icon={Flame} colorClass="icon-orange">
+
                   {currentUserParticipant.currentStreak || 0} day streak
+                  
                 </Stat>
                 <Stat Icon={Trophy} colorClass="icon-yellow">
                   {currentUserParticipant.totalPoints || 0} pts
@@ -102,12 +107,18 @@ export function ChallengeCard({ challenge, onClick }) {
             )}
           </>
         )}
+    
 
-        {/* Number of particpants */}
+
+        {/* Number of particpants and current streak */}
         <div className="row gap-sm center muted">
           <Users className="icon" />
           <span className="small">{participantCount} participants</span>
+          
+
         </div>
+        
+
 
         {/* Calendar + join code row */}
         {(metaText || joinCode) && (
