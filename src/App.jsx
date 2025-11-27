@@ -92,14 +92,14 @@ function App() {
     return <p>Loading...</p>;
   }
 
+  // Show MFA setup screen if user just logged in without MFA - force before Router
+  if (showMfaSetup) {
+    return <Mfa onComplete={handleMfaComplete} />;
+  }
+
   return (
     <BrowserRouter>
       <Routes>
-        {/* Show MFA setup screen if user just logged in without MFA */}
-        {showMfaSetup && (
-          <Route path="*" element={<Mfa onComplete={handleMfaComplete} />} />
-        )}
-
         {/* Show dashboard if logged in */}
         {isLoggedIn && (
           <>
