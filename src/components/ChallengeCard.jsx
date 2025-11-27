@@ -54,7 +54,7 @@ export function ChallengeCard({ challenge, onClick, userStats  }) {
   const daysRemaining = Math.max(0, DAYS - currentDay)
 
   // show their streak + points
-  const currentUserParticipant = participants.find((p) => p.userId === challenge.currentUserId) 
+  const currentUserParticipant = participants.find((p) => p.userId === challenge.currentUserId)
   
 
 
@@ -98,11 +98,11 @@ export function ChallengeCard({ challenge, onClick, userStats  }) {
             
             <div className="row gap-sm center mt">
               <Stat Icon={Flame} colorClass="icon-orange">
-                {streak} day{streak === 1 ? '' : 's'} streak
+                {(userStats?.streak ?? streak ?? 0) + " streak"}
               </Stat>
 
               <Stat Icon={Trophy} colorClass="icon-yellow">
-                {points} pts
+                {(userStats?.points ?? points ?? 0) + " pts"}
               </Stat>
             </div>
 
