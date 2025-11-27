@@ -3,7 +3,7 @@ import { ArrowLeft, Trophy, Calendar, Users } from "lucide-react";
 import CheckinModal from "./CheckinModal";
 import "./ChallengeDetails.css";
 
-export function ChallengeDetails({ challenge, onBack }) {
+export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpdate }) {
   const [checkIns, setCheckIns] = useState([]);
   const [currentDay, setCurrentDay] = useState(0);
   const [currentStreak, setCurrentStreak] = useState(0);
@@ -24,6 +24,10 @@ export function ChallengeDetails({ challenge, onBack }) {
       setCurrentDay(data.currentDay);
       setCurrentStreak(data.participant.currentStreak);
       setTotalPoints(data.participant.totalPoints);
+      onStatsUpdate({
+        currentStreak: data.participant.currentStreak,
+        totalPoints: data.participant.totalPoints
+      });
     } catch (err) {
       console.error("Error fetching challenges:", err);
     } finally {
@@ -35,6 +39,7 @@ export function ChallengeDetails({ challenge, onBack }) {
   useEffect(() => {
     fetchCheckIns();
   }, [fetchCheckIns]);
+
 
   return (
     <div className="challenge-details">

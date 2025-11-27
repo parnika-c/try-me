@@ -11,6 +11,8 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
   const [loading, setLoading] = useState(true);
   const [selectedChallenge, setSelectedChallenge] = useState(null);
   const [error, setError] = useState(null);
+  const [userStatsByChallenge, setUserStatsByChallenge] = useState({});
+
 
   // Fetch challenges from backend
   useEffect(() => {
@@ -85,6 +87,7 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
                   key={c._id}
                   challenge={c}
                   onClick={() => setSelectedChallenge(c)}
+                  userStats={userStatsByChallenge[c._id]}
                 />
               ))}
             </div>
@@ -95,6 +98,13 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
             challenge={selectedChallenge}
             onBack={() => setSelectedChallenge(null)}
             currentUserId={userData?._id}
+            onStatsUpdate={(stats) =>
+              setUserStatsByChallenge(prev => ({
+                ...prev,
+                [selectedChallenge._id]: stats
+              }))
+            }
+
           />
         )}
       </div>

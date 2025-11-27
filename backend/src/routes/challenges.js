@@ -45,7 +45,7 @@ router.post("/", protect, async (req, res) => {
       type,
       dailyGoal,
       unit,
-      startDate
+      startDate,
     } = req.body;
     
     if (type === "value" && (!dailyGoal || !unit)) {
@@ -70,7 +70,7 @@ router.post("/", protect, async (req, res) => {
       startDate,
       createdBy,
       joinCode,
-      participants: [{ userId: createdBy, currentStreak: 0, totalPoints: 0 }]
+      participants: [createdBy]
     });
 
     await challenge.save();

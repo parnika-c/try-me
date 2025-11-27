@@ -31,12 +31,15 @@ const Stat = ({ Icon, colorClass = '', children }) => (
  * @property {string} [joinCode]
  */
 
-export function ChallengeCard({ challenge, onClick }) {
+export function ChallengeCard({ challenge, onClick, userStats  }) {
   const { name, description, currentDay = 0, participants: list = [], startDate, joinCode } = challenge
 
   // derives values
   const participants = list
   const participantCount = participants.length
+  const streak = userStats?.currentStreak ?? 0;
+  const points = userStats?.totalPoints ?? 0;
+
   const visibleParticipants = participants.slice(0, 5)
   const handleCopyJoinCode = (e) => {
     e.stopPropagation(); // don’t trigger card click
@@ -93,18 +96,16 @@ export function ChallengeCard({ challenge, onClick }) {
 
             {/* Personal progress for  that challenge */}
             
-            {currentUserParticipant && (
-              <div className="row gap-sm center mt">
-                <Stat Icon={Flame} colorClass="icon-orange">
+            <div className="row gap-sm center mt">
+              <Stat Icon={Flame} colorClass="icon-orange">
+                {(userStats?.streak ?? streak ?? 0) + " streak"}
+              </Stat>
 
-                  {currentUserParticipant.currentStreak || 0} day streak
-                  
-                </Stat>
-                <Stat Icon={Trophy} colorClass="icon-yellow">
-                  {currentUserParticipant.totalPoints || 0} pts
-                </Stat>
-              </div>
-            )}
+              <Stat Icon={Trophy} colorClass="icon-yellow">
+                {(userStats?.points ?? points ?? 0) + " pts"}
+              </Stat>
+            </div>
+
           </>
         )}
     

@@ -6,9 +6,7 @@ const challengeSchema = new mongoose.Schema({
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   joinCode: { type: String, required: true, unique: true },
   participants: [
-    {  type: mongoose.Schema.Types.ObjectId, ref: "User" ,
-      currentStreak: { type: Number, default: 0 },
-      totalPoints: { type: Number, default: 0 }
+    { type: mongoose.Schema.Types.ObjectId, ref: "User" ,
     }
   ],
 
