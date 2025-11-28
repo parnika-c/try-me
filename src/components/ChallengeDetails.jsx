@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { ArrowLeft, Trophy, Calendar, Users } from "lucide-react";
+import { ArrowLeft, Trophy, Flame, Calendar, Users } from "lucide-react";
 import CheckinModal from "./CheckinModal";
 import "./ChallengeDetails.css";
 
@@ -9,6 +9,14 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
   const [currentStreak, setCurrentStreak] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  // Small local Stat helper used also in ChallengeCard
+  const Stat = ({ Icon, colorClass = '', children }) => (
+    <div className="row gap-sm center">
+      <Icon className={`icon ${colorClass}`.trim()} />
+      <span>{children}</span>
+    </div>
+  );
 
   // Fetch check ins from backend
   const fetchCheckIns = useCallback(async () => {
@@ -90,10 +98,25 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
           />
           
           {/* TEMP TO VIEW VALUES */}
-          <div>
-            <p>Current Streak: {currentStreak} {currentStreak === 1 ? "day" : "days"}</p>
-            <p>Total Points: {totalPoints}</p>
+
+          <div className="progress-container">
+            <div className="progress-item">
+              <Flame className="icon-flame" />
+              <div>
+                <span className="progress-number">{currentStreak}</span>
+                <div className="progress-label">Day Streak</div>
+              </div>
+            </div>
+
+            <div className="progress-item">
+              <Trophy className="icon-trophy" />
+              <div>
+                <span className="progress-number">{totalPoints}</span>
+                <div className="progress-label">Points</div>
+              </div>
+            </div>
           </div>
+
           <div> 
             <ul>
               {checkIns.map((entry) => (

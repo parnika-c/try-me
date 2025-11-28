@@ -4,14 +4,60 @@
   padding: 48px;
   padding-top: 120px;
 }
-
-.flex {
+.progress-container {
   display: flex;
+  align-items: center;
+  gap: 2rem;
+  font-size: 0.875rem; /* text-sm */
 }
 
+.progress-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.progress-number {
+  font-size: 1.75rem; /* large number like screenshot */
+  font-weight: 600;
+  line-height: 1;
+  color: #111;
+  margin-left: 0.25rem;
+}
+
+.progress-label {
+  font-size: 1rem;
+  color: #777;
+  display: block;
+  margin-top: -2px;
+}
+
+.icon-flame {
+  width: 35px;
+  height: 35px;
+  color: #f97316; /* orange */
+}
+
+.icon-trophy {
+  width: 35px;
+  height: 35px;
+  color: #facc15; /* yellow */
+}
+
+.row { display: flex; align-items: center; gap: 8px; }
+.row.space-between { justify-content: space-between; }
+.row.gap { gap: 16px; }
+.row.gap-sm { gap: 4px; }
+.row.center { align-items: center; }
+.small { font-size: 0.875rem; }
+.muted { color: #6b7280; }
+.mt { margin-top: 16px; }
 .space-between {
   justify-content: space-between;
 }
+
+
+
 
 .small {
   font-size: 0.875rem;
