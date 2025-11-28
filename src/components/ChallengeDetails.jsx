@@ -120,7 +120,11 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
           {/* TEMP TO VIEW VALUES */}
 
           <div className="progress-card">
+            <div className="row space-betw">
+                <span>Your Progress</span>
+            </div>
           <div className="progress-container">
+            
             <div className="progress-item">
               <Flame className="icon-flame" />
               <div>

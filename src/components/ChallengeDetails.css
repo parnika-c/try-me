@@ -23,7 +23,7 @@
   align-items: center;
   gap: 2rem;
   font-size: 0.875rem; /* text-sm */
-  margin-bottom: 16px;margin-top: 16px;
+  margin-bottom: 20px;margin-top: 20px;
 }
 
 .progress-item {
@@ -60,12 +60,13 @@
 }
 
 .row { display: flex; align-items: center; gap: 8px; }
-.row.space-between { justify-content: space-between; }
+.row.space-between { justify-content: space-between; margin-top: 10px; }
+.row.space-betw { justify-content: space-between; margin-top: 10px; margin-bottom: 30px; color: black; font-weight: 500;}
 .row.gap { gap: 16px; }
 .row.gap-sm { gap: 4px; }
 .row.center { align-items: center; }
 .small { font-size: 0.875rem; }
-.muted { color: #6b7280; margin-top: 5px; }
+.muted { color: #6b7280; margin-top: 10px; }
 .mt { margin-top: 16px; margin-bottom: 5px;}
 .space-between {
   justify-content: space-between;
