@@ -63,7 +63,7 @@ export function ChallengeCard({ challenge, onClick, userStats, currentUserId  })
   const status = (challenge?.status || "Upcoming");
   const metaText =
     status === "Upcoming" ? `Starts ${new Date(startDate).toLocaleDateString()}` :
-    status === "Active" ? `${DAYS - currentDay} day${DAYS - currentDay === 1 ? '' : 's'} remaining` :
+    status === "Active" ? `${daysRemaining} day${daysRemaining === 1 ? '' : 's'} remaining` :
     status === "Previous" ? `Completed on ${new Date(challenge.endDate).toLocaleDateString()}` :
     null;
 

@@ -2,13 +2,18 @@ import { useState, useEffect, useCallback } from "react";
 import { ArrowLeft, Trophy, Flame, Calendar, Users } from "lucide-react";
 import CheckinModal from "./CheckinModal";
 import "./ChallengeDetails.css";
-
+const DAYS = 7;
 export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpdate }) {
   const [checkIns, setCheckIns] = useState([]);
   const [currentDay, setCurrentDay] = useState(0);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
   const [loading, setLoading] = useState(true);
+  
+  // MATH for the progress percentage for the progress bar 
+  const progressPercentage = Math.min(100, Math.max(0, (currentDay / DAYS) * 100));
+  const daysRemaining = Math.max(0, DAYS - currentDay)
+
 
   // Small local Stat helper used also in ChallengeCard
   const Stat = ({ Icon, colorClass = '', children }) => (
@@ -96,9 +101,25 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
             checkIns={checkIns}
             onComplete={fetchCheckIns}
           />
+
+          {/*show progress bar */}
+          <div className="progress-card">
+            <div className="progress-block">
+              <div className="row space-between small muted">
+                <span>Challenge Progress</span>
+                <span>Day {currentDay}/{DAYS}</span>
+              </div>
+              <div className="progress">
+                <div className="progress-inner" style={{ width: `${progressPercentage}%` }} />
+              </div>
+              <span>{daysRemaining} day{daysRemaining === 1 ? '' : 's'} remaining</span>
+            </div>
+          </div>
+
           
           {/* TEMP TO VIEW VALUES */}
 
+          <div className="progress-card">
           <div className="progress-container">
             <div className="progress-item">
               <Flame className="icon-flame" />
@@ -116,6 +137,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
               </div>
             </div>
           </div>
+          
 
           <div> 
             <ul>
@@ -125,6 +147,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
                 </li>
               ))}
             </ul>
+          </div>
           </div>
         </>
       )}
