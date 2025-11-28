@@ -149,11 +149,11 @@ export function ChallengeCard({ challenge, onClick, userStats, currentUserId  })
           {visibleParticipants.map((participant) => {
             const name = participant.user?.name || 'U'
             const initial = name.charAt(0).toUpperCase()
-            const src = participant.user?.avatar
+            const src = participant.user?.avatar // participant avatar
             return (
               <div key={participant._id} className="avatar" title={name}>
                 {src ? (
-                  <img src={src} alt={name} />
+                  <img src={src} alt={name} /> // show avatar if available
                 ) : (
                   <div className="avatar-fallback">{initial}</div>
                 )}

@@ -60,8 +60,15 @@
 
 /* ICONS */
 .icon { width: 16px; height: 16px; color: #6b7280; flex-shrink: 0; }
-.icon-orange { color: #f97316; }
-.icon-yellow { color: #eab308; }
+.icon-orange { 
+  color: #f97316; 
+ 
+
+}
+.icon-yellow { 
+  color: #eab308; 
+  margin-left: 15px;
+}
 .icon-green { color: #16a34a; }
 
 /* AVATARSS */
