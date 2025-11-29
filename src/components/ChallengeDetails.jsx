@@ -154,9 +154,11 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
             const isMissed = day < currentDay && !isCompleted;
             //future day
             const isFuture = day > currentDay;
+            //current day
+            const isCurrent = day === currentDay;
       
             return (
-              <div key={day} className={`checkin-box ${isCompleted ? 'success' : isMissed ? 'missed' : 'pending'}`}>
+              <div key={day} className={`checkin-box ${isCompleted ? 'success' : isMissed ? 'missed' : 'pending'} ${isCurrent ? 'current' : ''}`}>
                 <span>Day {day}</span>
                 {isCompleted && <div className="checkin-icon success">✓</div>}
                 {isMissed && <div className="checkin-icon missed">✕</div>}
@@ -167,7 +169,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
         </div>
       </div>
 
-        {/* Your Leaderboard Position */}
+        {/* Challenge Leaderboard */}
           <div className="leaderboard-card">
             <h3 className="section-title">Your Progress</h3>
               <div className="leaderboard-row">
