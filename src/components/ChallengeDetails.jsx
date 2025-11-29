@@ -9,6 +9,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
   const [currentStreak, setCurrentStreak] = useState(challenge?.participant?.currentStreak || 0);
   const [totalPoints, setTotalPoints] = useState(challenge?.participant?.totalPoints || 0);
   const [loading, setLoading] = useState(true);
+  const [leaderboard, setLeaderboard] = useState([]);
   
   // MATH for the progress percentage for the progress bar 
   const progressPercentage = Math.min(100, Math.max(0, (currentDay / DAYS) * 100));
@@ -53,6 +54,24 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
     fetchCheckIns();
   }, [fetchCheckIns]);
 
+  useEffect(() => {
+  const fetchLeaderboard = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/challenges/${challenge._id}/leaderboard`,
+        { credentials: "include" }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setLeaderboard(data);
+      }
+    } catch (err) {
+      console.error("Error fetching leaderboard:", err);
+    }
+  };
+
+  fetchLeaderboard();
+}, [challenge._id]);
 
   return (
     <div className="challenge-details">
