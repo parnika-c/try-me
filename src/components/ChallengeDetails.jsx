@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { ArrowLeft, Trophy, Flame, Calendar, Users, CheckCircle2, XCircle } from "lucide-react";
+import { ArrowLeft, Trophy, Flame, Calendar, Users } from "lucide-react";
 import CheckinModal from "./CheckinModal";
 import "./ChallengeDetails.css";
 const DAYS = 7;
@@ -9,10 +9,6 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
   const [currentStreak, setCurrentStreak] = useState(challenge?.participant?.currentStreak || 0);
   const [totalPoints, setTotalPoints] = useState(challenge?.participant?.totalPoints || 0);
   const [loading, setLoading] = useState(true);
-
-  const currentUserParticipant = challenge.participants.find(
-    p => p.userId === currentUserId
-  );
   
   // MATH for the progress percentage for the progress bar 
   const progressPercentage = Math.min(100, Math.max(0, (currentDay / DAYS) * 100));
@@ -145,72 +141,45 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
               </div>
             </div>
           </div>
-          
+        </div>
 
-          <div> 
-            {currentUserParticipant && (
-            <>
-    {/* Day 1-7 check-in boxes */}
-    <div className="progress-card">
-      <div className="row space-betw mb-2">
-        <span>Weekly Check-ins</span>
+        {/* Weekly Check-ins */}
+        <div className="details-card" style={{ padding: '24px', background: 'white', borderRadius: '12px', marginBottom: '20px' }}>
+          <h3 className="section-title">Daily Check-ins</h3>
+            <div className="checkin-grid">
+            {[1, 2, 3, 4, 5, 6, 7].map((day) => {
+            const checkIn = checkIns.find(c => c.day === day);
+            const isCompleted = checkIn?.completed;
+            //past day that was not completed
+            const isMissed = day < currentDay && !isCompleted;
+            //future day
+            const isFuture = day > currentDay;
+      
+            return (
+              <div key={day} className={`checkin-box ${isCompleted ? 'success' : isMissed ? 'missed' : 'pending'}`}>
+                <span>Day {day}</span>
+                {isCompleted && <div className="checkin-icon success">✓</div>}
+                {isMissed && <div className="checkin-icon missed">✕</div>}
+                {isFuture && <div className="checkin-icon pending"></div>}
+              </div>
+            );
+          })}
+        </div>
       </div>
-      <div className="progress-container grid grid-cols-7 gap-2">
-        {[1, 2, 3, 4, 5, 6, 7].map((day) => {
-          const checkIn = currentUserParticipant.checkIns.find(c => c.day === day);
-          const isFuture = day > currentDay;
 
-          return (
-            <div
-              key={day}
-              className={`aspect-square rounded-lg border-2 flex flex-col items-center justify-center p-2 ${
-                checkIn?.completed
-                  ? "bg-green-50 border-green-500"
-                  : checkIn
-                  ? "bg-orange-50 border-orange-300"
-                  : isFuture
-                  ? "bg-gray-50 border-gray-200"
-                  : "bg-red-50 border-red-300"
-              }`}
-            >
-              <span className="text-xs text-muted-foreground mb-1">Day {day}</span>
-              {checkIn?.completed && <CheckCircle2 className="w-5 h-5 text-green-600" />}
-              {checkIn && !checkIn.completed && <XCircle className="w-5 h-5 text-orange-500" />}
-              {!checkIn && !isFuture && <XCircle className="w-5 h-5 text-red-400" />}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-
-    {/* Leaderboard */}
-    <div className="progress-card">
-      <div className="row space-betw mb-2">
-        <span>Leaderboard</span>
-      </div>
-      {challenge.participants
-        .sort((a, b) => b.totalPoints - a.totalPoints)
-        .map((participant, index) => (
-          <div
-            key={participant.userId}
-            className="participant-row flex items-center justify-between p-2 border-b hover:bg-gray-50"
-          >
-            <div className="flex items-center gap-3 flex-1">
-              <span className="font-medium">{index < 3 ? "🏆" : `#${index + 1}`}</span>
-              <span>{participant.user.name}</span>
-              <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Flame className="w-3 h-3" /> {participant.currentStreak} streak
-              </span>
-              <span className="text-sm text-muted-foreground">{participant.checkIns.length}/{currentDay} check-ins</span>
-            </div>
-            <span className="font-medium">{participant.totalPoints} pts</span>
-          </div>
-        ))}
-    </div>
-  </>
-)}
-
-          </div>
+        {/* Your Leaderboard Position */}
+          <div className="leaderboard-card">
+            <h3 className="section-title">Your Progress</h3>
+              <div className="leaderboard-row">
+                <div className="leaderboard-left">
+                  <span className="rank">🏆</span>
+                  <span className="name">You</span>
+                </div>
+                <span className="points">{totalPoints} pts</span>
+              </div>
+              <p className="muted small" style={{ marginTop: '10px' }}>
+                {challenge.participants.length - 1} other participant{challenge.participants.length !== 2 ? 's' : ''} in this challenge
+              </p>
           </div>
         </>
       )}
