@@ -24,6 +24,68 @@ router.get("/:challengeId/check-ins/me", protect, async (req, res) => {
   }
 });
 
+// GET /api/challenges/:challengeId/leaderboard - get leaderboard for all participants
+router.get("/:challengeId/leaderboard", protect, async (req, res) => {
+  try {
+    const challenge = await Challenge.findOne({
+      _id: req.params.challengeId,
+      participants: req.user._id,
+    }).populate('participants', 'firstName lastName');
+
+    if (!challenge) return res.status(404).json({ message: "Challenge not found" });
+
+    const currentDay = computeCurrentDay(challenge.startDate);
+
+    // get all check-ins for this challenge
+    const allCheckIns = await Checkin.find({ challengeId: challenge._id });
+
+    // build leaderboard for each participant
+    const leaderboard = await Promise.all(
+      challenge.participants.map(async (user) => {
+        const userCheckIns = allCheckIns.filter(
+          c => c.userId.toString() === user._id.toString()
+        );
+
+        const checkInsByDay = [];
+        for (let day = 1; day <= DAYS_IN_CHALLENGE; day++) {
+          const c = userCheckIns.find(c => {
+            return dayFromDate(c.date, challenge.startDate) === day;
+          });
+
+          checkInsByDay.push({
+            day,
+            completed: !!c,
+            value: c?.value || "",
+            pointsEarned: c?.pointsEarned || 0,
+          });
+        }
+
+        const currentStreak = computeStreak(checkInsByDay, currentDay);
+        const totalPoints = userCheckIns.reduce((sum, c) => sum + (c.pointsEarned || 0), 0);
+        const completedCheckIns = checkInsByDay.filter(c => c.completed).length;
+
+        return {
+          user: {
+            _id: user._id,
+            name: `${user.firstName} ${user.lastName}`,
+          },
+          totalPoints,
+          currentStreak,
+          completedCheckIns,
+        };
+      })
+    );
+
+    // sort by points descending
+    leaderboard.sort((a, b) => b.totalPoints - a.totalPoints);
+
+    res.json(leaderboard);
+  } catch (err) {
+    console.error("Leaderboard fetch error:", err);
+    res.status(500).json({ message: "Failed to load leaderboard" });
+  }
+});
+
 // POST /api/challenges/:challengeId/check-ins - record a check-in for a specific day
 router.post("/:challengeId/check-ins", protect, async (req, res) => {
   try {
