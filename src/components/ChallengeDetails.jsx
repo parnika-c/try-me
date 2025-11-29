@@ -196,7 +196,11 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
               <div key={participant.user._id} className="leaderboard-row">
                 <div className="leaderboard-left">
                   <div className="leaderboard-trophy">
-                    {index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`}
+                    {index < 3 ? (
+                      <Trophy className={`leaderboard-trophy-icon ${index === 0 ? 'gold' : 'silver'}`} />
+                    ) : (
+                      `#${index + 1}`
+                    )}
                   </div>
                   <div className="leaderboard-user">
                     <div className="leaderboard-avatar">👤</div>
