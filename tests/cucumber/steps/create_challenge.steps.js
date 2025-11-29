@@ -1,5 +1,6 @@
 import { Given, When, Then } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
+import { authenticator } from "otplib"; // For generating TOTP codes
 
 import { setDefaultTimeout } from "@cucumber/cucumber";
 setDefaultTimeout(20_000); // 20 seconds for all steps
@@ -7,19 +8,31 @@ setDefaultTimeout(20_000); // 20 seconds for all steps
 Given("I am an authenticated user on the Dashboard page", async function () {
   await this.goto("/");
 
-  await this.page.fill('.login-input[type="email"]', "parnika@fake.com");
-  await this.page.fill('.login-input[type="password"]', "hifake!0Ab");
-  await this.page.click('.login-submit-btn');
+  this.log("Logging in");
 
-  // wait for navigation after clicking submit
-  await Promise.all([
-    this.page.waitForNavigation({ waitUntil: "networkidle" }),
-    await this.page.click('.login-submit-btn')
-  ]);
+  await this.page.fill('.login-input[type="email"]', "parnikac@ucla.edu");
+  await this.page.fill('.login-input[type="password"]', "tryme@1Aee");
 
-  // TODO: get around MFA for testing
+  await this.page.click('.login-submit-btn'); // don't wait for navigation b/c not full reload
 
-  await expect(this.page.locator("text=My Challenges")).toBeVisible();
+  // Wait for MFA page
+  this.log("after the click Promise");
+  await expect(this.page.locator("text=Two-Factor Authentication")).toBeVisible();
+  this.log("Got to MFA page");
+
+  // Fetch the user's MFA secret
+  const res = await this.page.request.get("http://localhost:4000/api/_test/mfa-secret?email=parnikac@ucla.edu");
+  const data = await res.json();
+  const secret = data.mfaSecret;
+  if (!secret) throw new Error("MFA secret is undefined");
+  
+  const code = authenticator.generate(secret); // Generate a valid TOTP
+
+  await this.page.fill("input[placeholder='000000']", code);
+  await this.page.click("button:has-text('Verify Code')");
+
+  // Wait for dashboard page
+  await expect(this.page.locator("h1.dashboard-title")).toBeVisible();
 });
 
 When("I open the Create Challenge modal", async function () {

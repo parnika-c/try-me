@@ -10,6 +10,10 @@ export class CustomWorld {
     this.page = null;
   }
 
+  log(msg) { // For debugging, can't use console.log directly in steps
+    console.error("[TEST LOG] " + msg);
+  }
+
   async init() {
     this.browser = await chromium.launch({ headless: false });
     this.context = await this.browser.newContext();
