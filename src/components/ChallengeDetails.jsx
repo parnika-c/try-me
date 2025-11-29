@@ -4,10 +4,10 @@ import CheckinModal from "./CheckinModal";
 import "./ChallengeDetails.css";
 const DAYS = 7;
 export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpdate }) {
-  const [checkIns, setCheckIns] = useState([]);
-  const [currentDay, setCurrentDay] = useState(0);
-  const [currentStreak, setCurrentStreak] = useState(0);
-  const [totalPoints, setTotalPoints] = useState(0);
+  const [checkIns, setCheckIns] = useState(challenge?.participant?.checkIns || []);
+  const [currentDay, setCurrentDay] = useState(challenge?.participant?.currentDay || 0);
+  const [currentStreak, setCurrentStreak] = useState(challenge?.participant?.currentStreak || 0);
+  const [totalPoints, setTotalPoints] = useState(challenge?.participant?.totalPoints || 0);
   const [loading, setLoading] = useState(true);
   
   // MATH for the progress percentage for the progress bar 
