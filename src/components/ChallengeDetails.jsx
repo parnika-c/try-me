@@ -188,20 +188,36 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
         </div>
       </div>
 
-        {/* Challenge Leaderboard */}
-          <div className="leaderboard-card">
-            <h3 className="section-title">Your Progress</h3>
-              <div className="leaderboard-row">
+      {/* Challenge Leaderboard */}
+      <div className="leaderboard-card">
+        <h3 className="section-title">Leaderboard</h3>
+          <div className="leaderboard-container">
+            {leaderboard.map((participant, index) => (
+              <div key={participant.user._id} className="leaderboard-row">
                 <div className="leaderboard-left">
-                  <span className="rank">🏆</span>
-                  <span className="name">You</span>
+                  <div className="leaderboard-trophy">
+                    {index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`}
+                  </div>
+                  <div className="leaderboard-user">
+                    <div className="leaderboard-avatar">👤</div>
+                      <div className="leaderboard-info">
+                        <div className="leaderboard-name">
+                          {participant.user._id === currentUserId ? 'You' : participant.user.name}
+                        </div>
+                        <div className="leaderboard-stats">
+                          <span>
+                            <Flame className="leaderboard-stats-icon" />
+                              {participant.currentStreak} streak
+                          </span>
+                        </div>
+                      </div>
+                  </div>
                 </div>
-                <span className="points">{totalPoints} pts</span>
+                <div className="leaderboard-points">{participant.totalPoints} pts</div>
               </div>
-              <p className="muted small" style={{ marginTop: '10px' }}>
-                {challenge.participants.length - 1} other participant{challenge.participants.length !== 2 ? 's' : ''} in this challenge
-              </p>
-          </div>
+            ))}
+        </div>
+      </div>
         </>
       )}
     </div>
