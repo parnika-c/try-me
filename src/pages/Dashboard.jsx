@@ -11,6 +11,18 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
   const [loading, setLoading] = useState(true);
   const [selectedChallenge, setSelectedChallenge] = useState(null);
   const [error, setError] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('all');
+
+  // Calculate status based on dates
+  const calculateStatus = (challenge) => {
+    const now = new Date();
+    const start = new Date(challenge.startDate);
+    const end = new Date(challenge.endDate);
+    
+    if (now < start) return "Upcoming";
+    if (now > end) return "Previous";
+    return "Active";
+  };
 
   // Fetch challenges from backend
   useEffect(() => {
@@ -25,7 +37,12 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
           throw new Error(msg);
         }
         const data = await res.json();
-        setChallenges(data);
+        // Add calculated status to each challenge
+        const challengesWithStatus = data.map(challenge => ({
+          ...challenge,
+          status: calculateStatus(challenge)
+        }));
+        setChallenges(challengesWithStatus);
       } catch (err) {
         setError(err.message);
         console.error("Error fetching challenges:", err);
@@ -38,11 +55,19 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
   }, []);
 
   const handleNewChallenge = (newChallenge) => {
-    setChallenges(prev => [newChallenge, ...prev]);
+    const challengeWithStatus = {
+      ...newChallenge,
+      status: calculateStatus(newChallenge)
+    };
+    setChallenges(prev => [challengeWithStatus, ...prev]);
   };
 
   // user joining new challenge
   const handleJoinChallenge = (joinedChallenge) => {
+    const challengeWithStatus = {
+      ...joinedChallenge,
+      status: calculateStatus(joinedChallenge)
+    };
     setChallenges(prev => {
       const exists = prev.some(c => c._id === joinedChallenge._id);
       if (exists) {
@@ -51,6 +76,12 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
       return [joinedChallenge, ...prev];
     });
   };
+
+   // Filter challenges based on status
+  const filteredChallenges = challenges.filter(challenge => {
+    if (statusFilter === 'all') return true;
+    return challenge.status === statusFilter;
+  });
 
   if (loading) return <p style={{ textAlign: "center" }}>Loading your challenges...</p>;
   if (error) return <p style={{ textAlign: "center", color: 'red' }}>{error}</p>;
@@ -74,13 +105,43 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
                 <JoinChallenge onJoinChallenge={handleJoinChallenge} />
               </div>
             </div>
+            {/* Filter Buttons */}
+            <div className="filter-buttons">
+              <button 
+                className={`filter-btn ${statusFilter === 'all' ? 'active' : ''}`}
+                onClick={() => setStatusFilter('all')}
+              >
+                All
+              </button>
+              <button 
+                className={`filter-btn ${statusFilter === 'Active' ? 'active' : ''}`}
+                onClick={() => setStatusFilter('Active')}
+              >
+                Active
+              </button>
+              <button 
+                className={`filter-btn ${statusFilter === 'Upcoming' ? 'active' : ''}`}
+                onClick={() => setStatusFilter('Upcoming')}
+              >
+                Upcoming
+              </button>
+              <button 
+                className={`filter-btn ${statusFilter === 'Previous' ? 'active' : ''}`}
+                onClick={() => setStatusFilter('Previous')}
+              >
+                Previous
+              </button>
+            </div>
             <div className="cards-grid">
-              {challenges.length === 0 && (
+              {filteredChallenges.length === 0 && (
                 <p className="empty-state">
-                  You have no challenges yet. Create or join one to get started.
+                  {statusFilter === 'all' 
+                    ? 'You have no challenges yet. Create or join one to get started.'
+                    : `No ${statusFilter.toLowerCase()} challenges found.`
+                  }
                 </p>
               )}
-              {challenges.map((c) => (
+              {filteredChallenges.map((c) => (
                 <ChallengeCard
                   key={c._id}
                   challenge={c}
