@@ -7,11 +7,11 @@ setDefaultTimeout(20_000); // 20 seconds for all steps
 
 const timestamp_for_unique_name = ` ${Date.now()}`;
 
-Given("I am an authenticated user on the Dashboard page", async function () {
+Given("I am an authenticated user on the Dashboard page with email {string} and password {string}", async function (email, password) {
   await this.goto("/");
 
-  await this.page.fill('.login-input[type="email"]', "parnikac@ucla.edu");
-  await this.page.fill('.login-input[type="password"]', "tryme@1Aee");
+  await this.page.fill('.login-input[type="email"]', email);
+  await this.page.fill('.login-input[type="password"]', password);
 
   await this.page.click('.login-submit-btn'); // don't wait for navigation b/c not full reload
 
@@ -19,7 +19,7 @@ Given("I am an authenticated user on the Dashboard page", async function () {
   await expect(this.page.locator("text=Two-Factor Authentication")).toBeVisible();
 
   // Fetch the user's MFA secret
-  const res = await this.page.request.get("http://localhost:4000/api/_test/mfa-secret?email=parnikac@ucla.edu");
+  const res = await this.page.request.get(`http://localhost:4000/api/_test/mfa-secret?email=${email}`);
   const data = await res.json();
   const secret = data.mfaSecret;
   if (!secret) throw new Error("MFA secret is undefined");

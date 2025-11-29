@@ -1,7 +1,7 @@
 Feature: Create Task-Based Challenge
 
     Scenario: User creates a new task-based challenge and sees it on the Dashboard
-        Given I am an authenticated user on the Dashboard page
+        Given I am an authenticated user on the Dashboard page with email "parnikac@ucla.edu" and password "tryme@1Aee"
         When I open the Create Challenge modal
         And I fill in the challenge name "Go Outside"
         And I fill in the challenge description "Go outside at least once each day"
