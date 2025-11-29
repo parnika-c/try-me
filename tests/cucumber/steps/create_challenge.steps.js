@@ -5,10 +5,10 @@ import { authenticator } from "otplib"; // For generating TOTP codes
 import { setDefaultTimeout } from "@cucumber/cucumber";
 setDefaultTimeout(20_000); // 20 seconds for all steps
 
+const timestamp_for_unique_name = ` ${Date.now()}`;
+
 Given("I am an authenticated user on the Dashboard page", async function () {
   await this.goto("/");
-
-  this.log("Logging in");
 
   await this.page.fill('.login-input[type="email"]', "parnikac@ucla.edu");
   await this.page.fill('.login-input[type="password"]', "tryme@1Aee");
@@ -16,9 +16,7 @@ Given("I am an authenticated user on the Dashboard page", async function () {
   await this.page.click('.login-submit-btn'); // don't wait for navigation b/c not full reload
 
   // Wait for MFA page
-  this.log("after the click Promise");
   await expect(this.page.locator("text=Two-Factor Authentication")).toBeVisible();
-  this.log("Got to MFA page");
 
   // Fetch the user's MFA secret
   const res = await this.page.request.get("http://localhost:4000/api/_test/mfa-secret?email=parnikac@ucla.edu");
@@ -43,7 +41,7 @@ When("I open the Create Challenge modal", async function () {
 });
 
 When("I fill in the challenge name {string}", async function (name) {
-  await this.page.fill("#name", name); // input id is name
+  await this.page.fill("#name", name + timestamp_for_unique_name); // input id is name
 });
 
 When("I fill in the challenge description {string}", async function (desc) {
@@ -64,5 +62,5 @@ When("I submit the challenge form", async function () {
 });
 
 Then("I should see a challenge card with the name {string}", async function (name) {
-  await expect(this.page.locator(`.challenge-card:has-text("${name}")`)).toBeVisible();
+  await expect(this.page.locator(`.challenge-card:has-text("${name + timestamp_for_unique_name}")`)).toBeVisible();
 });
