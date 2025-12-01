@@ -37,12 +37,13 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
           throw new Error(msg);
         }
         const data = await res.json();
-        // Add calculated status to each challenge
-        const challengesWithStatus = data.map(challenge => ({
-          ...challenge,
-          status: calculateStatus(challenge)
-        }));
-        setChallenges(challengesWithStatus);
+        
+        //sort challenges by start date (most recent first)
+        const sortedChallenges = data.sort((a, b) => 
+          new Date(b.startDate) - new Date(a.startDate)
+        );
+
+        setChallenges(sortedChallenges);
       } catch (err) {
         setError(err.message);
         console.error("Error fetching challenges:", err);
@@ -55,27 +56,23 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
   }, []);
 
   const handleNewChallenge = (newChallenge) => {
-    const challengeWithStatus = {
-      ...newChallenge,
-      status: calculateStatus(newChallenge)
-    };
-    setChallenges(prev => [challengeWithStatus, ...prev]);
-  };
+  setChallenges(prev => [newChallenge, ...prev].sort((a, b) => 
+    new Date(b.startDate) - new Date(a.startDate)
+  ));
+};
 
   // user joining new challenge
   const handleJoinChallenge = (joinedChallenge) => {
-    const challengeWithStatus = {
-      ...joinedChallenge,
-      status: calculateStatus(joinedChallenge)
-    };
-    setChallenges(prev => {
-      const exists = prev.some(c => c._id === joinedChallenge._id);
-      if (exists) {
-        return prev.map(c => c._id === joinedChallenge._id ? joinedChallenge : c);
-      }
-      return [joinedChallenge, ...prev];
-    });
-  };
+  setChallenges(prev => {
+    const exists = prev.some(c => c._id === joinedChallenge._id);
+    if (exists) {
+      return prev.map(c => c._id === joinedChallenge._id ? joinedChallenge : c);
+    }
+    return [joinedChallenge, ...prev].sort((a, b) => 
+      new Date(b.startDate) - new Date(a.startDate)
+    );
+  });
+};
 
    // Filter challenges based on status
   const filteredChallenges = challenges.filter(challenge => {
