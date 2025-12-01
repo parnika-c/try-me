@@ -169,11 +169,11 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
             {[1, 2, 3, 4, 5, 6, 7].map((day) => {
             const checkIn = checkIns.find(c => c.day === day);
             const isCompleted = checkIn?.completed;
-            //past day that was not completed
+            // Past day that was not completed
             const isMissed = day < currentDay && !isCompleted;
-            //future day
+            // Future day
             const isFuture = day > currentDay;
-            //current day
+            // Current day
             const isCurrent = day === currentDay;
       
             return (

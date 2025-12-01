@@ -59,21 +59,50 @@
   color: #facc15; /* yellow */
 }
 
-.row { display: flex; align-items: center; gap: 8px; }
-.row.space-between { justify-content: space-between; margin-top: 10px; }
-.row.space-betw { justify-content: space-between; margin-top: 10px; margin-bottom: 30px; color: black; font-weight: 500;}
-.row.gap { gap: 16px; }
-.row.gap-sm { gap: 4px; }
-.row.center { align-items: center; }
-.small { font-size: 0.875rem; }
-.muted { color: #6b7280; margin-top: 10px; }
-.mt { margin-top: 16px; margin-bottom: 5px;}
+.row { 
+  display: flex; align-items: center; gap: 8px; 
+}
+
+.row.space-between { 
+  justify-content: space-between; margin-top: 10px; 
+}
+
+.row.space-betw { 
+  justify-content: space-between; 
+  margin-top: 10px; 
+  margin-bottom: 30px; 
+  color: black; 
+  font-weight: 500;
+}
+
+.row.gap { 
+  gap: 16px; 
+}
+
+.row.gap-sm { 
+  gap: 4px; 
+}
+
+.row.center { 
+  align-items: center; 
+}
+
+.small { 
+  font-size: 0.875rem; 
+}
+
+.muted { 
+  color: #6b7280; margin-top: 10px; 
+}
+
+.mt { 
+  margin-top: 16px; 
+  margin-bottom: 5px;
+}
+
 .space-between {
   justify-content: space-between;
 }
-
-
-
 
 .small {
   font-size: 0.875rem;
@@ -82,14 +111,37 @@
 .muted {
   color: #6b7280;
 }
+
 /* PROGRESS SECTION */
-.progress-block { display: flex; flex-direction: column; gap: 20px; }
-.progress { position: relative; height: 10px; background: #e5e7eb; border-radius: 999px; overflow: hidden; }
-.progress-inner { position: absolute; inset: 0 auto 0 0; width: 0; background: #1f2937; border-radius: 999px; }
+.progress-block { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 20px; 
+}
+
+.progress { 
+  position: relative; height: 10px; background: #e5e7eb; border-radius: 999px; overflow: hidden; 
+}
+
+.progress-inner { 
+  position: absolute; 
+  inset: 0 auto 0 0; 
+  width: 0; 
+  background: #1f2937; 
+  border-radius: 999px; 
+}
 
 /* Layout helpers (row, alignment, spacing, muted text) */
-.stats-row { display: flex; align-items: center; gap: 20px; }
-.stats-row .stat-text { font-size: 0.875rem; font-weight: 500; }
+.stats-row { 
+  display: flex; 
+  align-items: center; 
+  gap: 20px; 
+}
+
+.stats-row .stat-text { 
+  font-size: 0.875rem; 
+  font-weight: 500; 
+}
 
 .back-btn {
   display: flex;
@@ -381,7 +433,7 @@
 }
 
 .leaderboard-trophy-icon.silver {
-  color: #8f949a;
+  color: #9ca3af;
 }
 
 .leaderboard-stats-icon {
