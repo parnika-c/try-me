@@ -1,15 +1,12 @@
-import { Router } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
-
-const router = Router();
 
 export const protect = async (req, res, next) => {
   try {
     let token = null;
-    if (req.cookies?.token) { // get token from cookies
+    if (req.cookies?.token) {
       token = req.cookies.token;
-    } else if (req.headers.authorization?.startsWith("Bearer ")) { // get token from header
+    } else if (req.headers.authorization?.startsWith("Bearer ")) {
       token = req.headers.authorization.split(" ")[1];
     }
     if (!token) return res.status(401).json({ message: "Not authorized, no token" });
@@ -24,5 +21,3 @@ export const protect = async (req, res, next) => {
     return res.status(401).json({ message: "Not authorized" });
   }
 };
-
-export default router;
