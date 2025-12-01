@@ -38,7 +38,7 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
         }
         const data = await res.json();
         
-        //sort challenges by start date (most recent first)
+        // Sort challenges by start date (most recent first)
         const sortedChallenges = data.sort((a, b) => 
           new Date(b.startDate) - new Date(a.startDate)
         );
@@ -61,7 +61,7 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
   ));
 };
 
-  // user joining new challenge
+  // User joining new challenge
   const handleJoinChallenge = (joinedChallenge) => {
   setChallenges(prev => {
     const exists = prev.some(c => c._id === joinedChallenge._id);
