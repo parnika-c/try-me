@@ -7,17 +7,28 @@ config:
       rampTo: 20         # ramp to 20 users/sec
       name: "Spike traffic test"
 
-    # Sustained load
+    # Phase 2: Sustained load
     - duration: 60       # 1 minute
       arrivalRate: 10     # 10 users/sec constant
       name: "Sustained load test"
+
+    # Phase 3: Ramping up to breakpoint
+    - duration: 120          # 2 minutes
+      arrivalRate: 5          # start with 5 users/sec
+      rampTo: 100             # ramp to 100 users/sec
+      name: "Ramp-up to potential breakpoint"
 
 scenarios:
   - flow:
       # User visits home page
       - get:
           url: "/"
+          weight: 3
 
       # User visits global leaderboard page
       - get:
           url: "/leaderboard"
+          weight: 1
+
+      # User is thinking/reading/interacting with page
+      - think: 1-3
