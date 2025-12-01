@@ -1,0 +1,36 @@
+config:
+  target: "http://localhost:5173/"
+  phases:
+    # Spike Test: Sudden traffic spike
+    - duration: 30        # 30 seconds
+      arrivalRate: 5      # start with 5 users/sec
+      rampTo: 200         # ramp to 200 users/sec
+      name: "Spike traffic test"
+
+    # Sustained High Load: Check stability over time
+    - duration: 300       # 5 minutes
+      arrivalRate: 50     # 50 users/sec constant
+      name: "Sustained high load test"
+
+    # Ramp-Up to Breakpoint: Increase users until stress
+    - duration: 120       # 2 minutes
+      arrivalRate: 10
+      rampTo: 300
+      name: "Ramp-up breakpoint test"
+
+scenarios:
+  - flow:
+      # User visits homepage
+      - get:
+          url: "/"
+
+      # User logs in
+      - post:
+          url: "/api/login"
+          json:
+            email: "test@test.com"
+            password: "Password123!"
+
+      # User logs out
+      - get:
+          url: "/api/logout"
