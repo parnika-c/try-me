@@ -210,7 +210,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
               <div className="leaderboard-left">
                 <div className="leaderboard-trophy">
                   {index < 3 ? (
-                    <Trophy className={`leaderboard-trophy-icon ${index === 0 ? 'gold' : 'silver'}`} />
+                    <Trophy className={`leaderboard-trophy-icon ${index === 0 ? 'gold' : index === 1 ? 'silver' : 'bronze'}`} />
                   ) : (
                     `#${index + 1}`
                   )}

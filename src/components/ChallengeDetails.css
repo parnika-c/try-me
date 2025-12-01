@@ -450,6 +450,10 @@
   color: #9ca3af;
 }
 
+.leaderboard-trophy-icon.bronze {
+  color: #d97706;
+}
+
 .leaderboard-stats-icon {
   width: 16px;
   height: 16px;
