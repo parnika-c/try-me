@@ -228,15 +228,41 @@ export const verifyAuth = async () => {
     const data = await response.json();
 
     if (!response.ok) {
-      // Token is invalid, clear it
       localStorage.removeItem('authToken');
       throw new Error(data.message || 'Not authorized');
     }
 
     return data;
   } catch (error) {
-    // Clear token on any error
     localStorage.removeItem('authToken');
+    throw error;
+  }
+};
+
+/**
+ * Get current authenticated user
+ * @returns {Promise} - Returns current user data
+ */
+export const getCurrentUser = async () => {
+  try {
+    const token = localStorage.getItem('authToken');
+    const response = await fetch(`${API_URL}/auth/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+      },
+      credentials: 'include',
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to fetch current user');
+    }
+
+    return data;
+  } catch (error) {
     throw error;
   }
 };
