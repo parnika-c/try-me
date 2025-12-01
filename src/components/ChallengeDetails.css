@@ -240,10 +240,17 @@
 
 /* Details Card */
 .details-card {
-  background: #f9fafb;
+  display: block;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
   border-radius: 12px;
-  padding: 24px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s ease, transform 0.05s ease;
+  width: 100%;
   margin-bottom: 24px;
+  margin-top: -12px;
 }
 
 /* Challenge Progress Section */
@@ -341,11 +348,18 @@
 }
 
 /* Leaderboard Styles */
-.section-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: #111827;
+.leaderboard-card {
+  display: block;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s ease, transform 0.05s ease;
+  width: 100%;
+  margin-bottom: 24px;
+  margin-top: -12px;
 }
 
 .leaderboard-container {

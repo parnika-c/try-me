@@ -24,6 +24,32 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
     </div>
   );
 
+  useEffect(() => {
+    if (challenge?.participant) {
+      setCheckIns(challenge.participant.checkIns || []);
+      setCurrentDay(challenge.participant.currentDay || 0);
+      setCurrentStreak(challenge.participant.currentStreak || 0);
+      setTotalPoints(challenge.participant.totalPoints || 0);
+    }
+  }, [challenge.participant]);
+
+
+  // Fetch leaderboard
+  const fetchLeaderboard = useCallback(async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/challenges/${challenge._id}/leaderboard`,
+        { credentials: "include" }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setLeaderboard(data);
+      }
+    } catch (err) {
+      console.error("Error fetching leaderboard:", err);
+    }
+  }, [challenge._id]);
+
   // Fetch check ins from backend
   const fetchCheckIns = useCallback(async () => {
     try {
@@ -42,6 +68,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
         currentStreak: data.participant.currentStreak,
         totalPoints: data.participant.totalPoints
       });
+      fetchLeaderboard();
     } catch (err) {
       console.error("Error fetching challenges:", err);
     } finally {
@@ -52,26 +79,8 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
   // Load on first render
   useEffect(() => {
     fetchCheckIns();
-  }, [fetchCheckIns]);
-
-  useEffect(() => {
-  const fetchLeaderboard = async () => {
-    try {
-      const res = await fetch(
-        `http://localhost:4000/api/challenges/${challenge._id}/leaderboard`,
-        { credentials: "include" }
-      );
-      if (res.ok) {
-        const data = await res.json();
-        setLeaderboard(data);
-      }
-    } catch (err) {
-      console.error("Error fetching leaderboard:", err);
-    }
-  };
-
-  fetchLeaderboard();
-}, [challenge._id]);
+    fetchLeaderboard();
+}, [fetchCheckIns, fetchLeaderboard]);
 
   return (
     <div className="challenge-details">
@@ -163,8 +172,10 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
         </div>
 
         {/* Weekly Check-ins */}
-        <div className="details-card" style={{ padding: '24px', background: 'white', borderRadius: '12px', marginBottom: '20px' }}>
-          <h3 className="section-title">Daily Check-ins</h3>
+        <div className="details-card">
+          <div className="row space-betw">
+                <span>Daily Check-ins</span>
+          </div>
             <div className="checkin-grid">
             {[1, 2, 3, 4, 5, 6, 7].map((day) => {
             const checkIn = checkIns.find(c => c.day === day);
@@ -190,40 +201,42 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
 
       {/* Challenge Leaderboard */}
       <div className="leaderboard-card">
-        <h3 className="section-title">Leaderboard</h3>
-          <div className="leaderboard-container">
-            {leaderboard.map((participant, index) => (
-              <div key={participant.user._id} className="leaderboard-row">
-                <div className="leaderboard-left">
-                  <div className="leaderboard-trophy">
-                    {index < 3 ? (
-                      <Trophy className={`leaderboard-trophy-icon ${index === 0 ? 'gold' : 'silver'}`} />
-                    ) : (
-                      `#${index + 1}`
-                    )}
-                  </div>
-                  <div className="leaderboard-user">
-                    <div className="leaderboard-avatar">👤</div>
-                      <div className="leaderboard-info">
-                        <div className="leaderboard-name">
-                          {participant.user._id === currentUserId ? 'You' : participant.user.name}
-                        </div>
-                        <div className="leaderboard-stats">
-                          <span>
-                            <Flame className="leaderboard-stats-icon" />
-                              {participant.currentStreak} streak
-                          </span>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-                <div className="leaderboard-points">{participant.totalPoints} pts</div>
-              </div>
-            ))}
+        <div className="row space-betw">
+                <span>Leaderboard</span>
         </div>
+        <div className="leaderboard-container">
+          {leaderboard.map((participant, index) => (
+            <div key={participant.user._id} className="leaderboard-row">
+              <div className="leaderboard-left">
+                <div className="leaderboard-trophy">
+                  {index < 3 ? (
+                    <Trophy className={`leaderboard-trophy-icon ${index === 0 ? 'gold' : 'silver'}`} />
+                  ) : (
+                    `#${index + 1}`
+                  )}
+                </div>
+                <div className="leaderboard-user">
+                  <div className="leaderboard-avatar">👤</div>
+                    <div className="leaderboard-info">
+                      <div className="leaderboard-name">
+                        {participant.user._id === currentUserId ? 'You' : participant.user.name}
+                      </div>
+                      <div className="leaderboard-stats">
+                        <span>
+                          <Flame className="leaderboard-stats-icon" />
+                            {participant.currentStreak} streak
+                        </span>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div className="leaderboard-points">{participant.totalPoints} pts</div>
+            </div>
+          ))}
       </div>
-        </>
-      )}
+    </div>
+      </>
+    )}
     </div>
   );
 }
