@@ -89,38 +89,24 @@ router.post("/logout", (_req, res) => {
   return res.json({ ok: true });
 });
 
-// verify token and get user info
-router.get("/me", async (req, res) => {
+// get current user (protected)
+router.get("/me", protect, async (req, res) => {
   try {
-    let token = null;
-    if (req.cookies?.token) {
-      token = req.cookies.token;
-    } else if (req.headers.authorization?.startsWith("Bearer ")) {
-      token = req.headers.authorization.split(" ")[1];
-    }
-    
-    if (!token) {
-      return res.status(401).json({ message: "Not authorized, no token" });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.sub).select("-password -mfaSecret");
-    
+    const user = await User.findById(req.user._id).select("firstName lastName email totalPoints mfaEnabled");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
     return res.json({
       id: user._id,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
       mfaEnabled: !!user.mfaEnabled,
-      token: token
+      totalPoints: user.totalPoints,
     });
-  } catch (error) {
-    console.error("Auth error:", error);
-    return res.status(401).json({ message: "Not authorized" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
   }
 });
 
