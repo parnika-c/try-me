@@ -6,7 +6,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: #0b0b15;
+  background: linear-gradient(to right, var(--brand-from), var(--brand-to));
   color: #fff;
   border: 0;
   padding: 12px 18px;

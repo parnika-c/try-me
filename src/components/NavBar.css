@@ -9,7 +9,8 @@
   align-items: center;
   flex-wrap: nowrap;
   padding: 1.3rem 2rem;
-  background-color: #2563eb;
+  background: radial-gradient(1000px 420px at -10% -10%, rgba(90, 115, 144, 0.28), transparent 60%),
+              linear-gradient(135deg, #90a7fc, #eef2ff);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 @media (max-width: 768px) {
