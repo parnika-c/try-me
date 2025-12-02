@@ -31,12 +31,14 @@ const Stat = ({ Icon, colorClass = '', children }) => (
  * @property {string} [joinCode]
  */
 
-export function ChallengeCard({ challenge, onClick }) {
-  const { name, description, currentDay = 0, participants: list = [], startDate, joinCode } = challenge
+export function ChallengeCard({ challenge, onClick, userStats  }) {
+  const { name, description, currentDay = 0, participants: list = [], startDate, joinCode  } = challenge
 
   // derives values
   const participants = list
   const participantCount = participants.length
+  
+
   const visibleParticipants = participants.slice(0, 5)
   const handleCopyJoinCode = (e) => {
     e.stopPropagation(); // don’t trigger card click
@@ -51,13 +53,17 @@ export function ChallengeCard({ challenge, onClick }) {
   const daysRemaining = Math.max(0, DAYS - currentDay)
 
   // show their streak + points
-  const currentUserParticipant = participants.find((p) => p.userId === 'user-1')
+  
+  const streak = userStats?.currentStreak ?? 0;
+  const points = userStats?.totalPoints ?? 0;
+  
+
 
   // get status and create meta text
   const status = (challenge?.status || "Upcoming");
   const metaText =
     status === "Upcoming" ? `Starts ${new Date(startDate).toLocaleDateString()}` :
-    status === "Active" ? `${DAYS - currentDay} day${DAYS - currentDay === 1 ? '' : 's'} remaining` :
+    status === "Active" ? `${daysRemaining} day${daysRemaining === 1 ? '' : 's'} remaining` :
     status === "Previous" ? `Completed on ${new Date(challenge.endDate).toLocaleDateString()}` :
     null;
 
@@ -90,24 +96,31 @@ export function ChallengeCard({ challenge, onClick }) {
             </div>
 
             {/* Personal progress for  that challenge */}
-            {currentUserParticipant && (
-              <div className="row gap small">
-                <Stat Icon={Flame} colorClass="icon-orange">
-                  {currentUserParticipant.currentStreak || 0} day streak
-                </Stat>
-                <Stat Icon={Trophy} colorClass="icon-yellow">
-                  {currentUserParticipant.totalPoints || 0} pts
-                </Stat>
-              </div>
-            )}
+            
+            <div className="row gap-sm center mt">
+              <Stat Icon={Flame} colorClass="icon-orange">
+                {streak + " streak"}
+              </Stat>
+
+              <Stat Icon={Trophy} colorClass="icon-yellow">
+                {points + " pts"}
+              </Stat>
+            </div>
+
           </>
         )}
+    
 
-        {/* Number of particpants */}
+
+        {/* Number of particpants*/}
         <div className="row gap-sm center muted">
           <Users className="icon" />
           <span className="small">{participantCount} participants</span>
+          
+
         </div>
+        
+
 
         {/* Calendar + join code row */}
         {(metaText || joinCode) && (
@@ -136,11 +149,11 @@ export function ChallengeCard({ challenge, onClick }) {
           {visibleParticipants.map((participant) => {
             const name = participant.user?.name || 'U'
             const initial = name.charAt(0).toUpperCase()
-            const src = participant.user?.avatar
+            const src = participant.user?.avatar // participant avatar
             return (
               <div key={participant._id} className="avatar" title={name}>
                 {src ? (
-                  <img src={src} alt={name} />
+                  <img src={src} alt={name} /> // show avatar if available
                 ) : (
                   <div className="avatar-fallback">{initial}</div>
                 )}

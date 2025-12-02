@@ -5,8 +5,99 @@
   padding-top: 120px;
 }
 
-.flex {
+.progress-card {
+  display: block;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s ease, transform 0.05s ease;
+  width: 100%;
+  margin-bottom: 24px;
+  margin-top: -12px;
+}
+.progress-container {
   display: flex;
+  align-items: center;
+  gap: 2rem;
+  font-size: 0.875rem; /* text-sm */
+  margin-bottom: 20px;margin-top: 20px;
+}
+
+.progress-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.progress-number {
+  font-size: 1.75rem; /* large number like screenshot */
+  font-weight: 600;
+  line-height: 1;
+  color: #111;
+  margin-left: 0.25rem;
+}
+
+.progress-label {
+  font-size: 1rem;
+  color: #777;
+  display: block;
+  margin-top: -2px;
+}
+
+.icon-flame {
+  width: 35px;
+  height: 35px;
+  color: #f97316; /* orange */
+}
+
+.icon-trophy {
+  width: 35px;
+  height: 35px;
+  color: #facc15; /* yellow */
+}
+
+.row { 
+  display: flex; align-items: center; gap: 8px; 
+}
+
+.row.space-between { 
+  justify-content: space-between; margin-top: 10px; 
+}
+
+.row.space-betw { 
+  justify-content: space-between; 
+  margin-top: 10px; 
+  margin-bottom: 30px; 
+  color: black; 
+  font-weight: 500;
+}
+
+.row.gap { 
+  gap: 16px; 
+}
+
+.row.gap-sm { 
+  gap: 4px; 
+}
+
+.row.center { 
+  align-items: center; 
+}
+
+.small { 
+  font-size: 0.875rem; 
+}
+
+.muted { 
+  color: #6b7280; margin-top: 10px; 
+}
+
+.mt { 
+  margin-top: 16px; 
+  margin-bottom: 5px;
 }
 
 .space-between {
@@ -19,6 +110,37 @@
 
 .muted {
   color: #6b7280;
+}
+
+/* PROGRESS SECTION */
+.progress-block { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 20px; 
+}
+
+.progress { 
+  position: relative; height: 10px; background: #e5e7eb; border-radius: 999px; overflow: hidden; 
+}
+
+.progress-inner { 
+  position: absolute; 
+  inset: 0 auto 0 0; 
+  width: 0; 
+  background: #1f2937; 
+  border-radius: 999px; 
+}
+
+/* Layout helpers (row, alignment, spacing, muted text) */
+.stats-row { 
+  display: flex; 
+  align-items: center; 
+  gap: 20px; 
+}
+
+.stats-row .stat-text { 
+  font-size: 0.875rem; 
+  font-weight: 500; 
 }
 
 .back-btn {
@@ -118,10 +240,17 @@
 
 /* Details Card */
 .details-card {
-  background: #f9fafb;
+  display: block;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
   border-radius: 12px;
-  padding: 24px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s ease, transform 0.05s ease;
+  width: 100%;
   margin-bottom: 24px;
+  margin-top: -12px;
 }
 
 /* Challenge Progress Section */
@@ -149,4 +278,190 @@
   background: #1f2937;
   border-radius: 999px;
   transition: width 0.3s ease;
+}
+
+/* Daily Check-ins Grid */
+.checkin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.checkin-box {
+  padding: 32px 20px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s;
+  border: 2px solid;
+}
+
+.checkin-box.success {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+
+.checkin-box.missed {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.checkin-box.pending {
+  border-color: #e5e7eb;
+  background: #f9fafb;
+}
+
+.checkin-box > span {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.checkin-box.current {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+  border-color: #3b82f6;
+}
+
+.checkin-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+}
+
+.checkin-icon.success {
+  background: #10b981;
+}
+
+.checkin-icon.missed {
+  background: #f59e0b;
+}
+
+.checkin-icon.pending {
+  background: #e5e7eb;
+}
+
+/* Leaderboard Styles */
+.leaderboard-card {
+  display: block;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s ease, transform 0.05s ease;
+  width: 100%;
+  margin-bottom: 24px;
+  margin-top: -12px;
+}
+
+.leaderboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.leaderboard-row {
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.leaderboard-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.leaderboard-trophy {
+  font-size: 32px;
+}
+
+.leaderboard-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.leaderboard-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.leaderboard-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.leaderboard-name {
+  font-weight: 600;
+  font-size: 16px;
+  color: #111827;
+}
+
+.leaderboard-stats {
+  font-size: 14px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.leaderboard-points {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.leaderboard-trophy {
+  min-width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leaderboard-trophy-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.leaderboard-trophy-icon.gold {
+  color: #fbbf24;
+}
+
+.leaderboard-trophy-icon.silver {
+  color: #9ca3af;
+}
+
+.leaderboard-trophy-icon.bronze {
+  color: #d97706;
+}
+
+.leaderboard-stats-icon {
+  width: 16px;
+  height: 16px;
+  color: #f97316;
+}
+
+.leaderboard-stats span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }

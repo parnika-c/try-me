@@ -45,7 +45,7 @@ router.post("/", protect, async (req, res) => {
       type,
       dailyGoal,
       unit,
-      startDate
+      startDate,
     } = req.body;
     
     if (type === "value" && (!dailyGoal || !unit)) {
@@ -78,6 +78,8 @@ router.post("/", protect, async (req, res) => {
     const populated = await Challenge.findById(challenge._id)
       .populate("createdBy", "name email")
       .populate("participants", "name email");
+      
+      
 
     res.status(201).json({
       ...populated.toObject(),

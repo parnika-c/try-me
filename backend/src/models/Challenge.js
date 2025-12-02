@@ -6,7 +6,8 @@ const challengeSchema = new mongoose.Schema({
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   joinCode: { type: String, required: true, unique: true },
   participants: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+    { type: mongoose.Schema.Types.ObjectId, ref: "User" ,
+    }
   ],
 
   type: { type: String, enum: ["task", "value"], required: true },

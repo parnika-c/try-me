@@ -1,4 +1,5 @@
 /* CARD CONTAINER */
+
 .challenge-card {
   cursor: pointer;
   background: #fff;
@@ -55,11 +56,19 @@
 .row.center { align-items: center; }
 .small { font-size: 0.875rem; }
 .muted { color: #6b7280; }
+.mt { margin-top: 16px; }
 
 /* ICONS */
 .icon { width: 16px; height: 16px; color: #6b7280; flex-shrink: 0; }
-.icon-orange { color: #f97316; }
-.icon-yellow { color: #eab308; }
+.icon-orange { 
+  color: #f97316; 
+ 
+
+}
+.icon-yellow { 
+  color: #eab308; 
+  margin-left: 15px;
+}
 .icon-green { color: #16a34a; }
 
 /* AVATARSS */
@@ -95,4 +104,9 @@
 .join-code-value {
   font-weight: 400;        
   letter-spacing: 0.01em;  
+}
+.row-gap-small {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }

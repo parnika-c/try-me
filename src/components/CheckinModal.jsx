@@ -31,6 +31,7 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
         points = value / challenge.dailyGoal * 25;
         points = Math.min(Math.max(Math.round(points), 0), 25); // round to int between 0-25, proportional to goal
       }
+  
 
       const res = await fetch(
         `http://localhost:4000/api/challenges/${challenge._id}/check-ins`,
@@ -38,7 +39,7 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
           method: "POST",
           headers: {"Content-Type": "application/json"},
           credentials: "include",
-          body: JSON.stringify({day: today, value: challenge.type === "value" ? value : "", pointsEarned: points,}),
+          body: JSON.stringify({day: today, value: challenge.type === "value" ? value : "", pointsEarned: points}),
         }
       );
 
