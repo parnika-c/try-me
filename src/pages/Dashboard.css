@@ -16,7 +16,7 @@
   align-items: center;
   width: 100%;
   padding-top: 120px;
-  margin-bottom: 32px;
+  margin-bottom: 25px;
 }
 
 .header-left {
@@ -41,7 +41,7 @@
 .filter-btn {
   padding: 8px 16px;
   border: 2px solid #e5e7eb;
-  border-radius: 20px;
+  border-radius: 12px;
   background: white;
   color: #6b7280;
   font-size: 14px;
@@ -59,4 +59,8 @@
   border-color: #111827;
   background: #111827;
   color: white;
+}
+
+.dashboard-subtitle {
+  padding-top: 0.3rem;
 }

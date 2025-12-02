@@ -53,7 +53,7 @@ export const NavBar = ({ onLogout }) => {
                 <div className="logo-section">
                     <span className="trophy">🏆</span>
                     <div className="text-group">
-                        <h1 className="app-name">Try Me</h1>
+                        <h1 className="app-name">TryMe!</h1>
                         <p className="subtitle">Challenge yourself, compete with friends</p>
                     </div>
                 </div>
@@ -75,11 +75,8 @@ export const NavBar = ({ onLogout }) => {
                             src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" 
                             alt="Profile Picture"
                             onMouseEnter={() => setIsMenuOpen(!isMenuOpen)}
-                            
                             />
-                     
                         {isMenuOpen && <div className="menu-dropdown">
-                            
                         <ul>
                             {menus.map((menu) => ( 
                                 <li 
@@ -87,19 +84,13 @@ export const NavBar = ({ onLogout }) => {
                                     <button className="logout-btn" onClick={handleLogout}>
                                     {menu}
                                     </button>
-
-
                                 </li>
                             ))}
-                       
                         </ul>
                     </div>}
-                    </div>
-                    
-                    </div>
                 </div>
-
-   
+                </div>
+            </div>
         </nav>
         <div className="bottom-nav">
             {}
@@ -107,17 +98,8 @@ export const NavBar = ({ onLogout }) => {
             className={`nav-tab ${isDashboard ? "active" : ""}`}
             onClick={() => navigate("/")}
             >
-            <Target size={18} />
-            <span>My Challenges</span>
-            </button>
-
-            {/*discover*/}
-            <button
-            className="nav-tab"
-            onClick={() => navigate("/")}
-            >
-            <Compass size={18} />
-            <span>Discover</span>
+                <Target size={18} />
+                <span>My Challenges</span>
             </button>
 
             {/* leaderboard */}
@@ -125,8 +107,8 @@ export const NavBar = ({ onLogout }) => {
             className={`nav-tab ${isLeaderboard ? "active" : ""}`}
             onClick={() => navigate("/leaderboard")}
             >
-            <Trophy size={18} />
-            <span>Leaderboard</span>
+                <Trophy size={18} />
+                <span>Leaderboard</span>
             </button>
         </div>
         </>
