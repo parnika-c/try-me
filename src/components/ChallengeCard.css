@@ -22,16 +22,19 @@
 .badge-active {
   background: #22c55e;
   color: white;
+  border-radius: 12px;
 }
 
 .badge-upcoming {
   background: #fecc40;
   color: #111827;
+  border-radius: 12px;
 }
 
 .badge-previous {
   background: #e5e7eb;
   color: #111827;
+  border-radius: 12px;
 }
 
 /* SPACING */
@@ -76,7 +79,7 @@
   border: 1px solid transparent;   
   background: transparent;
   padding: 4px 8px;
-  border-radius: 999px;            
+  border-radius: 12px;            
   cursor: pointer;
   display: inline-flex;
   align-items: center;
