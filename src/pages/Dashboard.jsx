@@ -12,6 +12,7 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
   const [selectedChallenge, setSelectedChallenge] = useState(null);
   const [error, setError] = useState(null);
   const [userStatsByChallenge, setUserStatsByChallenge] = useState({});
+  const [statusFilter, setStatusFilter] = useState('all');
 
 
   // Fetch user stats for a challenge
@@ -38,6 +39,17 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
       console.error(`Error fetching user stats for challenge ${challengeId}:`, err);
       return null;
     }
+  
+
+  // Calculate status based on dates
+  const calculateStatus = (challenge) => {
+    const now = new Date();
+    const start = new Date(challenge.startDate);
+    const end = new Date(challenge.endDate);
+    
+    if (now < start) return "Upcoming";
+    if (now > end) return "Previous";
+    return "Active";
   };
 
   // Fetch challenges from backend
@@ -53,7 +65,13 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
           throw new Error(msg);
         }
         const data = await res.json();
-        setChallenges(data); //sets challenges to data from backend initially before any user interaction
+        
+        // Sort challenges by start date (most recent first)
+        const sortedChallenges = data.sort((a, b) => 
+          new Date(b.startDate) - new Date(a.startDate)
+        );
+
+        setChallenges(sortedChallenges);
       } catch (err) {
         setError(err.message);
         console.error("Error fetching challenges:", err);
@@ -96,17 +114,23 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
   }, [userData?.id, userData?._id, challenges.length]);
 
   const handleNewChallenge = (newChallenge) => {
-    setChallenges(prev => [newChallenge, ...prev]);
-  };
+  setChallenges(prev => [newChallenge, ...prev].sort((a, b) => 
+    new Date(b.startDate) - new Date(a.startDate)
+  ));
+};
 
   // user joining new challenge
   const handleJoinChallenge = async (joinedChallenge) => {
     setChallenges(prev => {
       const exists = prev.some(c => c._id === joinedChallenge._id);
       if (exists) {
-        return prev.map(c => c._id === joinedChallenge._id ? joinedChallenge : c);
+        return prev
+          .map(c => (c._id === joinedChallenge._id ? joinedChallenge : c))
+          .sort((a, b) => new Date(b.startDate) - new Date(a.startDate);
       }
-      return [joinedChallenge, ...prev];
+      return [joinedChallenge, ...prev].sort((a, b) => 
+      new Date(b.startDate) - new Date(a.startDate)
+    );
     });
     
     // Fetch stats for the newly joined challenge
@@ -122,6 +146,12 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
       }
     }
   };
+
+   // Filter challenges based on status
+  const filteredChallenges = challenges.filter(challenge => {
+    if (statusFilter === 'all') return true;
+    return challenge.status === statusFilter;
+  });
 
   if (loading) return <p style={{ textAlign: "center" }}>Loading your challenges...</p>;
   if (error) return <p style={{ textAlign: "center", color: 'red' }}>{error}</p>;
@@ -145,13 +175,43 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
                 <JoinChallenge onJoinChallenge={handleJoinChallenge} />
               </div>
             </div>
+            {/* Filter Buttons */}
+            <div className="filter-buttons">
+              <button 
+                className={`filter-btn ${statusFilter === 'all' ? 'active' : ''}`}
+                onClick={() => setStatusFilter('all')}
+              >
+                All
+              </button>
+              <button 
+                className={`filter-btn ${statusFilter === 'Active' ? 'active' : ''}`}
+                onClick={() => setStatusFilter('Active')}
+              >
+                Active
+              </button>
+              <button 
+                className={`filter-btn ${statusFilter === 'Upcoming' ? 'active' : ''}`}
+                onClick={() => setStatusFilter('Upcoming')}
+              >
+                Upcoming
+              </button>
+              <button 
+                className={`filter-btn ${statusFilter === 'Previous' ? 'active' : ''}`}
+                onClick={() => setStatusFilter('Previous')}
+              >
+                Previous
+              </button>
+            </div>
             <div className="cards-grid">
-              {challenges.length === 0 && (
+              {filteredChallenges.length === 0 && (
                 <p className="empty-state">
-                  You have no challenges yet. Create or join one to get started.
+                  {statusFilter === 'all' 
+                    ? 'You have no challenges yet. Create or join one to get started.'
+                    : `No ${statusFilter.toLowerCase()} challenges found.`
+                  }
                 </p>
               )}
-              {challenges.map((c) => ( //map over challenges to show ChallengeCard for each challenge
+              {filteredChallenges.map((c) => (
                 <ChallengeCard
                   key={c._id}
                   challenge={c}
