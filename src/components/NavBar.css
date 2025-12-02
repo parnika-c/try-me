@@ -76,9 +76,9 @@
 }
 
 .text-group { 
-    display:flex; 
+    display: flex; 
     flex-direction: column; 
-    line-height: 1.1; 
+    line-height: 1.1;
 }
 
 .app-name { 

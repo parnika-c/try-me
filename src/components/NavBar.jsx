@@ -29,7 +29,7 @@ export const NavBar = ({ onLogout }) => {
                         <Trophy/>
                     </span>
                     <div className="text-group">
-                        <h1 className="app-name">Try Me</h1>
+                        <h1 className="app-name">TryMe!</h1>
                         <p className="subtitle">Challenge yourself, compete with friends</p>
                     </div>
                 </div>
