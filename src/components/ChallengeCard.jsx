@@ -31,14 +31,12 @@ const Stat = ({ Icon, colorClass = '', children }) => (
  * @property {string} [joinCode]
  */
 
-export function ChallengeCard({ challenge, onClick, userStats, currentUserId  }) {
+export function ChallengeCard({ challenge, onClick, userStats  }) {
   const { name, description, currentDay = 0, participants: list = [], startDate, joinCode  } = challenge
 
   // derives values
   const participants = list
   const participantCount = participants.length
-  const streak = userStats?.currentStreak ?? 0;
-  const points = userStats?.totalPoints ?? 0;
   
 
   const visibleParticipants = participants.slice(0, 5)
@@ -55,7 +53,9 @@ export function ChallengeCard({ challenge, onClick, userStats, currentUserId  })
   const daysRemaining = Math.max(0, DAYS - currentDay)
 
   // show their streak + points
-  const currentUserParticipant = participants.find((p) => p.userId === challenge.currentUserId)
+  
+  const streak = userStats?.currentStreak ?? 0;
+  const points = userStats?.totalPoints ?? 0;
   
 
 
@@ -99,11 +99,11 @@ export function ChallengeCard({ challenge, onClick, userStats, currentUserId  })
             
             <div className="row gap-sm center mt">
               <Stat Icon={Flame} colorClass="icon-orange">
-                {(userStats?.streak ?? streak ?? 0) + " streak"}
+                {streak + " streak"}
               </Stat>
 
               <Stat Icon={Trophy} colorClass="icon-yellow">
-                {(userStats?.points ?? points ?? 0) + " pts"}
+                {points + " pts"}
               </Stat>
             </div>
 
@@ -112,7 +112,7 @@ export function ChallengeCard({ challenge, onClick, userStats, currentUserId  })
     
 
 
-        {/* Number of particpants and current streak */}
+        {/* Number of particpants*/}
         <div className="row gap-sm center muted">
           <Users className="icon" />
           <span className="small">{participantCount} participants</span>

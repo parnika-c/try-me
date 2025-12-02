@@ -189,8 +189,16 @@ function dayFromDate(date, startDate) {
 }
 
 function computeStreak(checkIns, currentDay) {
+  //if currentDay does not have checkin, use currentDay - 1
+  let startDay = currentDay;
+  const todayCheckIn = checkIns.find(c => c.day === currentDay); // check if current day is checked in
+  if (!todayCheckIn?.completed) {
+    startDay = currentDay - 1; // start streak calc from previous day
+  }
+  if (startDay < 1) return 0;
+ // compute current streak up to currentDay 
   let streak = 0;
-  for (let day = currentDay; day >= 1; day--) {
+  for (let day = startDay; day >= 1; day--) {
     const entry = checkIns.find(c => c.day === day);
     if (!entry?.completed) break;
     streak++;
