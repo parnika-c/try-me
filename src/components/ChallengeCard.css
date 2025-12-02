@@ -18,7 +18,7 @@
 .card-description { color: #6b7280; margin: 0; font-size: 0.9rem; line-height: 1.5; }
 
 /* STATUS BADGE*/
-.badge { display:inline-flex; align-items:center; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+.badge { display:inline-flex; align-items:center; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
 .badge-active {
   background: #22c55e;
   color: white;
