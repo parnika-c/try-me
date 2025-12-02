@@ -39,6 +39,7 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
       console.error(`Error fetching user stats for challenge ${challengeId}:`, err);
       return null;
     }
+  };
   
 
   // Calculate status based on dates
@@ -126,7 +127,7 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
       if (exists) {
         return prev
           .map(c => (c._id === joinedChallenge._id ? joinedChallenge : c))
-          .sort((a, b) => new Date(b.startDate) - new Date(a.startDate);
+          .sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
       }
       return [joinedChallenge, ...prev].sort((a, b) => 
       new Date(b.startDate) - new Date(a.startDate)

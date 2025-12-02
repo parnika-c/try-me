@@ -32,6 +32,8 @@
 
 .empty-state {
   white-space: nowrap;
+}
+
 .filter-buttons {
   display: flex;
   gap: 12px;
