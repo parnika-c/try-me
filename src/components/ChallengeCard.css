@@ -1,4 +1,5 @@
 /* CARD CONTAINER */
+
 .challenge-card {
   cursor: pointer;
   background: #fff;
@@ -18,24 +19,33 @@
 .card-description { color: #6b7280; margin: 0; font-size: 0.9rem; line-height: 1.5; }
 
 /* STATUS BADGE*/
-.badge { display:inline-flex; align-items:center; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+.badge { display:inline-flex; align-items:center; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
 .badge-active {
   background: #22c55e;
   color: white;
+  border-radius: 12px;
 }
 
 .badge-upcoming {
   background: #fecc40;
   color: #111827;
+  border-radius: 12px;
 }
 
 .badge-previous {
   background: #e5e7eb;
   color: #111827;
+  border-radius: 12px;
 }
 
 /* SPACING */
-.card-content { display: flex; flex-direction: column; gap: 12px; }
+.card-content { 
+  display: flex; 
+  flex-direction: column;
+   gap: 12px; 
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
 
 /* PROGRESS SECTION */
 .progress-block { display: flex; flex-direction: column; gap: 8px; }
@@ -53,13 +63,21 @@
 .row.gap { gap: 16px; }
 .row.gap-sm { gap: 4px; }
 .row.center { align-items: center; }
-.small { font-size: 0.875rem; }
+.small { display: flex; font-size: 0.875rem; }
 .muted { color: #6b7280; }
+.mt { margin-top: 16px; }
 
 /* ICONS */
 .icon { width: 16px; height: 16px; color: #6b7280; flex-shrink: 0; }
-.icon-orange { color: #f97316; }
-.icon-yellow { color: #eab308; }
+.icon-orange { 
+  color: #f97316; 
+ 
+
+}
+.icon-yellow { 
+  color: #eab308; 
+  margin-left: 15px;
+}
 .icon-green { color: #16a34a; }
 
 /* AVATARSS */
@@ -76,8 +94,11 @@
   border: 1px solid transparent;   
   background: transparent;
   padding: 4px 8px;
-  border-radius: 999px;            
+  border-radius: 12px;            
   cursor: pointer;
+
+
+
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -95,4 +116,12 @@
 .join-code-value {
   font-weight: 400;        
   letter-spacing: 0.01em;  
+  display: flex;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.row-gap-small {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }

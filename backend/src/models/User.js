@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
     resetPasswordExpires: { type: Date },
     challengesJoined: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Challenge" }
-    ]
+    ],
   },
   { timestamps: true }
 );

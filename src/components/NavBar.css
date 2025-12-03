@@ -7,11 +7,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background-color: #fff;
+  gap: 16px;
+  flex-wrap: nowrap;
+  padding: 1.3rem 2rem;
+  background: #f8fafc;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  font-family: 'Inter', sans-serif;
 }
+
 .logout-btn {
   display: inline-flex;
   align-items: center;
@@ -21,7 +23,7 @@
   border: 0;
   white-space: nowrap;
   padding: 12px 18px;
-  border-radius: 999px;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -76,7 +78,7 @@
 }
 
 .app-name { 
-    font-size: 1.4rem; 
+    font-size: 1.5rem; 
     font-weight: 700; 
     color: #222; 
     margin: 0; 
@@ -86,14 +88,16 @@
     font-size: 0.85rem; 
     color:#777; 
     margin:0; 
-    padding-top: 0.3rem;
+    padding-top: 0.4rem;
 }
 
 .nav-right {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
+
 .profile-pic:hover {
   transform: scale(1.05);
   cursor: pointer;
@@ -103,8 +107,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.4rem 0.95rem;
-  border-radius: 999px;
+  padding: 0.2rem 0.95rem;
+  border-radius: 12px;
   background: linear-gradient(90deg, #f3e5f5, #e3f2fd);
   color: #4a4a4a;
   font-weight: 500;
@@ -121,13 +125,14 @@
 }
 
 .bottom-nav {
-  position: fixed;
+  position: absolute;
   left: 50%;
   top: 7rem;
   transform: translateX(-50%);
   z-index: 1000;
   display: flex;
   justify-content: center;
+  gap: 1.2rem;
 }
 
 .bottom-nav-inner {
@@ -135,7 +140,7 @@
   justify-content: center;
   gap: 0.6rem;
   padding: 0.5rem 0.6rem;
-  border-radius: 999px;
+  border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -144,8 +149,9 @@
   justify-content: center;
   gap: 0.4rem;
   padding: 0.45rem 1rem;
-  border-radius: 999px;
+  border-radius: 12px;
   border: none;
+  position: relative;
   background: white;
   font-weight: 600;
   font-size: 0.95rem;
@@ -154,9 +160,11 @@
   transition: background 0.2s, transform 0.15s;
 }
 
+
 .nav-tab.active {
   background: #edf0ff;
   transform: translateY(-1px);
+  border: 0.07rem solid black;
 }
 
 .nav-tab:hover {

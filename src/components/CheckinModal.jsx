@@ -8,6 +8,7 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
 
   const today = Math.min(currentDay, 7);
   const alreadyCheckedIn = checkIns.find((c) => c.day === today)?.completed;
+  const challengeEnded = challenge.status === "Previous";
 
   const closeModal = () => {
     setOpen(false);
@@ -31,6 +32,7 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
         points = value / challenge.dailyGoal * 25;
         points = Math.min(Math.max(Math.round(points), 0), 25); // round to int between 0-25, proportional to goal
       }
+  
 
       const res = await fetch(
         `http://localhost:4000/api/challenges/${challenge._id}/check-ins`,
@@ -38,7 +40,7 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
           method: "POST",
           headers: {"Content-Type": "application/json"},
           credentials: "include",
-          body: JSON.stringify({day: today, value: challenge.type === "value" ? value : "", pointsEarned: points,}),
+          body: JSON.stringify({day: today, value: challenge.type === "value" ? value : "", pointsEarned: points}),
         }
       );
 
@@ -47,6 +49,9 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
 
       await onComplete(data);
       closeModal();
+
+      // Dispatch event to update navbar
+      window.dispatchEvent(new Event('userDataChanged'));
     } catch (err) {
       console.error("Error checking into challenge:",err.message);
       alert("Failed to check into challenge. Try again.");
@@ -57,7 +62,7 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
 
   return (
     <>
-      <button className="checkin-btn" onClick={() => setOpen(true)} disabled={alreadyCheckedIn}>
+      <button className="checkin-btn" onClick={() => setOpen(true)} disabled={alreadyCheckedIn || challengeEnded}>
         {alreadyCheckedIn ? "Checked In" : 
           <>
             <span className="checkin-btn__icon">✓</span>

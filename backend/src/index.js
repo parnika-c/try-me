@@ -9,6 +9,7 @@ import challengeRoutes from "./routes/challenges.js";
 import mfaRoutes from "./routes/mfa.js";
 import checkinRoutes from "./routes/checkins.js";
 import testRoutes from "./routes/test.js"; // For test-only routes
+import userRoutes from "./routes/users.js";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/challenges", challengeRoutes);
 app.use("/api/mfa", mfaRoutes);
 app.use("/api/challenges", checkinRoutes);
+app.use("/api/users", userRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ ok: true });
