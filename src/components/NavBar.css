@@ -10,8 +10,7 @@
   gap: 16px;
   flex-wrap: nowrap;
   padding: 1.3rem 2rem;
-  background: radial-gradient(1000px 420px at -10% -10%, rgba(96, 154, 220, 0.28), transparent 60%),
-              linear-gradient(135deg, #ffffff, #eef2ff);
+  background: #f8fafc;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
@@ -165,6 +164,7 @@
 .nav-tab.active {
   background: #edf0ff;
   transform: translateY(-1px);
+  border: 0.07rem solid black;
 }
 
 .nav-tab:hover {
