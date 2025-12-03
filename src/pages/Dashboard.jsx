@@ -169,7 +169,7 @@ function Dashboard({ onShowMfa, onLogout, userData }) {
             <div className="dashboard-header">
               <div className="header-left">
                 <h1 className="dashboard-title">My Challenges</h1>
-                <p className="dashboard-subtitle">Track your active and upcoming challenges</p>
+                <p className="dashboard-subtitle">Track your active and upcoming challenges.</p>
               </div>
               <div className="header-right">
                 <CreateChallenge onCreateChallenge={handleNewChallenge} />
