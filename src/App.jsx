@@ -91,10 +91,6 @@ function App() {
     try { localStorage.removeItem('currentUser'); } catch {}
   };
 
-  const toggleView = () => { // TODO remove??
-    setCurrentView(currentView === 'login' ? 'createAccount' : 'login');
-  };
-
   // Show loading while checking auth on page reload
   if (isCheckingAuth) {
     return <p>Loading...</p>;
