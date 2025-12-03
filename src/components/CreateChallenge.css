@@ -9,6 +9,7 @@
   border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
+  margin-left: 16px;
   transition: all 0.2s ease;
 }
 

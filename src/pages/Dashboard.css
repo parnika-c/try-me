@@ -2,8 +2,6 @@
   justify-content: center;
   align-items: center;
   max-width: 1440px;
-  background: radial-gradient(1000px 420px at -10% -10%, rgba(90, 115, 144, 0.28), transparent 60%),
-              linear-gradient(135deg, #f8fafc, #b1c2f9);
   text-align: left; 
   width: 100%;
   margin: 0 auto;

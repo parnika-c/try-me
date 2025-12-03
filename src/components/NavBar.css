@@ -7,19 +7,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
   flex-wrap: nowrap;
   padding: 1.3rem 2rem;
-  background: radial-gradient(1000px 420px at -10% -10%, rgba(90, 115, 144, 0.28), transparent 60%),
-              linear-gradient(135deg, #90a7fc, #eef2ff);
+  background: radial-gradient(1000px 420px at -10% -10%, rgba(96, 154, 220, 0.28), transparent 60%),
+              linear-gradient(135deg, #ffffff, #eef2ff);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    flex-wrap: wrap; /* allows wrapping if needed */
-  }
-}
+
 .logout-btn {
   display: inline-flex;
   align-items: center;
@@ -101,6 +96,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .profile-pic:hover {
@@ -130,7 +126,7 @@
 }
 
 .bottom-nav {
-  position: fixed;
+  position: absolute;
   left: 50%;
   top: 7rem;
   transform: translateX(-50%);
@@ -156,6 +152,7 @@
   padding: 0.45rem 1rem;
   border-radius: 12px;
   border: none;
+  position: relative;
   background: white;
   font-weight: 600;
   font-size: 0.95rem;
@@ -163,6 +160,7 @@
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
 }
+
 
 .nav-tab.active {
   background: #edf0ff;

@@ -6,7 +6,8 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  
+  background: radial-gradient(1000px 420px at -10% -10%, rgba(72, 117, 167, 0.28), transparent 60%),
+              linear-gradient(135deg, #bad2ea, #6ca7e2);
   color: #0f172a;
 }
 
@@ -48,4 +49,5 @@ body {
   margin-top: 16px;
   margin-left: auto;
   margin-right: auto;
+  
 }
