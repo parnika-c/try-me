@@ -62,6 +62,7 @@ export const NavBar = ({ onLogout }) => {
                 setRank(typeof userRank === 'number' ? `#${userRank}` : '#--');
                 setPoints(`${currentUser.totalPoints} pts`);
                 setAvatar(currentUser.avatar || defaultAvatar);
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
             } catch (error) {
                 console.error('Failed to load user data:', error);
             } finally {
