@@ -7,8 +7,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
+  flex-wrap: nowrap;
   padding: 1.3rem 2rem;
-  background-color: #fff;
+  background: #f8fafc;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
@@ -21,7 +23,7 @@
   border: 0;
   white-space: nowrap;
   padding: 12px 18px;
-  border-radius: 999px;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -93,6 +95,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .profile-pic:hover {
@@ -122,7 +125,7 @@
 }
 
 .bottom-nav {
-  position: fixed;
+  position: absolute;
   left: 50%;
   top: 7rem;
   transform: translateX(-50%);
@@ -148,6 +151,7 @@
   padding: 0.45rem 1rem;
   border-radius: 12px;
   border: none;
+  position: relative;
   background: white;
   font-weight: 600;
   font-size: 0.95rem;
@@ -156,9 +160,11 @@
   transition: background 0.2s, transform 0.15s;
 }
 
+
 .nav-tab.active {
   background: #edf0ff;
   transform: translateY(-1px);
+  border: 0.07rem solid black;
 }
 
 .nav-tab:hover {

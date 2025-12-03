@@ -15,7 +15,6 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
   const progressPercentage = Math.min(100, Math.max(0, (currentDay / DAYS) * 100));
   const daysRemaining = Math.max(0, DAYS - currentDay)
 
-
   // Small local Stat helper used also in ChallengeCard
   const Stat = ({ Icon, colorClass = '', children }) => (
     <div className="row gap-sm center">
@@ -76,6 +75,17 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
     }
   }, [challenge._id]);
 
+  const getDayState = (day, checkIn, currentDay, challengeStatus) => ({
+    // Past day that as completed
+    isCompleted: checkIn?.completed,
+    // Past day that was not completed
+    isMissed: !checkIn?.completed && (day < currentDay || (challengeStatus === "Previous" && day <= 7)),
+    // Future day
+    isFuture: day > currentDay && challengeStatus !== "Previous",
+    // Current day
+    isCurrent: day === currentDay && challengeStatus === "Active"
+  });
+
   // Load on first render
   useEffect(() => {
     fetchCheckIns();
@@ -128,6 +138,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
             currentDay={currentDay}
             checkIns={checkIns}
             onComplete={fetchCheckIns}
+            disabled={challenge.status === "Previous"}
           />
 
           {/*show progress bar */}
@@ -178,24 +189,18 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
           </div>
             <div className="checkin-grid">
             {[1, 2, 3, 4, 5, 6, 7].map((day) => {
-            const checkIn = checkIns.find(c => c.day === day);
-            const isCompleted = checkIn?.completed;
-            // Past day that was not completed
-            const isMissed = day < currentDay && !isCompleted;
-            // Future day
-            const isFuture = day > currentDay;
-            // Current day
-            const isCurrent = day === currentDay;
+              const checkIn = checkIns.find(c => c.day === day);
+              const { isCompleted, isMissed, isFuture, isCurrent } = getDayState(day, checkIn, currentDay, challenge.status);
       
-            return (
-              <div key={day} className={`checkin-box ${isCompleted ? 'success' : isMissed ? 'missed' : 'pending'} ${isCurrent ? 'current' : ''}`}>
-                <span>Day {day}</span>
-                {isCompleted && <div className="checkin-icon success">✓</div>}
-                {isMissed && <div className="checkin-icon missed">✕</div>}
-                {isFuture && <div className="checkin-icon pending"></div>}
-              </div>
-            );
-          })}
+              return (
+                <div key={day} className={`checkin-box ${isCompleted ? 'success' : ''} ${isMissed ? 'missed' : ''} ${isFuture ? 'pending' : ''} ${isCurrent ? 'current' : ''}`}>
+                  <span>Day {day}</span>
+                  {isCompleted && <div className="checkin-icon success">✓</div>}
+                  {isMissed && <div className="checkin-icon missed">✕</div>}
+                  {isFuture && <div className="checkin-icon pending"></div>}
+                </div>
+              );
+            })}
         </div>
       </div>
 
