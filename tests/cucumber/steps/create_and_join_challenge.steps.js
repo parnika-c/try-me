@@ -7,7 +7,7 @@ setDefaultTimeout(20_000); // 20 seconds for all steps
 
 const timestamp_for_unique_name = ` ${Date.now()}`;
 
-Given("I am an authenticated user on the Dashboard page with email {string} and password {string}", async function (email, password) {
+When("I authenticate as a user with email {string} and password {string}", async function (email, password) {
   await this.goto("/");
 
   await this.page.fill('.login-input[type="email"]', email);
@@ -28,8 +28,9 @@ Given("I am an authenticated user on the Dashboard page with email {string} and 
 
   await this.page.fill("input[placeholder='000000']", code);
   await this.page.click("button:has-text('Verify Code')");
+});
 
-  // Wait for dashboard page
+When("I am on the Dashboard page", async function () {
   await expect(this.page.locator("h1.dashboard-title")).toBeVisible();
 });
 
@@ -62,5 +63,35 @@ When("I submit the challenge form", async function () {
 });
 
 Then("I should see a challenge card with the name {string}", async function (name) {
-  await expect(this.page.locator(`.challenge-card:has-text("${name + timestamp_for_unique_name}")`)).toBeVisible();
+  this.card = this.page.locator(`.challenge-card:has-text("${name + timestamp_for_unique_name}")`); // Store card for later
+  await expect(this.card).toBeVisible();
+});
+
+Then("I store the join code from the {string} challenge card", async function (name) {
+  this.joinCode = await this.card.locator(".join-code-value").innerText(); // Store join code for later
+});
+
+Then("I sign out of my account", async function () {
+  await this.page.click(".profile-pic"); // Trigger the dropdown menu by clicking profile picture
+
+  // Wait for menu to appear
+  const logoutButton = this.page.locator(".menu-dropdown button.logout-btn");
+  await expect(logoutButton).toBeVisible({ timeout: 5000 });
+  await logoutButton.click();
+
+  // Verify logged out by checking for Sign In button
+  await expect(this.page.locator("button:has-text('Sign In')")).toBeVisible();
+});
+
+When("I open the Join Challenge modal", async function () {
+  await this.page.click(".join-btn");
+  await expect(this.page.locator(".join-modal")).toBeVisible(); // TODO check that this works
+});
+
+When("I fill in the stored join code", async function () {
+  await this.page.fill(".join-input", this.joinCode);
+});
+
+When("I submit the join code", async function () {
+  await this.page.click(".join-primary");
 });
