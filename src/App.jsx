@@ -28,6 +28,8 @@ function App() {
       try {
         const userData = await verifyAuth();
         setUserData(userData);
+        // Persist user for leaderboard matching
+        try { localStorage.setItem('currentUser', JSON.stringify(userData)); } catch {}
         
         // If user doesn't have MFA enabled, show MFA setup
         if (!userData.mfaEnabled) {
@@ -40,6 +42,7 @@ function App() {
         // Token is invalid, user will see login page
         setIsLoggedIn(false);
         setUserData(null);
+        try { localStorage.removeItem('currentUser'); } catch {}
       } finally {
         setIsCheckingAuth(false);
       }
@@ -51,6 +54,8 @@ function App() {
   // Handler for successful login - check if MFA setup is needed
   const handleLoginSuccess = (data) => {
     setUserData(data);
+    // Persist user for leaderboard matching
+    try { localStorage.setItem('currentUser', JSON.stringify(data)); } catch {}
     
     // If user doesn't have MFA enabled, show MFA setup screen
     if (!data.mfaEnabled) {
@@ -73,6 +78,8 @@ function App() {
     setIsLoggedIn(true);
     // Update userData to reflect MFA is now enabled
     setUserData(prev => ({ ...prev, mfaEnabled: true }));
+    // Update persisted user
+    try { localStorage.setItem('currentUser', JSON.stringify({ ...userData, mfaEnabled: true })); } catch {}
   };
 
   const handleLogout = () => {
@@ -81,6 +88,7 @@ function App() {
     setCurrentView('login');
     setShowMfaSetup(false);
     localStorage.removeItem('authToken');
+    try { localStorage.removeItem('currentUser'); } catch {}
   };
 
   const toggleView = () => { // TODO remove??

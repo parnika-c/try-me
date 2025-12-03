@@ -44,6 +44,16 @@ export const NavBar = ({ onLogout }) => {
             }
         };
         loadUserData();
+
+        // Listen for user data changes
+        const handleUserDataChange = () => {
+            loadUserData();
+        };
+        window.addEventListener('userDataChanged', handleUserDataChange);
+
+        return () => {
+            window.removeEventListener('userDataChanged', handleUserDataChange);
+        };
     }, []);
 
     return (

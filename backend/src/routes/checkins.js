@@ -1,6 +1,7 @@
 import express from "express";
 import Challenge from "../models/Challenge.js";
 import Checkin from "../models/Checkin.js";
+import User from "../models/User.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -125,6 +126,14 @@ router.post("/:challengeId/check-ins", protect, async (req, res) => {
       },
       { upsert: true, new: true }
     );
+
+    // Update user's totalPoints by summing all pointsEarned from their checkins
+    const totalPointsResult = await Checkin.aggregate([
+      { $match: { userId: req.user._id } },
+      { $group: { _id: null, total: { $sum: "$pointsEarned" } } }
+    ]);
+    const totalPoints = totalPointsResult[0]?.total || 0;
+    await User.findByIdAndUpdate(req.user._id, { totalPoints });
 
     const summary = await buildParticipantSummary(challenge, req.user._id);
     res.json(summary);

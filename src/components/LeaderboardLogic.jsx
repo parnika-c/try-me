@@ -21,7 +21,6 @@ export const getRankMeta = (rank) => {
 };
 
 export const isTop10 = (rank) => rank <= 10;
-export const isCurrentUser = (name) => name === 'You';
 
 export const fetchUsers = async () => {
   const url = 'http://localhost:4000/api/users';
@@ -57,6 +56,23 @@ export const fetchUsers = async () => {
       const avatar = u.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
       return { id, name, avatar, totalPoints: u.totalPoints };
     });
+};
+
+export const isCurrentUser = (displayName) => {
+  try {
+    // Expect the app to cache the current user object in localStorage under 'currentUser'
+    // e.g., after successful login or getCurrentUser(): localStorage.setItem('currentUser', JSON.stringify(user))
+    const raw = localStorage.getItem('currentUser');
+    if (!raw) return false;
+    const u = JSON.parse(raw);
+    const first = (u?.firstName || '').trim();
+    const last = (u?.lastName || '').trim();
+    const full = [first, last].filter(Boolean).join(' ').trim();
+    if (!full) return false;
+    return (full.toLowerCase() === (displayName || '').toLowerCase());
+  } catch {
+    return false;
+  }
 };
 
 // UI primitives used by Leaderboard UI (exported for reuse)
