@@ -70,15 +70,18 @@ export function Leaderboard() {
                 const displayOrder = getTop3DisplayOrder(sortedUsers);
                 return displayOrder.filter(({ user }) => user).map(({ user, rank }) => {
                   const meta = getRankMeta(rank);
+                  const current = isCurrentUser(user.name);
+                  const displayName = current ? 'You' : user.name;
+                  const fallbackChar = current ? 'Y' : (user.name || 'U')[0];
                   return (
                     <Card key={user.id} className={`podium-card podium-${rank === 1 ? 'first' : rank === 2 ? 'second' : 'third'}`}>
                       <CardContent className="podium-content">
                         <div className="podium-icon">{renderIcon(meta.icon)}</div>
                         <Avatar className="podium-avatar">
-                          <AvatarImage src={user.avatar} alt={user.name} />
-                          <AvatarFallback>{user.name[0]}</AvatarFallback>
+                          <AvatarImage src={user.avatar} alt={displayName} />
+                          <AvatarFallback>{fallbackChar}</AvatarFallback>
                         </Avatar>
-                        <p className="podium-name">{user.name}</p>
+                        <p className="podium-name">{displayName}</p>
                         <p className="podium-points">{user.totalPoints}</p>
                         <p className="podium-points-label">points</p>
                         {meta.badge && (
@@ -104,6 +107,8 @@ export function Leaderboard() {
                       const rank = index+1;
                       const meta = getRankMeta(rank);
                       const current = isCurrentUser(user.name);
+                      const displayName = current ? 'You' : user.name;
+                      const fallbackChar = current ? 'Y' : (user.name || 'U')[0];
                       return (
                         <div key={user.id} className={`ranking-row ${current?'current-user':''}`}>
                           <div className="ranking-left">
@@ -111,11 +116,11 @@ export function Leaderboard() {
                               {rank<=3 ? renderIcon(meta.icon) : <span className="rank-text">#{rank}</span>}
                             </div>
                             <Avatar className="ranking-avatar">
-                              <AvatarImage src={user.avatar} alt={user.name} />
-                              <AvatarFallback>{user.name[0]}</AvatarFallback>
+                              <AvatarImage src={user.avatar} alt={displayName} />
+                              <AvatarFallback>{fallbackChar}</AvatarFallback>
                             </Avatar>
                             <div className="ranking-info">
-                              <p className="ranking-name">{user.name} {current && <span className="you-tag">You</span>}</p>
+                              <p className="ranking-name">{displayName} {current && <span className="you-tag"></span>}</p>
                               {isTop10(rank) && (
                                 <p className="ranking-top10"><TrendingUp />    Top 10 Player</p>
                               )}
