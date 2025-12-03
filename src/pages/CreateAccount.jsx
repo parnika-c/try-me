@@ -109,10 +109,10 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
         <div className="create-account-hero">
           <div className="create-account-hero-content">
             <h1 className="create-account-hero-title">
-              Welcome to TryMe!, a fun way to compete with your friends!
+              Welcome to TryMe!
             </h1>
             <p className="create-account-hero-text">
-              Create an account to creat challenges and compete with your friends!
+              Create an account to create challenges and compete with your friends!
             </p>
           </div>
         </div>
