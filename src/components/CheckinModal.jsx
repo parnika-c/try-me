@@ -8,6 +8,7 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
 
   const today = Math.min(currentDay, 7);
   const alreadyCheckedIn = checkIns.find((c) => c.day === today)?.completed;
+  const challengeEnded = challenge.status === "Previous";
 
   const closeModal = () => {
     setOpen(false);
@@ -58,7 +59,7 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
 
   return (
     <>
-      <button className="checkin-btn" onClick={() => setOpen(true)} disabled={alreadyCheckedIn}>
+      <button className="checkin-btn" onClick={() => setOpen(true)} disabled={alreadyCheckedIn || challengeEnded}>
         {alreadyCheckedIn ? "Checked In" : 
           <>
             <span className="checkin-btn__icon">✓</span>
