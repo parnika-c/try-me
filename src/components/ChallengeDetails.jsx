@@ -217,7 +217,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
                   {index < 3 ? (
                     <Trophy className={`leaderboard-trophy-icon ${index === 0 ? 'gold' : index === 1 ? 'silver' : 'bronze'}`} />
                   ) : (
-                    `#${index + 1}`
+                    <span className="leaderboard-rank">#{index + 1}</span>
                   )}
                 </div>
                 <div className="leaderboard-user">
