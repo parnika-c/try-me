@@ -6,7 +6,7 @@ const router = Router();
 // GET /api/users - get all users for leaderboard
 router.get("/", async (req, res) => {
   try {
-    const users = await User.find({}, 'firstName lastName totalPoints').lean();
+    const users = await User.find({}, 'firstName lastName totalPoints avatar').lean();
     res.json(users);
   } catch (err) {
     console.error(err);

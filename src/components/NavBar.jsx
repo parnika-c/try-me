@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Target, Compass, Trophy } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getCurrentUser } from "../services/api.js";
+import { getCurrentUser, updateUser } from "../services/api.js";
 import { fetchUsers } from "./LeaderboardLogic.jsx";
+import { SelectAvatar } from "./selectAvatar.jsx";
 import "./NavBar.css";
 
 export const NavBar = ({ onLogout }) => {
@@ -15,7 +16,7 @@ export const NavBar = ({ onLogout }) => {
             window.location.href = '/login';
         }
     };
-    const menus = ["Sign Out"];
+    const menus = ["Profile", "Sign Out"];
     const [isMenuOpen, setIsMenuOpen] = useState(false);
   
     const navigate = useNavigate();
@@ -23,9 +24,32 @@ export const NavBar = ({ onLogout }) => {
     const isDashboard = location.pathname === "/";
     const isLeaderboard = location.pathname === "/leaderboard";
 
+    const currentUserData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const defaultAvatar = currentUserData.id ? `https://api.dicebear.com/9.x/avataaars/svg?seed=${currentUserData.id}` : 'https://cdn-icons-png.flaticon.com/512/4140/4140047.png';
+    const [avatar, setAvatar] = useState(defaultAvatar);
+    const [avatarOpen, setAvatarOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
+
     const [rank, setRank] = useState('#--');
     const [points, setPoints] = useState('-- pts');
-    const [loading, setLoading] = useState(true);
+
+    const handleMenuClick = (menu) => {
+        if (menu === 'Profile') {
+            setAvatarOpen(true);
+        } else if (menu === 'Sign Out') {
+            handleLogout();
+        }
+        setIsMenuOpen(false);
+    };
+
+    const handleAvatarSelect = async (newAvatar) => {
+        try {
+            await updateUser(newAvatar);
+            setAvatar(newAvatar);
+        } catch (error) {
+            console.error('Failed to update avatar:', error);
+        }
+    };
 
     useEffect(() => {
         const loadUserData = async () => {
@@ -37,6 +61,7 @@ export const NavBar = ({ onLogout }) => {
                 const userRank = userIndex >= 0 ? userIndex + 1 : '--';
                 setRank(typeof userRank === 'number' ? `#${userRank}` : '#--');
                 setPoints(`${currentUser.totalPoints} pts`);
+                setAvatar(currentUser.avatar || defaultAvatar);
             } catch (error) {
                 console.error('Failed to load user data:', error);
             } finally {
@@ -72,16 +97,15 @@ export const NavBar = ({ onLogout }) => {
                     
                     <div className="profile">
                         <img className="profile-pic" 
-                            src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" 
+                            src={avatar} 
                             alt="Profile Picture"
                             onMouseEnter={() => setIsMenuOpen(!isMenuOpen)}
                             />
                         {isMenuOpen && <div className="menu-dropdown">
                         <ul>
                             {menus.map((menu) => ( 
-                                <li 
-                                    key={menu}>
-                                    <button className="logout-btn" onClick={handleLogout}>
+                                <li key={menu}>
+                                    <button className="logout-btn" onClick={() => handleMenuClick(menu)}>
                                     {menu}
                                     </button>
                                 </li>
@@ -93,7 +117,6 @@ export const NavBar = ({ onLogout }) => {
             </div>
         </nav>
         <div className="bottom-nav">
-            {}
             <button
             className={`nav-tab ${isDashboard ? "active" : ""}`}
             onClick={() => navigate("/")}
@@ -111,6 +134,12 @@ export const NavBar = ({ onLogout }) => {
                 <span>Leaderboard</span>
             </button>
         </div>
+        <SelectAvatar
+            open={avatarOpen}
+            onOpenChange={setAvatarOpen}
+            currentAvatar={avatar}
+            onAvatarSelect={handleAvatarSelect}
+        />
         </>
     );
 };

@@ -53,7 +53,7 @@ export const fetchUsers = async () => {
       const last = u.lastName || '';
       const name = `${first} ${last}`.trim() || u.name || 'Unknown';
       const seed = id || name || Math.random().toString(36).slice(2);
-      const avatar = u.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
+      const avatar = u.avatar || `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
       return { id, name, avatar, totalPoints: u.totalPoints };
     });
 };
