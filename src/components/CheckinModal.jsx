@@ -48,6 +48,9 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
 
       await onComplete(data);
       closeModal();
+
+      // Dispatch event to update navbar
+      window.dispatchEvent(new Event('userDataChanged'));
     } catch (err) {
       console.error("Error checking into challenge:",err.message);
       alert("Failed to check into challenge. Try again.");
