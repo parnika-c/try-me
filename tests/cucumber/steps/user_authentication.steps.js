@@ -7,7 +7,7 @@ setDefaultTimeout(20_000); // 20 seconds for all steps
 
 let user_email = ""; // Store for MFA retrieval
 
-Given("I am an authenticated user on the Login page", async function () {
+Given("I am on the Login page", async function () {
   await this.goto("/");
 });
 
@@ -61,4 +61,8 @@ When("I click the 'Sign Out' button", async function () {
 
 Then("I should be logged out and taken to the Login page", async function () {
    await expect(this.page.locator("button:has-text('Sign In')")).toBeVisible();
+});
+
+Then("I should see an error message {string}", async function (errorMsg) {
+  await expect(this.page.locator(`text=${errorMsg}`)).toBeVisible();
 });
