@@ -157,9 +157,8 @@
   font-size: 0.95rem;
   color: #333;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition: all 0.2s;
 }
-
 
 .nav-tab.active {
   background: #edf0ff;
@@ -169,6 +168,7 @@
 
 .nav-tab:hover {
   background: #f1f3ff;
+  scale: 1.05;
 }
 .menu-dropdown {
   position: absolute;

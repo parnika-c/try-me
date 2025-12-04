@@ -16,18 +16,17 @@
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
 /* make it responsive on smaller screens */
 @media (max-width: 900px) {
   .join-btn {
     margin-left: 0;
     align-items: flex-start;
   }
-
 }
 
-
 .join-btn:hover { 
-  background: #0f0f1f;
+  background: #111827;
   scale: 1.05;
 }
 
