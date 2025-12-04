@@ -102,7 +102,6 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
 }, [fetchCheckIns, fetchLeaderboard]);
 
   return (
-    
     <div className="challenge-details">
       <button className="back-btn" onClick={onBack}>
         <ArrowLeft className="icon" /> Back
@@ -142,7 +141,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
       </div>
 
       {loading ? (<p style={{ textAlign: "center" }}>Loading...</p>) : ( 
-        <>
+        <div className="details-content">
           <CheckinModal
             challenge={challenge}
             currentDay={currentDay}
@@ -151,117 +150,105 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
             disabled={challenge.status === "Previous"}
           />
 
-          {/*show progress bar */}
-          <div className="progress-card">
-            <div className="progress-block">
-              <div className="row space-between small muted">
-                <span>Challenge Progress</span>
-                <span>Day {currentDay}/{DAYS}</span>
-              </div>
-              <div className="progress">
-                <div className="progress-inner" style={{ width: `${progressPercentage}%` }} />
-              </div>
-              <span>{daysRemaining} day{daysRemaining === 1 ? '' : 's'} remaining</span>
-            </div>
-          </div>
-
-          
-          {/* TEMP TO VIEW VALUES */}
-
-          <div className="progress-card">
+          <div className="details-card">
             <div className="row space-betw">
-                <span>Your Progress</span>
-            </div>
-          <div className="progress-container">
-            
-            <div className="progress-item">
-              <Flame className="icon-flame" />
-              <div>
-                <span className="progress-number">{currentStreak}</span>
-                <div className="progress-label">Day Streak</div>
-              </div>
+              <span>Your Progress</span>
             </div>
 
-            <div className="progress-item">
-              <Trophy className="icon-trophy" />
-              <div>
-                <span className="progress-number">{totalPoints}</span>
-                <div className="progress-label">Points</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Weekly Check-ins */}
-        <div className="details-card">
-          <div className="row space-betw">
-                <span>Daily Check-ins</span>
-          </div>
-            <div className="checkin-grid">
-            {[1, 2, 3, 4, 5, 6, 7].map((day) => {
-              const checkIn = checkIns.find(c => c.day === day);
-              const { isCompleted, isMissed, isFuture, isCurrent } = getDayState(day, checkIn, currentDay, challenge.status);
-      
-              return (
-                <div key={day} className={`checkin-box ${isCompleted ? 'success' : ''} ${isMissed ? 'missed' : ''} ${isFuture ? 'pending' : ''} ${isCurrent ? 'current' : ''}`}>
-                  <span>Day {day}</span>
-                  {isCompleted && <div className="checkin-icon success">✓</div>}
-                  {isMissed && <div className="checkin-icon missed">✕</div>}
-                  {isFuture && <div className="checkin-icon pending"></div>}
+            <div className="progress-container">
+              <div className="progress-item">
+                <Flame className="icon-flame" />
+                <div>
+                  <span className="progress-number">{currentStreak}</span>
+                  <div className="progress-label">Day Streak</div>
                 </div>
-              );
-            })}
-        </div>
-      </div>
+              </div>
 
-      {/* Challenge Leaderboard */}
-      <div className="leaderboard-card">
-        <div className="row space-betw">
-                <span>Leaderboard</span>
-        </div>
-        <div className="leaderboard-container">
-          {leaderboard.map((participant, index) => {
-            // get avatar props
-             const { id, displayName, avatar } = getAvatarProps(participant.user);
-              const avatarSrc = avatar;
-              const fallbackChar = (participant.user.name || 'U')[0].toUpperCase();
-            return (
-          
-            <div key={participant.user._id} className="leaderboard-row">
-              <div className="leaderboard-left">
-                <div className={`leaderboard-trophy ${index >= 3 ? 'small-rank' : ''}`}>
-                    {index < 3 ? (
-                      renderRankIcon(['trophy', 'medal', 'award'][index])
-                    ) : (
-                      `#${index + 1}`
-                    )}
+              <div className="progress-item">
+                <Trophy className="icon-trophy" />
+                <div>
+                  <span className="progress-number">{totalPoints}</span>
+                  <div className="progress-label">Points</div>
+                </div>
+              </div>
+
+              {/* Progress bar */}
+              <div className="progress-block">
+                <div className="row space-between small muted">
+                  <span>Day {currentDay}/{DAYS}&nbsp;&nbsp; | &nbsp;&nbsp;{daysRemaining} day{daysRemaining === 1 ? '' : 's'} remaining</span>
+                </div>
+                <div className="progress">
+                  <div className="progress-inner" style={{ width: `${progressPercentage}%` }} />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Weekly Check-ins */}
+          <div className="details-card">
+            <div className="row space-betw">
+                  <span>Daily Check-ins</span>
+            </div>
+            <div className="checkin-grid">
+              {[1, 2, 3, 4, 5, 6, 7].map((day) => {
+                const checkIn = checkIns.find(c => c.day === day);
+                const { isCompleted, isMissed, isFuture, isCurrent } = getDayState(day, checkIn, currentDay, challenge.status);
+        
+                return (
+                  <div key={day} className={`checkin-box ${isCompleted ? 'success' : ''} ${isMissed ? 'missed' : ''} ${isFuture ? 'pending' : ''} ${isCurrent ? 'current' : ''}`}>
+                    <span>Day {day}</span>
+                    {isCompleted && <div className="checkin-icon success">✓</div>}
+                    {isMissed && <div className="checkin-icon missed">✕</div>}
+                    {isFuture && <div></div>}
                   </div>
+                );
+              })}
+            </div>
+          </div>
 
-                <div className="leaderboard-user">
-                  <Avatar className="ranking-avatar">
-                      <AvatarImage src={avatarSrc} alt={displayName} />
-                      <AvatarFallback>{fallbackChar}</AvatarFallback>
-                    </Avatar>
-                    <div className="leaderboard-info">
-                      <div className="leaderboard-name">
-                        {participant.user._id === currentUserId ? 'You' : participant.user.name}
+          {/* Challenge Leaderboard */}
+          <div className="leaderboard-card">
+            <div className="row space-betw">
+                    <span>Leaderboard</span>
+            </div>
+            <div className="leaderboard-container">
+              {leaderboard.map((participant, index) => {
+                // get avatar props
+                const { id, displayName, avatar } = getAvatarProps(participant.user);
+                  const avatarSrc = avatar;
+                  const fallbackChar = (participant.user.name || 'U')[0].toUpperCase();
+                return (
+              
+                <div key={participant.user._id} className="leaderboard-row">
+                  <div className="leaderboard-left">
+                    <div className={`leaderboard-trophy ${index >= 3 ? 'small-rank' : ''}`}>
+                        {index < 3 ? (
+                          renderRankIcon(['trophy', 'medal', 'award'][index])
+                        ) : (
+                          `#${index + 1}`
+                        )}
                       </div>
-                      <div className="leaderboard-stats">
-                        <span>
-                          <Flame className="leaderboard-stats-icon" />
-                            {participant.currentStreak} streak
-                        </span>
+
+                    <div className="leaderboard-user">
+                      <Avatar className="ranking-avatar">
+                          <AvatarImage src={avatarSrc} alt={displayName} />
+                          <AvatarFallback>{fallbackChar}</AvatarFallback>
+                        </Avatar>
+                        <div className="leaderboard-info">
+                          <div className="leaderboard-name">
+                            {participant.user._id === currentUserId ? 'You' : participant.user.name}
+                          </div>
                       </div>
                     </div>
+                    <div className="leaderboard-points">{participant.totalPoints} pts</div>
+                  </div>
+                  <div className="leaderboard-points">{participant.totalPoints} pts</div>
                 </div>
-              </div>
-              <div className="leaderboard-points">{participant.totalPoints} pts</div>
-            </div>
-          );
-          })}
-      </div>
+              );
+              })}
+          </div>
+        </div>
     </div>
-      </>
     )}
     </div>
   );

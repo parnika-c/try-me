@@ -67,15 +67,15 @@ export default function JoinChallenge({ onJoinChallenge }) {
             />
 
             <div className="join-actions">
-              <button className="join-primary" type="submit">
-                Enter
-              </button>
               <button
-                className="join-cancel"
+                className="btn-cancel"
                 type="button"
                 onClick={() => setOpen(false)}
               >
                 X      
+              </button>
+              <button className="btn-join" type="submit">
+                Enter
               </button>
             </div>
           </form>

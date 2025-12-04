@@ -1,4 +1,4 @@
-# 🏆 Try Me – Challenge Tracking Web App
+# 🏆 TryMe! – Challenge Tracking Web App
 
 A full-stack web application where users create accounts, join or create weekly challenges, and check in daily to stay active. Includes MFA, authentication, rankings, and a dynamic leaderboard.
 
@@ -10,6 +10,8 @@ Before running the project locally, you must have:
 * Node.js
   * Download: [https://nodejs.org/en/download](https://nodejs.org/en/download)
   * npm (comes with Node): used to manage dependencies
+  * Recommended: at least version 22
+    * Check your node version by running `node -v` command in terminal
 * A MongoDB Atlas cluster and connection string
 
 ## Environment Variables

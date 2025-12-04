@@ -80,10 +80,8 @@ export function ChallengeCard({ challenge, onClick, userStats  }) {
   const daysRemaining = Math.max(0, DAYS - currentDay)
 
   // show their streak + points
-  
   const streak = userStats?.currentStreak ?? 0;
   const points = userStats?.totalPoints ?? 0;
-  
 
   // get status and create meta text
   const status = (challenge?.status || "Upcoming");
@@ -97,8 +95,7 @@ export function ChallengeCard({ challenge, onClick, userStats  }) {
     <div className="challenge-card" role="button" onClick={onClick}>
       <div className="card-header">
         <div className="title-row">
-
-           {/* Badge for active vs upcoming */}
+          {/* Badge for active vs upcoming */}
           <h3 className="card-title">{name}</h3>
           <span className={`badge badge-${(status || "Upcoming").toLowerCase()}`} >
             {status}
@@ -122,7 +119,6 @@ export function ChallengeCard({ challenge, onClick, userStats  }) {
             </div>
 
             {/* Personal progress for  that challenge */}
-            
             <div className="row gap-sm center mt">
               <Stat Icon={Flame} colorClass="icon-orange">
                 {streak + " streak"}
@@ -135,43 +131,6 @@ export function ChallengeCard({ challenge, onClick, userStats  }) {
 
           </>
         )}
-
-        {/* participants text + avatars on same line */}
-        <div className="row participants-row muted">
-          <div className="row gap-sm center">
-            <Users className="icon" />
-            <span className="small">{participantCount} participants</span>
-          </div>
-
-          
-          <div className="avatar-stack">
-            {visibleParticipants.map((participant, index) => {
-              if (!participant) return null;
-              const participantId = participant.userId || participant._id || participant.id;
-
-              const matchedUser = users.find(u => u.id === participantId);
-
-              const source = matchedUser || participant;
-              const { avatar, fallbackChar, displayName } = getAvatarProps(source);
-              const avatarSrc = avatar;
-
-              return (
-                <Avatar
-                  key={participantId || index}
-                  className="card-avatar"
-                >
-                  <AvatarImage src={avatarSrc} alt={displayName} />
-                  <AvatarFallback>{fallbackChar}</AvatarFallback>
-                </Avatar>
-              );
-            })}
-
-            {participantCount > 5 && (
-              <div className="avatar more">+{participantCount - 5}</div>
-            )}
-          </div>
-        </div>
-
 
         {/* Calendar + join code row */}
         {(metaText || joinCode) && (
@@ -195,7 +154,42 @@ export function ChallengeCard({ challenge, onClick, userStats  }) {
           </div>
         )}
 
-       
+        {/* Participants Row */}
+        <div className="row space-between center">
+          {/* Number of particpants*/}
+          <div className="row gap-sm center muted">
+            <Users className="icon" />
+            <span className="small">{participantCount} participants</span>
+          </div>
+
+          {/* Show first 5 participants */}
+          <div className="avatar-stack">
+            {visibleParticipants.map((participant, index) => {
+              if (!participant) return null;
+              const participantId = participant.userId || participant._id || participant.id;
+
+              const matchedUser = users.find(u => u.id === participantId);
+
+              const source = matchedUser || participant;
+              const { avatar, fallbackChar, displayName } = getAvatarProps(source);
+              const avatarSrc = avatar;
+
+              return (
+                <Avatar
+                  key={participantId || index}
+                  className="card-avatar"
+                >
+                  <AvatarImage src={avatarSrc} alt={displayName} />
+                  <AvatarFallback>{fallbackChar}</AvatarFallback>
+                </Avatar>
+              );
+            })}
+            
+            {participantCount > 5 && (
+              <div className="avatar more">+{participantCount - 5}</div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )
