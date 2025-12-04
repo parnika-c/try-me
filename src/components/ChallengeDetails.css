@@ -5,17 +5,20 @@
   padding-top: 120px;
 }
 .podium-avatar {
-  width: 80px;
-  height: 80px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   overflow: hidden;
-  margin-bottom: 0.75rem;
   background: #f3f4f6;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   position: relative;
 }
+
+
+
 
 .progress-card {
   display: block;
@@ -404,6 +407,9 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  
+  
+  
 }
 
 .leaderboard-avatar {

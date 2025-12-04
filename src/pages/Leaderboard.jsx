@@ -123,6 +123,7 @@ export function Leaderboard() {
                               {rank<=3 ? renderIcon(meta.icon) : <span className="rank-text">#{rank}</span>}
                             </div>
                             <Avatar className="ranking-avatar">
+                              
                               <AvatarImage src={user.avatar} alt={displayName} />
                               <AvatarFallback>{fallbackChar}</AvatarFallback>
                             </Avatar>
