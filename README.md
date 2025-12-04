@@ -1,4 +1,4 @@
-# 🏆 Try Me – Challenge Tracking Web App
+# 🏆 TryMe! – Challenge Tracking Web App
 
 A full-stack web application where users create accounts, join or create weekly challenges, and check in daily to stay active. Includes MFA, authentication, rankings, and a dynamic leaderboard.
 

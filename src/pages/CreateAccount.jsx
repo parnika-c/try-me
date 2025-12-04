@@ -93,7 +93,7 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
       <div className="create-account-nav">
         <div className="create-account-logo-container">
           <div className="create-account-logo" />
-          <span className="create-account-logo-text">Try Me</span>
+          <span className="create-account-logo-text">TryMe!</span>
         </div>
         <div className="create-account-nav-buttons">
           <button className="create-account-btn-secondary" onClick={onShowLogin}>
