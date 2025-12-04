@@ -12,7 +12,7 @@ export const NavBar = ({ onLogout }) => {
         if (onLogout) {
             onLogout();
         } else {
-            window.location.href = '/login';
+            window.location.href = '/';
         }
     };
     const menus = ["Sign Out"];
