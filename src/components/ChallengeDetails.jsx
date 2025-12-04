@@ -141,46 +141,39 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
             disabled={challenge.status === "Previous"}
           />
 
-          {/*show progress bar */}
-          <div className="progress-card">
-            <div className="progress-block">
-              <div className="row space-between small muted">
-                <span>Challenge Progress</span>
-                <span>Day {currentDay}/{DAYS}</span>
-              </div>
-              <div className="progress">
-                <div className="progress-inner" style={{ width: `${progressPercentage}%` }} />
-              </div>
-              <span>{daysRemaining} day{daysRemaining === 1 ? '' : 's'} remaining</span>
-            </div>
-          </div>
-
-          
-          {/* TEMP TO VIEW VALUES */}
-
           <div className="progress-card">
             <div className="row space-betw">
                 <span>Your Progress</span>
             </div>
-          <div className="progress-container">
-            
-            <div className="progress-item">
-              <Flame className="icon-flame" />
-              <div>
-                <span className="progress-number">{currentStreak}</span>
-                <div className="progress-label">Day Streak</div>
-              </div>
-            </div>
 
-            <div className="progress-item">
-              <Trophy className="icon-trophy" />
-              <div>
-                <span className="progress-number">{totalPoints}</span>
-                <div className="progress-label">Points</div>
+            <div className="progress-container">
+              <div className="progress-item">
+                <Flame className="icon-flame" />
+                <div>
+                  <span className="progress-number">{currentStreak}</span>
+                  <div className="progress-label">Day Streak</div>
+                </div>
+              </div>
+
+              <div className="progress-item">
+                <Trophy className="icon-trophy" />
+                <div>
+                  <span className="progress-number">{totalPoints}</span>
+                  <div className="progress-label">Points</div>
+                </div>
+              </div>
+
+              {/* Progress bar */}
+              <div className="progress-block">
+                <div className="row space-between small muted">
+                  <span>Day {currentDay}/{DAYS}&nbsp;&nbsp; | &nbsp;&nbsp;{daysRemaining} day{daysRemaining === 1 ? '' : 's'} remaining</span>
+                </div>
+                <div className="progress">
+                  <div className="progress-inner" style={{ width: `${progressPercentage}%` }} />
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
         {/* Weekly Check-ins */}
         <div className="details-card">
@@ -207,7 +200,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
       {/* Challenge Leaderboard */}
       <div className="leaderboard-card">
         <div className="row space-betw">
-                <span>Leaderboard</span>
+          <span>Leaderboard</span>
         </div>
         <div className="leaderboard-container">
           {leaderboard.map((participant, index) => (
