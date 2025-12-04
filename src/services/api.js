@@ -267,3 +267,33 @@ export const getCurrentUser = async () => {
   }
 };
 
+/**
+ * Update current user avatar
+ * @param {string} avatar - New avatar URL
+ * @returns {Promise} - Returns success message
+ */
+export const updateUser = async (avatar) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    const response = await fetch(`${API_URL}/auth/me`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+      },
+      credentials: 'include',
+      body: JSON.stringify({ avatar }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to update avatar');
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+

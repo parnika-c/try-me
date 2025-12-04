@@ -35,7 +35,7 @@ export function Leaderboard() {
 
   useEffect(() => {
     let mounted = true;
-    (async () => {
+    const fetchData = async () => {
       try {
         const data = await fetchUsers();
         if (mounted) setUsers(data);
@@ -44,8 +44,15 @@ export function Leaderboard() {
       } finally {
         if (mounted) setLoading(false);
       }
-    })();
-    return () => { mounted = false; };
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 10000); // Refetch every 10 seconds
+
+    return () => {
+      mounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
   const sortedUsers = getSortedUsers(users);
