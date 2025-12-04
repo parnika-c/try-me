@@ -2,7 +2,6 @@ config:
   target: "http://localhost:4000"
   http:
     headers:
-      # Bypass authentication for testing
       x-test-mode: "true"
   phases:
     - duration: 10
@@ -38,7 +37,6 @@ scenarios:
             - statusCode: 200
       - think: 3
       
-      # Task-based check-in (no value field needed)
       - post:
           url: "/api/challenges/6931d5ff08cb87b6c057183f/check-ins"
           json:
