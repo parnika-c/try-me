@@ -6,23 +6,29 @@
   color: #fff;
   border: 0;
   padding: 12px 18px;
-  border-radius: 999px;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   margin-top: -15px;
   margin-bottom: 20px;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .checkin-btn:hover {
   background: #111827;
-  transform: translateY(-1px);
+  scale: 1.05;
+}
+
+.checkin-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  scale: 1;
+  transform: none;
 }
 
 .checkin-btn__icon {
   font-size: 18px;
   line-height: 1;
-
 }
 
 .checkin-overlay {
@@ -39,7 +45,7 @@
   position: relative;
   width: min(92vw, 420px);
   background: #fff;
-  border-radius: 18px;
+  border-radius: 12px;
   padding: 28px 26px 24px;
   box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
   display: flex;
@@ -95,28 +101,35 @@
   gap: 12px;
 }
 
-.checkin-cancel,
-.checkin-primary {
-  border: 0;
-  border-radius: 999px;
-  padding: 12px 18px;
-  font-weight: 600;
+.btn-cancel {
+  background: #f8fafc;
+  color: #161c25;
+  border: 1px solid #d1d5db;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.checkin-cancel {
-  background: #e5e7eb;
-  color: #111827;
+.btn-cancel:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  scale: 1.05;
 }
 
-.checkin-primary {
-  background: #000;
-  color: #fff;
+.btn-confirm {
+  background: #1e293b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.checkin-btn:disabled,
-.checkin-primary:disabled,
-.checkin-cancel:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.btn-confirm:hover {
+  background: #111827;
+  scale: 1.05;
 }

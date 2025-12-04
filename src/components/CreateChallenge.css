@@ -14,7 +14,7 @@
 }
 
 .create-btn:hover { 
-  background: #0f0f1f;
+  background: #111827;
   scale: 1.05;
 }
 
@@ -204,6 +204,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .btn-cancel:hover {
   background: #f1f5f9;
   border-color: #cbd5e1;
+  scale: 1.05;
 }
 
 .btn-create {
@@ -218,5 +219,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .btn-create:hover {
-  background: #161c25;
+  background: #111827;
+  scale: 1.05;
 }

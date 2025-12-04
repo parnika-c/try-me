@@ -92,7 +92,7 @@ router.post("/logout", (_req, res) => {
 // get current user (protected)
 router.get("/me", protect, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select("firstName lastName email totalPoints mfaEnabled");
+    const user = await User.findById(req.user._id).select("firstName lastName email totalPoints mfaEnabled avatar");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -103,7 +103,25 @@ router.get("/me", protect, async (req, res) => {
       lastName: user.lastName,
       mfaEnabled: !!user.mfaEnabled,
       totalPoints: user.totalPoints,
+      avatar: user.avatar,
     });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+// update current user avatar (protected)
+router.put("/me", protect, async (req, res) => {
+  try {
+    const { avatar } = req.body;
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.avatar = avatar;
+    await user.save();
+    return res.json({ message: "Avatar updated successfully" });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error" });

@@ -185,7 +185,7 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
         <div className="login-nav">
           <div className="login-logo-container">
             <div className="login-logo" />
-            <span className="login-logo-text">Try Me</span>
+            <span className="login-logo-text">TryMe!</span>
           </div>
         </div>
 
@@ -241,15 +241,14 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
 
   if (step === 'resetPassword') {
     const strengthScore = Object.values(passwordValidation).filter(Boolean).length;
-
     return (
       <div className="login-container">
         <div className="login-blob" aria-hidden="true" />
         
         <div className="login-nav">
           <div className="login-logo-container">
-            <div className="login-logo" />
-            <span className="login-logo-text">Try Me</span>
+            <span className="trophy">🏆</span>
+            <span className="login-logo-text">TryMe!</span>
           </div>
         </div>
 
@@ -386,8 +385,8 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
       {/* Top Nav */}
       <div className="login-nav">
         <div className="login-logo-container">
-          <div className="login-logo" />
-          <span className="login-logo-text">Try Me</span>
+          <span className="trophy">🏆</span>
+          <span className="login-logo-text">TryMe!</span>
         </div>
         <div className="login-nav-buttons">
           <button className="login-btn-primary">Login</button>
@@ -402,7 +401,7 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
         <div className="login-hero">
           <div className="login-hero-content">
             <h1 className="login-hero-title">
-              Welcome back to Try Me!
+              Welcome back to TryMe!
             </h1>
             <p className="login-hero-text">
               Sign in to your account to continue.
