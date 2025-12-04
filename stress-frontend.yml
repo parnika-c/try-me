@@ -31,4 +31,4 @@ scenarios:
           weight: 1
 
       # user is thinking/reading/interacting with page
-      - think: 1-3
+      - think: 2
