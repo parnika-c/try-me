@@ -71,7 +71,7 @@ export const NavBar = ({ onLogout }) => {
             <div className="nav-right">
                 <div className="rank-card">
                     <span className="rank-text">
-                        Rank: {rank}
+                        Rank {rank}
                     </span>
                     <span className="divider">
                         |

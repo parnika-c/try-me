@@ -125,7 +125,7 @@
 }
 
 .bottom-nav {
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: 7rem;
   transform: translateX(-50%);
@@ -158,12 +158,14 @@
   color: #333;
   cursor: pointer;
   transition: all 0.2s;
+
+  border: 0.05rem solid black;
 }
 
 .nav-tab.active {
   background: #edf0ff;
   transform: translateY(-1px);
-  border: 0.07rem solid black;
+  border: 0.1rem solid black;
 }
 
 .nav-tab:hover {
