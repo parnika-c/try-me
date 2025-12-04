@@ -22,10 +22,6 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
   // MATH for the progress percentage for the progress bar 
   const progressPercentage = Math.min(100, Math.max(0, (currentDay / DAYS) * 100));
   const daysRemaining = Math.max(0, DAYS - currentDay)
-  const avatarSrc = user.avatar || `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
-  const displayName = user.name || 'Unknown';
-  const fallbackChar = displayName.charAt(0).toUpperCase();
-  // Small local Stat helper used also in ChallengeCard
   const Stat = ({ Icon, colorClass = '', children }) => (
     <div className="row gap-sm center">
       <Icon className={`icon ${colorClass}`.trim()} />
@@ -222,7 +218,13 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
                 <span>Leaderboard</span>
         </div>
         <div className="leaderboard-container">
-          {leaderboard.map((participant, index) => (
+          {leaderboard.map((participant, index) => {
+            // get avatar props
+             const { id, displayName, avatar } = getAvatarProps(participant.user);
+              const avatarSrc = avatar;
+              const fallbackChar = (participant.user.name || 'U')[0].toUpperCase();
+            return (
+          
             <div key={participant.user._id} className="leaderboard-row">
               <div className="leaderboard-left">
                 <div className="leaderboard-trophy">
@@ -252,7 +254,8 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
               </div>
               <div className="leaderboard-points">{participant.totalPoints} pts</div>
             </div>
-          ))}
+          );
+          })}
       </div>
     </div>
       </>
