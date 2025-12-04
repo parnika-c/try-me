@@ -1,5 +1,16 @@
 import { useState, useEffect, useCallback } from "react";
-import { ArrowLeft, Trophy, Flame, Calendar, Users } from "lucide-react";
+import { ArrowLeft, Trophy, Flame, Calendar, Users, Medal } from "lucide-react";
+import { renderRankIcon } from '../components/LeaderboardLogic.jsx';
+import '../pages/Leaderboard.css';
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  getAvatarProps //imported from '../components/LeaderboardLogic.jsx
+} from '../components/LeaderboardLogic.jsx';
+
+
+
 import CheckinModal from "./CheckinModal";
 import "./ChallengeDetails.css";
 const DAYS = 7;
@@ -14,8 +25,6 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
   // MATH for the progress percentage for the progress bar 
   const progressPercentage = Math.min(100, Math.max(0, (currentDay / DAYS) * 100));
   const daysRemaining = Math.max(0, DAYS - currentDay)
-
-  // Small local Stat helper used also in ChallengeCard
   const Stat = ({ Icon, colorClass = '', children }) => (
     <div className="row gap-sm center">
       <Icon className={`icon ${colorClass}`.trim()} />
@@ -31,7 +40,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
       setTotalPoints(challenge.participant.totalPoints || 0);
     }
   }, [challenge.participant]);
-
+  
 
   // Fetch leaderboard
   const fetchLeaderboard = useCallback(async () => {
@@ -93,6 +102,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
 }, [fetchCheckIns, fetchLeaderboard]);
 
   return (
+    
     <div className="challenge-details">
       <button className="back-btn" onClick={onBack}>
         <ArrowLeft className="icon" /> Back
@@ -210,18 +220,28 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
                 <span>Leaderboard</span>
         </div>
         <div className="leaderboard-container">
-          {leaderboard.map((participant, index) => (
+          {leaderboard.map((participant, index) => {
+            // get avatar props
+             const { id, displayName, avatar } = getAvatarProps(participant.user);
+              const avatarSrc = avatar;
+              const fallbackChar = (participant.user.name || 'U')[0].toUpperCase();
+            return (
+          
             <div key={participant.user._id} className="leaderboard-row">
               <div className="leaderboard-left">
-                <div className="leaderboard-trophy">
-                  {index < 3 ? (
-                    <Trophy className={`leaderboard-trophy-icon ${index === 0 ? 'gold' : index === 1 ? 'silver' : 'bronze'}`} />
-                  ) : (
-                    `#${index + 1}`
-                  )}
-                </div>
+                <div className={`leaderboard-trophy ${index >= 3 ? 'small-rank' : ''}`}>
+                    {index < 3 ? (
+                      renderRankIcon(['trophy', 'medal', 'award'][index])
+                    ) : (
+                      `#${index + 1}`
+                    )}
+                  </div>
+
                 <div className="leaderboard-user">
-                  <div className="leaderboard-avatar">👤</div>
+                  <Avatar className="ranking-avatar">
+                      <AvatarImage src={avatarSrc} alt={displayName} />
+                      <AvatarFallback>{fallbackChar}</AvatarFallback>
+                    </Avatar>
                     <div className="leaderboard-info">
                       <div className="leaderboard-name">
                         {participant.user._id === currentUserId ? 'You' : participant.user.name}
@@ -237,7 +257,8 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
               </div>
               <div className="leaderboard-points">{participant.totalPoints} pts</div>
             </div>
-          ))}
+          );
+          })}
       </div>
     </div>
       </>

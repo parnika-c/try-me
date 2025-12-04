@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavBar } from '../components/NavBar.jsx';
-import { Trophy, Medal, Award, TrendingUp } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 import './Leaderboard.css';
 import { 
   getSortedUsers, 
@@ -17,30 +17,35 @@ import {
   AvatarImage,
   AvatarFallback,
   Badge,
-  fetchUsers
+  fetchUsers,
+  renderRankIcon
 } from '../components/LeaderboardLogic.jsx';
 
-// Map rank meta icon keys to actual icon components
-const renderIcon = (icon) => {
-  if (icon === 'trophy') return <Trophy className="rank-icon trophy-icon" />;
-  if (icon === 'medal') return <Medal className="rank-icon medal-icon" />;
-  if (icon === 'award') return <Award className="rank-icon award-icon" />;
-  return null;
-};
 
+const getPodiumClassName = (rank) => `podium-card podium-${rank === 1 ? 'first' : rank === 2 ? 'second' : 'third'}`;
+
+const getDisplayName = (userName, isCurrent) => isCurrent ? 'You' : userName;
+
+const getFallbackChar = (userName, isCurrent) => isCurrent ? 'Y' : (userName || 'U')[0]; // missing username defaults to U
+
+/*
+  Goal: Renders the top 3 podium cards for the leaderboard
+  Input: sortedUsers - The sorted list of users by points
+  Output: Array of properly formatted JS elements for the podium
+ */
 const renderPodium = (sortedUsers) => {
   const displayOrder = getTop3DisplayOrder(sortedUsers);
   return displayOrder
     .filter(({ user }) => user)
     .map(({ user, rank }) => {
       const meta = getRankMeta(rank);
-      const current = isCurrentUser(user.name);
-      const displayName = current ? 'You' : user.name;
-      const fallbackChar = current ? 'Y' : (user.name || 'U')[0];
+      const isCurrent = isCurrentUser(user.name);
+      const displayName = getDisplayName(user.name, isCurrent);
+      const fallbackChar = getFallbackChar(user.name, isCurrent);
       return (
-        <Card key={user.id} className={`podium-card podium-${rank === 1 ? 'first' : rank === 2 ? 'second' : 'third'}`}>
+        <Card key={user.id} className={getPodiumClassName(rank)}>
           <CardContent className="podium-content">
-            <div className="podium-icon">{renderIcon(meta.icon)}</div>
+            <div className="podium-icon">{renderRankIcon(meta.icon)}</div>
             <Avatar className="podium-avatar">
               <AvatarImage src={user.avatar} alt={displayName} />
               <AvatarFallback>{fallbackChar}</AvatarFallback>
@@ -124,9 +129,10 @@ export function Leaderboard() {
                         <div key={user.id} className={`ranking-row ${current?'current-user':''}`}>
                           <div className="ranking-left">
                             <div className="ranking-icon">
-                              {rank<=3 ? renderIcon(meta.icon) : <span className="rank-text">#{rank}</span>}
+                              {rank<=3 ? renderRankIcon(meta.icon) : <span className="rank-text">#{rank}</span>}
                             </div>
                             <Avatar className="ranking-avatar">
+                              
                               <AvatarImage src={user.avatar} alt={displayName} />
                               <AvatarFallback>{fallbackChar}</AvatarFallback>
                             </Avatar>
