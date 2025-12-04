@@ -2,6 +2,15 @@
 import { Calendar, Users, Trophy, Flame, Copy } from 'lucide-react'
 import './ChallengeCard.css'
 
+import { useState, useEffect, useCallback } from 'react';
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  getAvatarProps, 
+  fetchUsers
+} from '../components/LeaderboardLogic.jsx';
+
 // Challenges are always 7 days long
 const DAYS = 7
 
@@ -33,13 +42,31 @@ const Stat = ({ Icon, colorClass = '', children }) => (
 
 export function ChallengeCard({ challenge, onClick, userStats  }) {
   const { name, description, currentDay = 0, participants: list = [], startDate, joinCode  } = challenge
+  //console.log('ChallengeCard sample participant:', list[0]);
+  const [users, setUsers] = useState([]);
+  const [loadingUsers, setLoadingUsers] = useState(true);
+
+  const fetchAllUsers = useCallback(async () => {
+    try {
+      const data = await fetchUsers();
+      setUsers(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Error fetching users for avatars:", err);
+    } finally {
+      setLoadingUsers(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAllUsers();
+  }, [fetchAllUsers]);
+
 
   // derives values
-  const participants = list
-  const participantCount = participants.length
-  
+  const participants = list || [];
+  const participantCount = participants.length;
+  const visibleParticipants = participants.slice(0, 5);
 
-  const visibleParticipants = participants.slice(0, 5)
   const handleCopyJoinCode = (e) => {
     e.stopPropagation(); // don’t trigger card click
     if (!joinCode) return;
@@ -57,7 +84,6 @@ export function ChallengeCard({ challenge, onClick, userStats  }) {
   const streak = userStats?.currentStreak ?? 0;
   const points = userStats?.totalPoints ?? 0;
   
-
 
   // get status and create meta text
   const status = (challenge?.status || "Upcoming");
@@ -109,17 +135,42 @@ export function ChallengeCard({ challenge, onClick, userStats  }) {
 
           </>
         )}
-    
 
+        {/* participants text + avatars on same line */}
+        <div className="row participants-row muted">
+          <div className="row gap-sm center">
+            <Users className="icon" />
+            <span className="small">{participantCount} participants</span>
+          </div>
 
-        {/* Number of particpants*/}
-        <div className="row gap-sm center muted">
-          <Users className="icon" />
-          <span className="small">{participantCount} participants</span>
           
+          <div className="avatar-stack">
+            {visibleParticipants.map((participant, index) => {
+              if (!participant) return null;
+              const participantId = participant.userId || participant._id || participant.id;
 
+              const matchedUser = users.find(u => u.id === participantId);
+
+              const source = matchedUser || participant;
+              const { avatar, fallbackChar, displayName } = getAvatarProps(source);
+              const avatarSrc = avatar;
+
+              return (
+                <Avatar
+                  key={participantId || index}
+                  className="card-avatar"
+                >
+                  <AvatarImage src={avatarSrc} alt={displayName} />
+                  <AvatarFallback>{fallbackChar}</AvatarFallback>
+                </Avatar>
+              );
+            })}
+
+            {participantCount > 5 && (
+              <div className="avatar more">+{participantCount - 5}</div>
+            )}
+          </div>
         </div>
-        
 
 
         {/* Calendar + join code row */}
@@ -144,26 +195,7 @@ export function ChallengeCard({ challenge, onClick, userStats  }) {
           </div>
         )}
 
-        {/* Show first 5 participants */}
-        <div className="avatar-stack">
-          {visibleParticipants.map((participant) => {
-            const name = participant.user?.name || 'U'
-            const initial = name.charAt(0).toUpperCase()
-            const src = participant.user?.avatar // participant avatar
-            return (
-              <div key={participant._id} className="avatar" title={name}>
-                {src ? (
-                  <img src={src} alt={name} /> // show avatar if available
-                ) : (
-                  <div className="avatar-fallback">{initial}</div>
-                )}
-              </div>
-            )
-          })}
-          {participantCount > 5 && (
-            <div className="avatar more">+{participantCount - 5}</div>
-          )}
-        </div>
+       
       </div>
     </div>
   )

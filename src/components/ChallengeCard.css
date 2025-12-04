@@ -42,7 +42,7 @@
 .card-content { 
   display: flex; 
   flex-direction: column;
-   gap: 12px; 
+   gap: 7px; 
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -80,14 +80,79 @@
 }
 .icon-green { color: #16a34a; }
 
-/* AVATARSS */
-.green-text { color: #16a34a; }
+/* participants row: text left, avatars right */
+.row.participants-row {
+  width: 100%;
+  justify-content: space-between;
+}
 
-.avatar-stack { display: flex; align-items: center; margin-top: 4px; }
-.avatar-stack .avatar { width: 28px; height: 28px; border-radius: 999px; overflow: hidden; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,0.06); margin-right: -6px; display: flex; align-items: center; justify-content: center; background: #e5e7eb; font-size: 11px; font-weight: 600; color: #374151; }
-.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.avatar-fallback { display:flex; align-items:center; justify-content:center; width:100%; height:100%; }
-.avatar.more { background: #e5e7eb; }
+/* avatar stack on same line, aligned to the right in circle*/
+.avatar-stack {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 0;
+}
+
+/* first circle starts normal, others overlap slightly */
+.card-avatar:first-child {
+  margin-left: 0;
+}
+
+/* style for the Avatar component inside the card, on same line as # of partcipants*/
+.card-avatar {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.06);
+  margin-left: -6px;    /* overlapping circles look */
+  background: #e5e7eb;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* For svg/pngs pfps */
+.card-avatar .avatar-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 999px;
+  position: relative;
+  z-index: 1;     /* z axis: image will go on top */
+}
+
+.card-avatar .avatar-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  z-index: 0;    /* participant name goes underneath, only visibile if no image */
+}
+
+/* keep +N participants bubble looking like the others */
+.avatar.more {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -6px;
+  background: #e5e7eb;
+  font-size: 11px;
+  font-weight: 600;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.06);
+}
+
 
 /* join code in bottom right corner */
 .join-code {
