@@ -132,7 +132,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
       </div>
 
       {loading ? (<p style={{ textAlign: "center" }}>Loading...</p>) : ( 
-        <>
+        <div className="details-content">
           <CheckinModal
             challenge={challenge}
             currentDay={currentDay}
@@ -141,9 +141,9 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
             disabled={challenge.status === "Previous"}
           />
 
-          <div className="progress-card">
+          <div className="details-card">
             <div className="row space-betw">
-                <span>Your Progress</span>
+              <span>Your Progress</span>
             </div>
 
             <div className="progress-container">
@@ -180,7 +180,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
           <div className="row space-betw">
                 <span>Daily Check-ins</span>
           </div>
-            <div className="checkin-grid">
+          <div className="checkin-grid">
             {[1, 2, 3, 4, 5, 6, 7].map((day) => {
               const checkIn = checkIns.find(c => c.day === day);
               const { isCompleted, isMissed, isFuture, isCurrent } = getDayState(day, checkIn, currentDay, challenge.status);
@@ -190,50 +190,50 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
                   <span>Day {day}</span>
                   {isCompleted && <div className="checkin-icon success">✓</div>}
                   {isMissed && <div className="checkin-icon missed">✕</div>}
-                  {isFuture && <div className="checkin-icon pending"></div>}
+                  {isFuture && <div></div>}
                 </div>
               );
             })}
+          </div>
         </div>
-      </div>
 
-      {/* Challenge Leaderboard */}
-      <div className="leaderboard-card">
-        <div className="row space-betw">
-          <span>Leaderboard</span>
-        </div>
-        <div className="leaderboard-container">
-          {leaderboard.map((participant, index) => (
-            <div key={participant.user._id} className="leaderboard-row">
-              <div className="leaderboard-left">
-                <div className="leaderboard-trophy">
-                  {index < 3 ? (
-                    <Trophy className={`leaderboard-trophy-icon ${index === 0 ? 'gold' : index === 1 ? 'silver' : 'bronze'}`} />
-                  ) : (
-                    <span className="leaderboard-rank">#{index + 1}</span>
-                  )}
-                </div>
-                <div className="leaderboard-user">
-                  <div className="leaderboard-avatar">👤</div>
-                    <div className="leaderboard-info">
-                      <div className="leaderboard-name">
-                        {participant.user._id === currentUserId ? 'You' : participant.user.name}
+        {/* Challenge Leaderboard */}
+        <div className="details-card">
+          <div className="row space-betw">
+            <span>Leaderboard</span>
+          </div>
+          <div className="leaderboard-container">
+            {leaderboard.map((participant, index) => (
+              <div key={participant.user._id} className="leaderboard-row">
+                <div className="leaderboard-left">
+                  <div className="leaderboard-trophy">
+                    {index < 3 ? (
+                      <Trophy className={`leaderboard-trophy-icon ${index === 0 ? 'gold' : index === 1 ? 'silver' : 'bronze'}`} />
+                    ) : (
+                      <span className="leaderboard-rank">#{index + 1}</span>
+                    )}
+                  </div>
+                  <div className="leaderboard-user">
+                    <div className="leaderboard-avatar">👤</div>
+                      <div className="leaderboard-info">
+                        <div className="leaderboard-name">
+                          {participant.user._id === currentUserId ? 'You' : participant.user.name}
+                        </div>
+                        <div className="leaderboard-stats">
+                          <span>
+                            <Flame className="leaderboard-stats-icon" />
+                              {participant.currentStreak} streak
+                          </span>
+                        </div>
                       </div>
-                      <div className="leaderboard-stats">
-                        <span>
-                          <Flame className="leaderboard-stats-icon" />
-                            {participant.currentStreak} streak
-                        </span>
-                      </div>
-                    </div>
+                  </div>
                 </div>
+                <div className="leaderboard-points">{participant.totalPoints} pts</div>
               </div>
-              <div className="leaderboard-points">{participant.totalPoints} pts</div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
-      </>
     )}
     </div>
   );
