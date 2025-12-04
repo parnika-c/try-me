@@ -75,7 +75,7 @@ export default function JoinChallenge({ onJoinChallenge }) {
                 type="button"
                 onClick={() => setOpen(false)}
               >
-                Cancel
+                X      
               </button>
             </div>
           </form>
