@@ -16,10 +16,17 @@
   flex-shrink: 0;
   position: relative;
 }
+.trophy-icon {
+  color: #fbbf24;
+}
 
+.medal-icon {
+  color: #9ca3af;
+}
 
-
-
+.award-icon {
+  color: #d97706;
+}
 .progress-card {
   display: block;
   cursor: pointer;
@@ -401,6 +408,7 @@
 
 .leaderboard-trophy {
   font-size: 32px;
+  color: #fbbf24;
 }
 
 .leaderboard-user {

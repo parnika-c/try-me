@@ -1,15 +1,19 @@
 import { useState, useEffect, useCallback } from "react";
-import { ArrowLeft, Trophy, Flame, Calendar, Users } from "lucide-react";
-
+import { ArrowLeft, Trophy, Flame, Calendar, Users, Medal } from "lucide-react";
+import { renderRankIcon } from '../components/LeaderboardLogic.jsx';
+import '../pages/Leaderboard.css';
 import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-  getAvatarProps
+  getAvatarProps //imported from '../components/LeaderboardLogic.jsx
 } from '../components/LeaderboardLogic.jsx';
+
+
 
 import CheckinModal from "./CheckinModal";
 import "./ChallengeDetails.css";
+import { render } from "@testing-library/react";
 const DAYS = 7;
 export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpdate }) {
   const [checkIns, setCheckIns] = useState(challenge?.participant?.checkIns || []);
@@ -37,8 +41,6 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
       setTotalPoints(challenge.participant.totalPoints || 0);
     }
   }, [challenge.participant]);
-
-  //fetch user avatar/profile
   
 
   // Fetch leaderboard
@@ -101,6 +103,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
 }, [fetchCheckIns, fetchLeaderboard]);
 
   return (
+    
     <div className="challenge-details">
       <button className="back-btn" onClick={onBack}>
         <ArrowLeft className="icon" /> Back
@@ -228,12 +231,13 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
             <div key={participant.user._id} className="leaderboard-row">
               <div className="leaderboard-left">
                 <div className="leaderboard-trophy">
-                  {index < 3 ? (
-                    <Trophy className={`leaderboard-trophy-icon ${index === 0 ? 'gold' : index === 1 ? 'silver' : 'bronze'}`} />
-                  ) : (
-                    `#${index + 1}`
-                  )}
-                </div>
+                    {index < 3 ? (
+                      renderRankIcon(['trophy', 'medal', 'award'][index])
+                    ) : (
+                      `#${index + 1}`
+                    )}
+                  </div>
+
                 <div className="leaderboard-user">
                   <Avatar className="podium-avatar">
                       <AvatarImage src={avatarSrc} alt={displayName} />

@@ -90,6 +90,12 @@ export const getAvatarProps = (u = {}) => {
 
 
 // UI primitives used by Leaderboard UI (exported for reuse)
+export const renderRankIcon = (icon) => {
+  if (icon === 'trophy') return <Trophy className="rank-icon trophy-icon" />;
+  if (icon === 'medal') return <Medal className="rank-icon medal-icon" />;
+  if (icon === 'award') return <Award className="rank-icon award-icon" />;
+  return null;
+};
 export const Card = ({ className = '', children }) => <div className={`card ${className}`}>{children}</div>;
 export const CardHeader = ({ children }) => <div className="card-header">{children}</div>;
 export const CardTitle = ({ children }) => <h3 className="card-title">{children}</h3>;
