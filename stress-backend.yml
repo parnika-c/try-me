@@ -65,4 +65,4 @@ scenarios:
           url: "/api/challenges"
           expect:
             - statusCode: 200
-      - think: 2-4
+      - think: 3
