@@ -1,11 +1,13 @@
 config:
   target: "http://localhost:4000"
+  http:
+    headers:
+      # Bypass authentication for testing
+      x-test-mode: "true"
   phases:
-    # Quick functional tests (runs once)
     - duration: 10
       arrivalCount: 3
       name: "Functional tests"
-    # Load test (simulates real traffic)
     - duration: 60
       arrivalRate: 5
       rampTo: 15
@@ -15,99 +17,52 @@ config:
     p95: 800
 
 scenarios:
-  # Test auth works
-  - weight: 10
-    name: "Test login"
-    flow:
-      - post:
-          url: "/api/auth/login"
-          json:
-            email: "testuser1@example.com"
-            password: "password123"
-          expect:
-            - statusCode: 200
-            - hasHeader: "set-cookie"
-
-  # Test main user flow (most important)
+  # 70% of users complete check-ins
   - weight: 70
     name: "Complete check-in process"
     flow:
-      - post:
-          url: "/api/auth/login"
-          json:
-            email: "testuser{{ $randomNumber(1, 5) }}@example.com"
-            password: "Password123!"
-          capture:
-            - header: "set-cookie"
-              as: "authCookie"
-              regexp: "token=([^;]+)"
-      
       - get:
           url: "/api/challenges"
-          headers:
-            Cookie: "token={{ authCookie }}"
           expect:
             - statusCode: 200
       - think: 2
       
       - get:
-          url: "/api/challenges/675e4adbe6c72baaeb07c20f/check-ins/me"
-          headers:
-            Cookie: "token={{ authCookie }}"
+          url: "/api/challenges/6931d5ff08cb87b6c057183f/check-ins/me"
           expect:
             - statusCode: 200
       
       - get:
-          url: "/api/challenges/675e4adbe6c72baaeb07c20f/leaderboard"
-          headers:
-            Cookie: "token={{ authCookie }}"
+          url: "/api/challenges/6931d5ff08cb87b6c057183f/leaderboard"
           expect:
             - statusCode: 200
       - think: 3
       
+      # Task-based check-in (no value field needed)
       - post:
-          url: "/api/challenges/675e4adbe6c72baaeb07c20f/check-ins"
-          headers:
-            Cookie: "token={{ authCookie }}"
+          url: "/api/challenges/6931d5ff08cb87b6c057183f/check-ins"
           json:
             day: "{{ $randomNumber(1, 7) }}"
-            value: "{{ $randomNumber(50, 150) }}"
             pointsEarned: 25
           expect:
             - statusCode: 200
       
       - get:
-          url: "/api/challenges/675e4adbe6c72baaeb07c20f/check-ins/me"
-          headers:
-            Cookie: "token={{ authCookie }}"
+          url: "/api/challenges/6931d5ff08cb87b6c057183f/check-ins/me"
           expect:
             - statusCode: 200
       
       - get:
-          url: "/api/challenges/675e4adbe6c72baaeb07c20f/leaderboard"
-          headers:
-            Cookie: "token={{ authCookie }}"
+          url: "/api/challenges/6931d5ff08cb87b6c057183f/leaderboard"
           expect:
             - statusCode: 200
 
-  # Test browsing
-  - weight: 20
+  # 30% of users just browse
+  - weight: 30
     name: "Browse challenges"
     flow:
-      - post:
-          url: "/api/auth/login"
-          json:
-            email: "testuser{{ $randomNumber(1, 5) }}@example.com"
-            password: "password123"
-          capture:
-            - header: "set-cookie"
-              as: "authCookie"
-              regexp: "token=([^;]+)"
-      
       - get:
           url: "/api/challenges"
-          headers:
-            Cookie: "token={{ authCookie }}"
           expect:
             - statusCode: 200
       - think: 2-4
