@@ -32,7 +32,6 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
         points = value / challenge.dailyGoal * 25;
         points = Math.min(Math.max(Math.round(points), 0), 25); // round to int between 0-25, proportional to goal
       }
-  
 
       const res = await fetch(
         `http://localhost:4000/api/challenges/${challenge._id}/check-ins`,
@@ -91,14 +90,14 @@ export function CheckinModal({challenge, currentDay = 0, checkIns = [], onComple
 
             <div className="checkin-actions">
               <button
-                className="checkin-cancel"
+                className="btn-cancel"
                 type="button"
                 onClick={closeModal}
                 disabled={submitting}
               >
                 Cancel
               </button>
-              <button className="checkin-primary" type="submit" disabled={submitting || today === 0}>
+              <button className="btn-confirm" type="submit" disabled={submitting || today === 0}>
                 {submitting ? "Saving..." : "Confirm"}
               </button>
             </div>
