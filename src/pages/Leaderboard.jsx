@@ -28,6 +28,35 @@ const renderIcon = (icon) => {
   return null;
 };
 
+const renderPodium = (sortedUsers) => {
+  const displayOrder = getTop3DisplayOrder(sortedUsers);
+  return displayOrder
+    .filter(({ user }) => user)
+    .map(({ user, rank }) => {
+      const meta = getRankMeta(rank);
+      const current = isCurrentUser(user.name);
+      const displayName = current ? 'You' : user.name;
+      const fallbackChar = current ? 'Y' : (user.name || 'U')[0];
+      return (
+        <Card key={user.id} className={`podium-card podium-${rank === 1 ? 'first' : rank === 2 ? 'second' : 'third'}`}>
+          <CardContent className="podium-content">
+            <div className="podium-icon">{renderIcon(meta.icon)}</div>
+            <Avatar className="podium-avatar">
+              <AvatarImage src={user.avatar} alt={displayName} />
+              <AvatarFallback>{fallbackChar}</AvatarFallback>
+            </Avatar>
+            <p className="podium-name">{displayName}</p>
+            <p className="podium-points">{user.totalPoints}</p>
+            <p className="podium-points-label">points</p>
+            {meta.badge && (
+              <Badge className={`rank-badge ${meta.badge.variantClass}`}>{meta.badge.label}</Badge>
+            )}
+          </CardContent>
+        </Card>
+      );
+    });
+};
+
 export function Leaderboard() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -73,32 +102,7 @@ export function Leaderboard() {
           <>
             {/* Top 3 Podium */}
             <div className="podium">
-              {(() => {
-                const displayOrder = getTop3DisplayOrder(sortedUsers);
-                return displayOrder.filter(({ user }) => user).map(({ user, rank }) => {
-                  const meta = getRankMeta(rank);
-                  const current = isCurrentUser(user.name);
-                  const displayName = current ? 'You' : user.name;
-                  const fallbackChar = current ? 'Y' : (user.name || 'U')[0];
-                  return (
-                    <Card key={user.id} className={`podium-card podium-${rank === 1 ? 'first' : rank === 2 ? 'second' : 'third'}`}>
-                      <CardContent className="podium-content">
-                        <div className="podium-icon">{renderIcon(meta.icon)}</div>
-                        <Avatar className="podium-avatar">
-                          <AvatarImage src={user.avatar} alt={displayName} />
-                          <AvatarFallback>{fallbackChar}</AvatarFallback>
-                        </Avatar>
-                        <p className="podium-name">{displayName}</p>
-                        <p className="podium-points">{user.totalPoints}</p>
-                        <p className="podium-points-label">points</p>
-                        {meta.badge && (
-                          <Badge className={`rank-badge ${meta.badge.variantClass}`}>{meta.badge.label}</Badge>
-                        )}
-                      </CardContent>
-                    </Card>
-                  );
-                });
-              })()}
+              {renderPodium(sortedUsers)}
             </div>
 
             {/* Full Rankings */}
