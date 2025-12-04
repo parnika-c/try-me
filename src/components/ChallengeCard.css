@@ -42,9 +42,13 @@
 .card-content { 
   display: flex; 
   flex-direction: column;
-   gap: 12px; 
   word-wrap: break-word;
   overflow-wrap: break-word;
+}
+
+/* Reduce vertical space when there is no progress block */
+.compact-content {
+  gap: 0px; /* or even 4px if you want it tighter */
 }
 
 /* PROGRESS SECTION */
@@ -71,8 +75,6 @@
 .icon { width: 16px; height: 16px; color: #6b7280; flex-shrink: 0; }
 .icon-orange { 
   color: #f97316; 
- 
-
 }
 .icon-yellow { 
   color: #eab308; 

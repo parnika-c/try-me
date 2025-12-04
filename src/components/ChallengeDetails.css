@@ -101,7 +101,7 @@
 }
 
 /* PROGRESS SECTION */
-.progress-block { 
+.challenge-details .progress-block { 
   display: flex; 
   flex-direction: column; 
   gap: 20px;
