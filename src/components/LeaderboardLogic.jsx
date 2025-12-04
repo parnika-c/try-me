@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trophy, Medal, Award } from 'lucide-react';
 // Encapsulated logic and data for the Leaderboard page
 
 export const getSortedUsers = (users) => [...users].sort((a, b) => b.totalPoints - a.totalPoints);
