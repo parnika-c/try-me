@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavBar } from '../components/NavBar.jsx';
-import { Trophy, Medal, Award, TrendingUp } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 import './Leaderboard.css';
 import { 
   getSortedUsers, 
@@ -17,16 +17,9 @@ import {
   AvatarImage,
   AvatarFallback,
   Badge,
-  fetchUsers
+  fetchUsers,
+  renderRankIcon
 } from '../components/LeaderboardLogic.jsx';
-
-// Map rank meta icon keys to actual icon components
-const renderIcon = (icon) => {
-  if (icon === 'trophy') return <Trophy className="rank-icon trophy-icon" />;
-  if (icon === 'medal') return <Medal className="rank-icon medal-icon" />;
-  if (icon === 'award') return <Award className="rank-icon award-icon" />;
-  return null;
-};
 
 const renderPodium = (sortedUsers) => {
   const displayOrder = getTop3DisplayOrder(sortedUsers);
@@ -40,7 +33,7 @@ const renderPodium = (sortedUsers) => {
       return (
         <Card key={user.id} className={`podium-card podium-${rank === 1 ? 'first' : rank === 2 ? 'second' : 'third'}`}>
           <CardContent className="podium-content">
-            <div className="podium-icon">{renderIcon(meta.icon)}</div>
+            <div className="podium-icon">{renderRankIcon(meta.icon)}</div>
             <Avatar className="podium-avatar">
               <AvatarImage src={user.avatar} alt={displayName} />
               <AvatarFallback>{fallbackChar}</AvatarFallback>
@@ -124,9 +117,10 @@ export function Leaderboard() {
                         <div key={user.id} className={`ranking-row ${current?'current-user':''}`}>
                           <div className="ranking-left">
                             <div className="ranking-icon">
-                              {rank<=3 ? renderIcon(meta.icon) : <span className="rank-text">#{rank}</span>}
+                              {rank<=3 ? renderRankIcon(meta.icon) : <span className="rank-text">#{rank}</span>}
                             </div>
                             <Avatar className="ranking-avatar">
+                              
                               <AvatarImage src={user.avatar} alt={displayName} />
                               <AvatarFallback>{fallbackChar}</AvatarFallback>
                             </Avatar>

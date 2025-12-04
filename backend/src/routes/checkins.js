@@ -31,7 +31,7 @@ router.get("/:challengeId/leaderboard", protect, async (req, res) => {
     const challenge = await Challenge.findOne({
       _id: req.params.challengeId,
       participants: req.user._id,
-    }).populate('participants', 'firstName lastName');
+    }).populate('participants', 'firstName lastName avatar');
 
     if (!challenge) return res.status(404).json({ message: "Challenge not found" });
 
@@ -69,6 +69,7 @@ router.get("/:challengeId/leaderboard", protect, async (req, res) => {
           user: {
             _id: user._id,
             name: `${user.firstName} ${user.lastName}`,
+            avatar: user.avatar
           },
           totalPoints,
           currentStreak,

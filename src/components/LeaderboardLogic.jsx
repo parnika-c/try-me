@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trophy, Medal, Award } from 'lucide-react';
 // Encapsulated logic and data for the Leaderboard page
 
 export const getSortedUsers = (users) => [...users].sort((a, b) => b.totalPoints - a.totalPoints);
@@ -48,13 +49,13 @@ export const fetchUsers = async () => {
   return list
     .filter(u => typeof u.totalPoints === 'number')
     .map(u => {
-      const id = u._id || u.id;
-      const first = u.firstName || '';
-      const last = u.lastName || '';
-      const name = `${first} ${last}`.trim() || u.name || 'Unknown';
-      const seed = id || name || Math.random().toString(36).slice(2);
-      const avatar = u.avatar || `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
-      return { id, name, avatar, totalPoints: u.totalPoints };
+      const { id, displayName, avatar } = getAvatarProps(u);
+      return {
+        id,
+        name: displayName,
+        avatar,
+        totalPoints: u.totalPoints || 0,
+      };
     });
 };
 
@@ -74,8 +75,28 @@ export const isCurrentUser = (displayName) => {
     return false;
   }
 };
+//export avatar in leaderboard
+export const getAvatarProps = (u = {}) => {
+  const id = u._id || u.id;
+  const first = u.firstName || '';
+  const last = u.lastName || '';
+  const name = `${first} ${last}`.trim() || u.name || 'Unknown';
+
+  const seed = id || name || Math.random().toString(36).slice(2);
+  const avatar = u.avatar || `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
+  const fallbackChar = name.charAt(0).toUpperCase();
+
+  return { id, displayName: name, avatar, fallbackChar };
+};
+
 
 // UI primitives used by Leaderboard UI (exported for reuse)
+export const renderRankIcon = (icon) => {
+  if (icon === 'trophy') return <Trophy className="rank-icon trophy-icon" />;
+  if (icon === 'medal') return <Medal className="rank-icon medal-icon" />;
+  if (icon === 'award') return <Award className="rank-icon award-icon" />;
+  return null;
+};
 export const Card = ({ className = '', children }) => <div className={`card ${className}`}>{children}</div>;
 export const CardHeader = ({ children }) => <div className="card-header">{children}</div>;
 export const CardTitle = ({ children }) => <h3 className="card-title">{children}</h3>;
