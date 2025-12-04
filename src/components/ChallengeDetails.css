@@ -4,29 +4,7 @@
   padding: 48px;
   padding-top: 120px;
 }
-.podium-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #f3f4f6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  position: relative;
-}
-.trophy-icon {
-  color: #fbbf24;
-}
 
-.medal-icon {
-  color: #9ca3af;
-}
-
-.award-icon {
-  color: #d97706;
-}
 .progress-card {
   display: block;
   cursor: pointer;
@@ -408,16 +386,12 @@
 
 .leaderboard-trophy {
   font-size: 32px;
-  color: #fbbf24;
 }
 
 .leaderboard-user {
   display: flex;
   align-items: center;
   gap: 12px;
-  
-  
-  
 }
 
 .leaderboard-avatar {

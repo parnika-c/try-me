@@ -239,7 +239,7 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
                   </div>
 
                 <div className="leaderboard-user">
-                  <Avatar className="podium-avatar">
+                  <Avatar className="ranking-avatar">
                       <AvatarImage src={avatarSrc} alt={displayName} />
                       <AvatarFallback>{fallbackChar}</AvatarFallback>
                     </Avatar>
