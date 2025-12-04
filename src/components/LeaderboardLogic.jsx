@@ -48,13 +48,13 @@ export const fetchUsers = async () => {
   return list
     .filter(u => typeof u.totalPoints === 'number')
     .map(u => {
-      const id = u._id || u.id;
-      const first = u.firstName || '';
-      const last = u.lastName || '';
-      const name = `${first} ${last}`.trim() || u.name || 'Unknown';
-      const seed = id || name || Math.random().toString(36).slice(2);
-      const avatar = u.avatar || `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
-      return { id, name, avatar, totalPoints: u.totalPoints };
+      const { id, displayName, avatar } = getAvatarProps(u);
+      return {
+        id,
+        name: displayName,
+        avatar,
+        totalPoints: u.totalPoints || 0,
+      };
     });
 };
 
@@ -74,6 +74,20 @@ export const isCurrentUser = (displayName) => {
     return false;
   }
 };
+//export avatar in leaderboard
+export const getAvatarProps = (u = {}) => {
+  const id = u._id || u.id;
+  const first = u.firstName || '';
+  const last = u.lastName || '';
+  const name = `${first} ${last}`.trim() || u.name || 'Unknown';
+
+  const seed = id || name || Math.random().toString(36).slice(2);
+  const avatar = u.avatar || `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
+  const fallbackChar = name.charAt(0).toUpperCase();
+
+  return { id, displayName: name, avatar, fallbackChar };
+};
+
 
 // UI primitives used by Leaderboard UI (exported for reuse)
 export const Card = ({ className = '', children }) => <div className={`card ${className}`}>{children}</div>;

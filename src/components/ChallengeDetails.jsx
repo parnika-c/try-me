@@ -1,5 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { ArrowLeft, Trophy, Flame, Calendar, Users } from "lucide-react";
+
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  getAvatarProps
+} from '../components/LeaderboardLogic.jsx';
+
 import CheckinModal from "./CheckinModal";
 import "./ChallengeDetails.css";
 const DAYS = 7;
@@ -14,7 +22,9 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
   // MATH for the progress percentage for the progress bar 
   const progressPercentage = Math.min(100, Math.max(0, (currentDay / DAYS) * 100));
   const daysRemaining = Math.max(0, DAYS - currentDay)
-
+  const avatarSrc = user.avatar || `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
+  const displayName = user.name || 'Unknown';
+  const fallbackChar = displayName.charAt(0).toUpperCase();
   // Small local Stat helper used also in ChallengeCard
   const Stat = ({ Icon, colorClass = '', children }) => (
     <div className="row gap-sm center">
@@ -32,6 +42,8 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
     }
   }, [challenge.participant]);
 
+  //fetch user avatar/profile
+  
 
   // Fetch leaderboard
   const fetchLeaderboard = useCallback(async () => {
@@ -221,7 +233,10 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
                   )}
                 </div>
                 <div className="leaderboard-user">
-                  <div className="leaderboard-avatar">👤</div>
+                  <Avatar className="podium-avatar">
+                      <AvatarImage src={avatarSrc} alt={displayName} />
+                      <AvatarFallback>{fallbackChar}</AvatarFallback>
+                    </Avatar>
                     <div className="leaderboard-info">
                       <div className="leaderboard-name">
                         {participant.user._id === currentUserId ? 'You' : participant.user.name}
