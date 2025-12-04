@@ -1,18 +1,18 @@
 config:
   target: "http://localhost:5173"
   phases:
-    # Phase 1: Short spike
+    # Phase 1: short spike
     - duration: 30        # 30 seconds
       arrivalRate: 5      # start with 5 users/sec
       rampTo: 20         # ramp to 20 users/sec
       name: "Spike traffic test"
 
-    # Phase 2: Sustained load
+    # Phase 2: sustained load
     - duration: 60       # 1 minute
       arrivalRate: 10     # 10 users/sec constant
       name: "Sustained load test"
 
-    # Phase 3: Ramping up to breakpoint
+    # Phase 3: ramping up to breakpoint
     - duration: 120          # 2 minutes
       arrivalRate: 5          # start with 5 users/sec
       rampTo: 100             # ramp to 100 users/sec
@@ -20,15 +20,15 @@ config:
 
 scenarios:
   - flow:
-      # User visits home page
+      # user visits home page
       - get:
           url: "/"
           weight: 3
 
-      # User visits global leaderboard page
+      # user visits global leaderboard page
       - get:
           url: "/leaderboard"
           weight: 1
 
-      # User is thinking/reading/interacting with page
+      # user is thinking/reading/interacting with page
       - think: 1-3

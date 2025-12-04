@@ -4,16 +4,16 @@ config:
     headers:
       x-test-mode: "true"
   phases:
-    - duration: 10
-      arrivalCount: 3
-      name: "Functional tests"
-    - duration: 60
-      arrivalRate: 5
-      rampTo: 15
+    - duration: 10              # 10 seconds
+      arrivalCount: 3           # 3 users/sec
+      name: "Functional test"
+    - duration: 60              # 60 seconds
+      arrivalRate: 5            # start with 5 users/sec
+      rampTo: 15                # ramp to 15 users/sec
       name: "Load test"
   ensure:
-    maxErrorRate: 1
-    p95: 800
+    maxErrorRate: 1     # fail test if more than 1% of requests result in errors
+    p95: 800            # fail test if 95th percentile response time exceeds 800ms
 
 scenarios:
   # 70% of users complete check-ins
@@ -27,18 +27,19 @@ scenarios:
       - think: 2
       
       - get:
-          url: "/api/challenges/6931d5ff08cb87b6c057183f/check-ins/me"
+          # before checking in
+          url: "/api/challenges/6931d5ff08cb87b6c057183f/check-ins/me" # on check-ins pageg
           expect:
             - statusCode: 200
       
       - get:
-          url: "/api/challenges/6931d5ff08cb87b6c057183f/leaderboard"
+          url: "/api/challenges/6931d5ff08cb87b6c057183f/leaderboard" # on global leaderboard page
           expect:
             - statusCode: 200
       - think: 3
       
       - post:
-          url: "/api/challenges/6931d5ff08cb87b6c057183f/check-ins"
+          url: "/api/challenges/6931d5ff08cb87b6c057183f/check-ins" # checking in
           json:
             day: "{{ $randomNumber(1, 7) }}"
             pointsEarned: 25
@@ -46,12 +47,13 @@ scenarios:
             - statusCode: 200
       
       - get:
-          url: "/api/challenges/6931d5ff08cb87b6c057183f/check-ins/me"
+          # after checking in
+          url: "/api/challenges/6931d5ff08cb87b6c057183f/check-ins/me" # again on check-ins page
           expect:
             - statusCode: 200
       
       - get:
-          url: "/api/challenges/6931d5ff08cb87b6c057183f/leaderboard"
+          url: "/api/challenges/6931d5ff08cb87b6c057183f/leaderboard" # again on global leadderboard page
           expect:
             - statusCode: 200
 
