@@ -10,6 +10,8 @@ Before running the project locally, you must have:
 * Node.js
   * Download: [https://nodejs.org/en/download](https://nodejs.org/en/download)
   * npm (comes with Node): used to manage dependencies
+  * Recommended: at least version 22
+    * Check your node version by running `node -v` command in terminal
 * A MongoDB Atlas cluster and connection string
 
 ## Environment Variables
