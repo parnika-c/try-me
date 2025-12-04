@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema(
     challengesJoined: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Challenge" }
     ],
+    avatar: { type: String },
   },
   { timestamps: true }
 );
