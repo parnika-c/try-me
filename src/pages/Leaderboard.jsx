@@ -21,17 +21,29 @@ import {
   renderRankIcon
 } from '../components/LeaderboardLogic.jsx';
 
+
+const getPodiumClassName = (rank) => `podium-card podium-${rank === 1 ? 'first' : rank === 2 ? 'second' : 'third'}`;
+
+const getDisplayName = (userName, isCurrent) => isCurrent ? 'You' : userName;
+
+const getFallbackChar = (userName, isCurrent) => isCurrent ? 'Y' : (userName || 'U')[0]; // missing username defaults to U
+
+/*
+  Goal: Renders the top 3 podium cards for the leaderboard
+  Input: sortedUsers - The sorted list of users by points
+  Output: Array of properly formatted JS elements for the podium
+ */
 const renderPodium = (sortedUsers) => {
   const displayOrder = getTop3DisplayOrder(sortedUsers);
   return displayOrder
     .filter(({ user }) => user)
     .map(({ user, rank }) => {
       const meta = getRankMeta(rank);
-      const current = isCurrentUser(user.name);
-      const displayName = current ? 'You' : user.name;
-      const fallbackChar = current ? 'Y' : (user.name || 'U')[0];
+      const isCurrent = isCurrentUser(user.name);
+      const displayName = getDisplayName(user.name, isCurrent);
+      const fallbackChar = getFallbackChar(user.name, isCurrent);
       return (
-        <Card key={user.id} className={`podium-card podium-${rank === 1 ? 'first' : rank === 2 ? 'second' : 'third'}`}>
+        <Card key={user.id} className={getPodiumClassName(rank)}>
           <CardContent className="podium-content">
             <div className="podium-icon">{renderRankIcon(meta.icon)}</div>
             <Avatar className="podium-avatar">
