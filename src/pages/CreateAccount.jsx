@@ -92,7 +92,7 @@ const CreateAccount = ({ onAccountCreated, onShowLogin }) => {
       {/* Top Navigation */}
       <div className="create-account-nav">
         <div className="create-account-logo-container">
-          <div className="create-account-logo" />
+          <span className="trophy">🏆</span>
           <span className="create-account-logo-text">TryMe!</span>
         </div>
         <div className="create-account-nav-buttons">

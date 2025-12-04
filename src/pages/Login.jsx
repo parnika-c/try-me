@@ -247,8 +247,8 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
         
         <div className="login-nav">
           <div className="login-logo-container">
-            <div className="login-logo" />
-            <span className="login-logo-text">Try Me</span>
+            <span className="trophy">🏆</span>
+            <span className="login-logo-text">TryMe!</span>
           </div>
         </div>
 
@@ -385,8 +385,8 @@ const Login = ({ onLoginSuccess, onShowCreateAccount }) => {
       {/* Top Nav */}
       <div className="login-nav">
         <div className="login-logo-container">
-          <div className="login-logo" />
-          <span className="login-logo-text">Try Me</span>
+          <span className="trophy">🏆</span>
+          <span className="login-logo-text">TryMe!</span>
         </div>
         <div className="login-nav-buttons">
           <button className="login-btn-primary">Login</button>
