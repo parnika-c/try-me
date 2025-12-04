@@ -86,34 +86,40 @@ export const NavBar = ({ onLogout }) => {
             </div>
             <div className="nav-right">
                 <div className="rank-card">
-                    <span className="rank-text">
-                        Rank: {rank}
-                    </span>
-                    <span className="divider">
-                        |
-                    </span>
-                    <span className="points">
-                        {points}
-                    </span>
-                    
-                    <div className="profile">
-                        <img className="profile-pic" 
-                            src={avatar} 
-                            alt="Profile Picture"
-                            onMouseEnter={() => setIsMenuOpen(!isMenuOpen)}
-                            />
-                        {isMenuOpen && <div className="menu-dropdown">
-                        <ul>
-                            {menus.map((menu) => ( 
-                                <li key={menu}>
-                                    <button className="logout-btn" onClick={() => handleMenuClick(menu)}>
-                                    {menu}
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>}
-                </div>
+                    {loading ? (
+                        "Loading..."
+                    ) : (
+                        <>
+                            <span className="rank-text">
+                                Rank: {rank}
+                            </span>
+                            <span className="divider">
+                                |
+                            </span>
+                            <span className="points">
+                                {points}
+                            </span>
+                            
+                            <div className="profile">
+                                <img className="profile-pic" 
+                                    src={avatar} 
+                                    alt="Profile Picture"
+                                    onMouseEnter={() => setIsMenuOpen(!isMenuOpen)}
+                                    />
+                                {isMenuOpen && <div className="menu-dropdown">
+                                <ul>
+                                    {menus.map((menu) => ( 
+                                        <li key={menu}>
+                                            <button className="logout-btn" onClick={() => handleMenuClick(menu)}>
+                                            {menu}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>}
+                        </div>
+                        </>
+                    )}
                 </div>
             </div>
         </nav>

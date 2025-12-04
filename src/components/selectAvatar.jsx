@@ -7,16 +7,39 @@ const SelectAvatar = ({ open, onOpenChange, currentAvatar, onAvatarSelect }) => 
   const [customAvatar, setCustomAvatar] = useState('');
   const fileInputRef = useRef(null);
 
-  const handleFileUpload = (event) => {
+  const resizeImage = (file, maxWidth, maxHeight) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        let { width, height } = img;
+        if (width > height) {
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = (width * maxHeight) / height;
+            height = maxHeight;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.8));
+      };
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
+  const handleFileUpload = async (event) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const result = reader.result;
-        setCustomAvatar(result);
-        setSelectedAvatar(result);
-      };
-      reader.readAsDataURL(file);
+      const resizedDataUrl = await resizeImage(file, 350, 350);
+      setCustomAvatar(resizedDataUrl);
+      setSelectedAvatar(resizedDataUrl);
     }
   };
 
