@@ -3,6 +3,12 @@ import User from "../models/User.js";
 
 export const protect = async (req, res, next) => {
   try {
+    // For tests: Bypass auth for load testing
+    if (process.env.NODE_ENV === 'test' && req.headers['x-test-mode'] === 'true') {
+      req.user = await User.findOne({ email: 'testuser1@example.com' }).select("-password");
+      if (!req.user) return res.status(404).json({ message: "Test user not found" });
+      return next();
+    }
     let token = null;
     if (req.cookies?.token) {
       token = req.cookies.token;
