@@ -54,7 +54,7 @@ When("I click on my profile picture in the navigation bar", async function () {
 
 When("I click the 'Sign Out' button", async function () {
     // Wait for menu to appear
-    const logoutButton = this.page.locator(".menu-dropdown button.logout-btn");
+    const logoutButton = this.page.locator("button:has-text('Sign Out')");
     await expect(logoutButton).toBeVisible({ timeout: 5000 });
     await logoutButton.click();
 });

@@ -75,7 +75,7 @@ Then("I sign out of my account", async function () {
   await this.page.click(".profile-pic"); // Trigger the dropdown menu by clicking profile picture
 
   // Wait for menu to appear
-  const logoutButton = this.page.locator(".menu-dropdown button.logout-btn");
+  const logoutButton = this.page.locator("button:has-text('Sign Out')");
   await expect(logoutButton).toBeVisible({ timeout: 5000 });
   await logoutButton.click();
 
@@ -93,5 +93,5 @@ When("I fill in the stored join code", async function () {
 });
 
 When("I submit the join code", async function () {
-  await this.page.click(".join-primary");
+  await this.page.click(".btn-join");
 });
