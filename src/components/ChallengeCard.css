@@ -165,8 +165,6 @@
   border-radius: 12px;            
   cursor: pointer;
 
-
-
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -174,7 +172,30 @@
     border-color 0.12s ease,
     background-color 0.12s ease,
     transform 0.12s ease;
+  position: relative; /* so the toast can anchor to this */
 }
+/* little Copied! pop up */
+.copy-toastmsg {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  background: #111827;
+  color: #fff;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+/* show toasts only while hovering */
+.join-code:hover .copy-toastmsg {
+  opacity: 1;
+}
+
 /* light gray bubble outline on copy hover */
 .join-code:hover {
   border-color: #d1d5db;          
