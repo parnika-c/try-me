@@ -45,6 +45,7 @@ export function ChallengeCard({ challenge, onClick, userStats  }) {
   //console.log('ChallengeCard sample participant:', list[0]);
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
+  const [copied, setCopied] = useState(false); 
 
   const fetchAllUsers = useCallback(async () => {
     try {
@@ -70,10 +71,16 @@ export function ChallengeCard({ challenge, onClick, userStats  }) {
   const handleCopyJoinCode = (e) => {
     e.stopPropagation(); // don’t trigger card click
     if (!joinCode) return;
+  
     navigator.clipboard
       ?.writeText(joinCode)
-      .catch((err) => console.error('Failed to copy join code', err));
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 900); // hide after ~1s
+      })
+      .catch((err) => console.error("Failed to copy join code", err));
   };
+  
 
   // MATH for the progress percentage for the progress bar 
   const progressPercentage = Math.min(100, Math.max(0, (currentDay / DAYS) * 100))
@@ -190,6 +197,10 @@ export function ChallengeCard({ challenge, onClick, userStats  }) {
                 onClick={handleCopyJoinCode}
               >
                 Code: <span className="join-code-value">{joinCode}</span>
+
+                <span className="copy-toastmsg">
+                  {copied ? 'Copied!' : 'Click to Copy'}
+                </span>
               </button>
             )}
           </div>
