@@ -70,3 +70,14 @@ The backend API runs at:
 ```
 http://localhost:4000
 ```
+
+
+
+## System Design Diagrams
+
+### 1. Class Diagram 
+
+![Class Diagram](src/assets/trymeclassdiagram.png)
+
+### 2. Sequence Diagram
+![Sequence Diagram](src/assets/trymesequencediagram.png)
