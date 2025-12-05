@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Mfa.css';
+import { enableMFA, verifyMFA } from '../services/api';
 
 function Mfa({ onComplete }) {
   const [code, setCode] = useState('');
@@ -16,63 +17,35 @@ function Mfa({ onComplete }) {
 
   const startSetup = async () => {
     setError('');
-    setMessage('');
+    setMessage('Generating QR code...');
+
     try {
-      const headers = getAuthHeaders();
-      if (!headers) {
-        setError('User not authenticated');
-        return;
-      }
-      const API_URL = 'http://localhost:4000/api';
-      const response = await fetch(`${API_URL}/mfa/enable`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...headers,
-        },
-      });
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        throw new Error(err.message || 'Failed to initiate MFA setup');
-      }
-      const data = await response.json();
+      const data = await enableMFA(getAuthHeaders()); // Pass auth headers
       setQrImage(data.qrCode);
       setStep('scan');
+      setMessage('');
     } catch (err) {
-      console.error(err);
-      setError(err.message || 'An error occurred while setting up MFA.');
+      console.error('Error enabling MFA:', err);
+      setError('Failed to start MFA setup. Please try again.');
+      setMessage('');
     }
   };
 
   const verifyCode = async () => {
     setError('');
-    setMessage('');
+    setMessage('Verifying code...');
+
     try {
-      const headers = getAuthHeaders();
-      if (!headers) {
-        setError('User not authenticated');
-        return;
-      }
-      const API_URL = 'http://localhost:4000/api';
-      const response = await fetch(`${API_URL}/mfa/verify`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...headers,
-        },
-        body: JSON.stringify({ token: code }),
-      });
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        throw new Error(err.message || 'MFA verification failed');
-      }
-      setMessage('MFA setup is successfully completed!');
+      await verifyMFA(code, getAuthHeaders()); // Pass auth headers
       setStep('done');
+      setMessage('MFA setup successfully completed!');
     } catch (err) {
-      console.error(err);
-      setError(err.message || 'An error occurred while verifying MFA.');
+      console.error('Error verifying MFA code:', err);
+      setError(err.message || 'Invalid code. Please try again.');
+      setMessage('');
     }
   };
+
 
   return (
     <div className="mfa-container">
