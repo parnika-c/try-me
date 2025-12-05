@@ -240,7 +240,6 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
                           </div>
                       </div>
                     </div>
-                    <div className="leaderboard-points">{participant.totalPoints} pts</div>
                   </div>
                   <div className="leaderboard-points">{participant.totalPoints} pts</div>
                 </div>
