@@ -57,8 +57,8 @@ scenarios:
           expect:
             - statusCode: 200
 
-  # 30% of users just browse
-  - weight: 30
+  # 20% of users just browse
+  - weight: 20
     name: "Browse challenges"
     flow:
       - get:
@@ -66,3 +66,15 @@ scenarios:
           expect:
             - statusCode: 200
       - think: 3
+
+  # 10% of users update their avatar
+  - weight: 10
+    name: "Update user avatar"
+    flow:
+      - put:
+          url: "/api/auth/me"
+          json:
+            avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed={{ $randomString() }}"
+          expect:
+            - statusCode: 200
+      - think: 2
