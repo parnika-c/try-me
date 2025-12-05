@@ -50,7 +50,7 @@ router.get("/:challengeId/leaderboard", protect, async (req, res) => {
         const checkInsByDay = [];
         for (let day = 1; day <= DAYS_IN_CHALLENGE; day++) {
           const c = userCheckIns.find(c => {
-            return dayFromDate(c.date, challenge.startDate) === day;
+            return getDayFromDate(c.date, challenge.startDate) === day;
           });
 
           checkInsByDay.push({
@@ -151,10 +151,10 @@ async function buildParticipantSummary(challenge, userId) {
   const checkInsByDay = [];
   for (let day = 1; day <= DAYS_IN_CHALLENGE; day++) {
     const c = checkins.find(c => {
-      return dayFromDate(c.date, challenge.startDate) === day; // find checkin matching this day
+      return getDayFromDate(c.date, challenge.startDate) === day; // find checkin matching this day
     });
 
-    checkInsByDay.push({
+    checkInsByDay.push({ // use default values if missing
       day,
       completed: !!c,
       value: c?.value || "",
@@ -170,7 +170,7 @@ async function buildParticipantSummary(challenge, userId) {
     participant: {
       userId: userId.toString(),
       currentStreak,
-      totalPoints: checkins.reduce((sum, c) => sum + (c.pointsEarned || 0), 0),
+      totalPoints: checkins.reduce((sum, c) => sum + (c.pointsEarned || 0), 0), // calculate sum of all points, default to 0 if missing
       checkIns: checkInsByDay,
     },
   };
@@ -188,7 +188,7 @@ function computeCurrentDay(startDate) {
   return Math.min(Math.max(diff, 0), DAYS_IN_CHALLENGE);
 }
 
-function dayFromDate(date, startDate) {
+function getDayFromDate(date, startDate) {
   const d = new Date(date);
   const s = new Date(startDate);
 

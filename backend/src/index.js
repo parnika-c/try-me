@@ -3,11 +3,12 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./db.js";
+import { protect } from './middleware/authMiddleware.js';
 import authRoutes from "./routes/auth.js";
 import challengeRoutes from "./routes/challenges.js";
 import mfaRoutes from "./routes/mfa.js";
-import { protect } from './middleware/authMiddleware.js';
 import checkinRoutes from "./routes/checkins.js";
+import testRoutes from "./routes/test.js"; // For test-only routes
 import userRoutes from "./routes/users.js";
 
 const app = express();
@@ -18,6 +19,10 @@ app.use(cors({
 }));
 app.use(cookieParser());
 app.use(express.json());
+
+if (process.env.NODE_ENV !== "production") { // Used for test-only MFA route
+  app.use("/api/_test", testRoutes);
+}
 
 app.use("/api/auth", authRoutes);
 app.use("/api/challenges", challengeRoutes);
