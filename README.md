@@ -71,6 +71,12 @@ The backend API runs at:
 http://localhost:4000
 ```
 
+## Running End-to-End Tests
+
+Automatically run the Cucumber/Playwright tests from the root directory:
+```
+npm run test:e2e
+```
 
 
 ## System Design Diagrams
