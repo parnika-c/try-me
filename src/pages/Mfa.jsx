@@ -41,7 +41,7 @@ function Mfa({ onComplete }) {
       setMessage('MFA setup successfully completed!');
     } catch (err) {
       console.error('Error verifying MFA code:', err);
-      setError('Invalid code. Please try again.');
+      setError(err.message || 'Invalid code. Please try again.');
       setMessage('');
     }
   };
