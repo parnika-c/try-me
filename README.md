@@ -23,7 +23,6 @@ CLIENT_ORIGIN=http://localhost:5173
 PORT=4000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
-
 ```
 
 ## Installation and Running the App Locally
@@ -73,7 +72,18 @@ http://localhost:4000
 
 ## Running End-to-End Tests
 
-Automatically run the Cucumber/Playwright tests from the root directory:
+Add to `backend/.env` file:
+```
+NODE_ENV=test
+```
+
+Install dependencies and Playwright browser:
+```
+npm install
+npx playwright install
+```
+
+Run the Cucumber/Playwright tests from the root directory:
 ```
 npm run test:e2e
 ```
