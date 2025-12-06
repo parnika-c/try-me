@@ -78,6 +78,18 @@ Automatically run the Cucumber/Playwright tests from the root directory:
 npm run test:e2e
 ```
 
+## Running Stress Tests
+
+Install Artillery:
+```
+npm install -g artillery
+```
+
+Run stress tests:
+```
+artillery run stress-frontend.yml  (Frontend tests)
+artillery run stress-backend.yml   (Backend tests)
+```
 
 ## System Design Diagrams
 
