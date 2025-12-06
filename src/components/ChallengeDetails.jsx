@@ -9,8 +9,6 @@ import {
   getAvatarProps //imported from '../components/LeaderboardLogic.jsx
 } from '../components/LeaderboardLogic.jsx';
 
-
-
 import CheckinModal from "./CheckinModal";
 import "./ChallengeDetails.css";
 const DAYS = 7;
@@ -84,16 +82,17 @@ export function ChallengeDetails({ challenge, onBack, currentUserId, onStatsUpda
     }
   }, [challenge._id]);
 
-  const getDayState = (day, checkIn, currentDay, challengeStatus) => ({
-    // Past day that as completed
-    isCompleted: checkIn?.completed,
-    // Past day that was not completed
-    isMissed: !checkIn?.completed && (day < currentDay || (challengeStatus === "Previous" && day <= 7)),
-    // Future day
-    isFuture: day > currentDay && challengeStatus !== "Previous",
-    // Current day
-    isCurrent: day === currentDay && challengeStatus === "Active"
-  });
+  /* Determines the visual state of a challenge day based on current progress */
+  const getDayState = (day, checkIn, currentDay, challengeStatus) => {
+    const isPastDay = day < currentDay || (challengeStatus === "Previous" && day <= 7);
+  
+    return {
+      isCompleted: checkIn?.completed,
+      isMissed: !checkIn?.completed && isPastDay,
+      isFuture: day > currentDay && challengeStatus !== "Previous",
+      isCurrent: day === currentDay && challengeStatus === "Active"
+    };
+  };
 
   // Load on first render
   useEffect(() => {
